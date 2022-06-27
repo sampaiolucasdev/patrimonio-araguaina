@@ -1,0 +1,43 @@
+{
+  "pessoas": [
+    {
+      "nomeCompleto": "Lucas",
+      "email": "lsampaio32@gmail.com",
+      "cidadeId": 4,
+      "id": 1
+    }
+  ],
+  "cidades": [
+    {
+      "nome": "Palmas",
+      "id": 3
+    },
+    {
+      "nome": "Recife",
+      "id": 4
+    },
+    {
+      "nome": "Gurupi",
+      "id": 5
+    },
+    {
+      "nome": "Surubim",
+      "id": 6
+    },
+    {
+      "nome": "Caxias",
+      "id": 7
+    },
+    {
+      "nome": "Rio",
+      "id": 8
+    },
+    {
+      "nome": "Caruaru",
+      "id": 9
+    }
+  ],
+  "auth": {
+    "accessToken": "aaaaaa.bbbbbb.cccccc"
+  }
+}
