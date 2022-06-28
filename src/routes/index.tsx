@@ -4,11 +4,23 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useDrawerContext } from "../shared/contexts";
 import {
   Dashboard,
-  ListagemDePessoas,
-  DetalheDePessoas,
-  DetalheDeCidades,
+  ListagemDeBens,
+  DetalheDeBens,
+  ListagemDeMovimentacao,
+  DetalheDeMovimentacao,
+  ListagemDeDepartamento,
+  DetalheDeDepartamento,
+  ListagemDeSetor,
+  DetalheDeSetor,
+  ListagemDeUsuario,
+  DetalheDeUsuario,
+  ListagemDePrediosAdmin,
+  DetalheDePrediosAdmin,
+  ListagemDeUbs,
+  DetalheDeUbs,
+  ListagemDeRelatorios,
+  DetalheDeRelatorios,
 } from "../pages";
-import { ListagemDeCidades } from "../pages/cidades/ListagemDeCidades";
 
 export const AppRoutes = () => {
   const { setDrawerOptions } = useDrawerContext();
@@ -36,26 +48,41 @@ export const AppRoutes = () => {
     <Routes>
       <Route path="/pagina-inicial" element={<Dashboard />} />
 
-      <Route path="/pessoas" element={<ListagemDePessoas />} />
-      <Route path="/pessoas/detalhe/:id" element={<DetalheDePessoas />} />
+      <Route path="/bens" element={<ListagemDeBens />} />
+      <Route path="/bens/detalhe/:id" element={<DetalheDeBens />} />
 
-      <Route path="/cidades" element={<ListagemDeCidades />} />
-      <Route path="/cidades/detalhe/:id" element={<DetalheDeCidades />} />
+      <Route path="/movimentacoes" element={<ListagemDeMovimentacao />} />
+      <Route
+        path="/movimentacoes/detalhe/:id"
+        element={<DetalheDeMovimentacao />}
+      />
 
-      {/* <Route path="/cadastro" element={<CadastroDeBem />} />
-      <Route path="/cidades/detalhe/:id" element={<DetalheDeBem />} />
+      <Route path="/departamento" element={<ListagemDeDepartamento />} />
+      <Route
+        path="/departamento/detalhe/:id"
+        element={<DetalheDeDepartamento />}
+      />
 
-      <Route path="/cidades" element={<ListagemDeCidades />} />
-      <Route path="/cidades/detalhe/:id" element={<DetalheDeCidades />} />
+      <Route path="/setor" element={<ListagemDeSetor />} />
+      <Route path="/setor/detalhe/:id" element={<DetalheDeSetor />} />
 
-      <Route path="/cidades" element={<ListagemDeCidades />} />
-      <Route path="/cidades/detalhe/:id" element={<DetalheDeCidades />} />
+      <Route path="/usuario" element={<ListagemDeUsuario />} />
+      <Route path="/usuario/detalhe/:id" element={<DetalheDeUsuario />} />
 
-      <Route path="/cidades" element={<ListagemDeCidades />} />
-      <Route path="/cidades/detalhe/:id" element={<DetalheDeCidades />} />
+      <Route
+        path="/predios-administrativos"
+        element={<ListagemDePrediosAdmin />}
+      />
+      <Route
+        path="/predios-administrativos/detalhe/:id"
+        element={<DetalheDePrediosAdmin />}
+      />
 
-      <Route path="/cidades" element={<ListagemDeCidades />} />
-      <Route path="/cidades/detalhe/:id" element={<DetalheDeCidades />} /> */}
+      <Route path="/ubs" element={<ListagemDeUbs />} />
+      <Route path="/ubs/detalhe/:id" element={<DetalheDeUbs />} />
+
+      <Route path="/relatorios" element={<ListagemDeRelatorios />} />
+      <Route path="/relatorios/detalhe/:id" element={<DetalheDeRelatorios />} />
 
       <Route path="*" element={<Navigate to="/pagina-inicial" />} />
     </Routes>

@@ -8,13 +8,19 @@ import {
   List,
   ListItemButton,
   ListItemIcon,
+  ListItemSecondaryAction,
   ListItemText,
   ListSubheader,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
 import { useState } from "react";
-import { useMatch, useNavigate, useResolvedPath } from "react-router-dom";
+import {
+  Navigate,
+  useMatch,
+  useNavigate,
+  useResolvedPath,
+} from "react-router-dom";
 import {
   useAppThemeContext,
   useAuthContext,
@@ -22,7 +28,6 @@ import {
 } from "../../contexts";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
 import MoveUpIcon from "@mui/icons-material/MoveUp";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import InventoryIcon from "@mui/icons-material/Inventory";
@@ -30,39 +35,10 @@ import ApartmentIcon from "@mui/icons-material/Apartment";
 import HealingIcon from "@mui/icons-material/Healing";
 import FolderSpecialIcon from "@mui/icons-material/FolderSpecial";
 import AddLocationIcon from "@mui/icons-material/AddLocation";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import PersonIcon from "@mui/icons-material/Person";
+import HomeIcon from "@mui/icons-material/Home";
 import AssessmentIcon from "@mui/icons-material/Assessment";
-
-interface IListItemLinkProps {
-  to: string;
-  icon: string;
-  label: string;
-  onClick: (() => void) | undefined;
-}
-const ListItemLink: React.FC<IListItemLinkProps> = ({
-  to,
-  icon,
-  label,
-  onClick,
-}) => {
-  const navigate = useNavigate();
-
-  const resolvedPath = useResolvedPath(to);
-  const match = useMatch({ path: resolvedPath.pathname, end: false });
-
-  const handleClick = () => {
-    navigate(to);
-    onClick?.(); //Se a função for undefined, não faz nada. Se não for, executa
-  };
-  return (
-    <ListItemButton selected={!!match} onClick={handleClick}>
-      <ListItemIcon>
-        <Icon>{icon}</Icon>
-      </ListItemIcon>
-      <ListItemText primary={label} />
-    </ListItemButton>
-  );
-};
+import prefeituraLogo from "../../../assets/prefeitura-logo-redonda.png";
 
 export const MenuLateral: React.FC = ({ children }) => {
   const theme = useTheme();
@@ -71,28 +47,23 @@ export const MenuLateral: React.FC = ({ children }) => {
   const { isDrawerOpen, toggleDrawerOpen, drawerOptions } = useDrawerContext();
   const { toggleTheme } = useAppThemeContext();
   const { logout } = useAuthContext();
+  const navigate = useNavigate();
 
-  const [open, setOpen] = useState(true);
-  const [openCadastro, setOpenCadastro] = useState(true);
-  const [openCadastroAdmin, setOpenCadastroAdmin] = useState(true);
-  const [openSUPAE, setOpenSUPAE] = useState(true);
-  const [openSUPVISA, setOpenSUPVISA] = useState(true);
+  const [openInventario, setOpenInventario] = useState(false);
+  const [openCadastro, setOpenCadastro] = useState(false);
+  //const [openCadastroAdmin, setOpenCadastroAdmin] = useState(true);
 
-  const handleClickDrawer = () => {
-    setOpen(!open);
+  const handleClickDrawerInventario = () => {
+    setOpenInventario(!openInventario);
+    openCadastro ? setOpenCadastro(!openCadastro) : null;
   };
   const handleClickDrawerCadastro = () => {
     setOpenCadastro(!openCadastro);
+    openInventario ? setOpenInventario(!openInventario) : null;
   };
-  const handleClickDrawerCadastroAdmin = () => {
-    setOpenCadastroAdmin(!openCadastroAdmin);
-  };
-  const handleClickDrawerSUPAE = () => {
-    setOpenSUPAE(!openSUPAE);
-  };
-  const handleClickDrawerSUPVISA = () => {
-    setOpenSUPVISA(!openSUPVISA);
-  };
+  // const handleClickDrawerCadastroAdmin = () => {
+  //   setOpenCadastroAdmin(!openCadastroAdmin);
+  // };
 
   return (
     <>
@@ -119,7 +90,7 @@ export const MenuLateral: React.FC = ({ children }) => {
                 height: theme.spacing(12),
                 width: theme.spacing(12),
               }}
-              src="https://cdn-icons-png.flaticon.com/512/1005/1005141.png"
+              src={prefeituraLogo}
             />
           </Box>
           <Divider />
@@ -134,7 +105,10 @@ export const MenuLateral: React.FC = ({ children }) => {
                 </ListSubheader>
               }
             >
-              <ListItemButton sx={{ height: 30 }}>
+              <ListItemButton
+                sx={{ height: 30 }}
+                onClick={() => navigate("/pagina-inicial")}
+              >
                 <ListItemIcon sx={{ minWidth: 30 }}>
                   <Icon>home</Icon>
                 </ListItemIcon>
@@ -148,13 +122,15 @@ export const MenuLateral: React.FC = ({ children }) => {
                   }}
                 />
               </ListItemButton>
-
-              <ListItemButton sx={{ height: 30 }}>
+              <ListItemButton
+                sx={{ height: 30 }}
+                onClick={handleClickDrawerCadastro}
+              >
                 <ListItemIcon sx={{ minWidth: 30 }}>
                   <AppRegistrationIcon />
                 </ListItemIcon>
                 <ListItemText
-                  primary="Cadastrar Bem"
+                  primary="Cadastros"
                   primaryTypographyProps={{
                     fontSize: 14,
                     fontWeight: "medium",
@@ -162,9 +138,79 @@ export const MenuLateral: React.FC = ({ children }) => {
                     mb: "2px",
                   }}
                 />
+                {openCadastro ? <ExpandLess /> : <ExpandMore />}
               </ListItemButton>
+              <Collapse in={openCadastro} timeout="auto" unmountOnExit>
+                <ListItemButton
+                  sx={{ pl: 3, heigth: 30 }}
+                  onClick={() => navigate("/departamento")}
+                >
+                  <ListItemIcon sx={{ minWidth: 30 }}>
+                    <HomeIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Departamento"
+                    primaryTypographyProps={{
+                      fontSize: 14,
+                      lineHeight: "20px",
+                      mb: "2px",
+                    }}
+                  />
+                </ListItemButton>
+                <ListItemButton
+                  sx={{ pl: 3, heigth: 30 }}
+                  onClick={() => navigate("/setor")}
+                >
+                  <ListItemIcon sx={{ minWidth: 30 }}>
+                    <Icon></Icon>
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Setor"
+                    primaryTypographyProps={{
+                      fontSize: 14,
+                      lineHeight: "20px",
+                      mb: "2px",
+                    }}
+                  />
+                </ListItemButton>
+                <ListItemButton
+                  sx={{ pl: 3, heigth: 30 }}
+                  onClick={() => navigate("/usuario")}
+                >
+                  <ListItemIcon sx={{ minWidth: 30 }}>
+                    <PersonIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Usuário"
+                    primaryTypographyProps={{
+                      fontSize: 14,
+                      lineHeight: "20px",
+                      mb: "2px",
+                    }}
+                  />
+                </ListItemButton>
+                <ListItemButton
+                  sx={{ pl: 3, heigth: 30 }}
+                  onClick={() => navigate("/bens")}
+                >
+                  <ListItemIcon sx={{ minWidth: 30 }}>
+                    <PersonIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Bem"
+                    primaryTypographyProps={{
+                      fontSize: 14,
+                      lineHeight: "20px",
+                      mb: "2px",
+                    }}
+                  />
+                </ListItemButton>
+              </Collapse>
 
-              <ListItemButton sx={{ height: 30 }}>
+              <ListItemButton
+                sx={{ height: 30 }}
+                onClick={() => navigate("/movimentacoes")}
+              >
                 <ListItemIcon sx={{ minWidth: 30 }}>
                   <MoveUpIcon />
                 </ListItemIcon>
@@ -178,8 +224,10 @@ export const MenuLateral: React.FC = ({ children }) => {
                   }}
                 />
               </ListItemButton>
-
-              <ListItemButton onClick={handleClickDrawer} sx={{ height: 30 }}>
+              <ListItemButton
+                onClick={handleClickDrawerInventario}
+                sx={{ height: 30 }}
+              >
                 <ListItemIcon sx={{ minWidth: 30 }}>
                   <InventoryIcon />
                 </ListItemIcon>
@@ -192,12 +240,14 @@ export const MenuLateral: React.FC = ({ children }) => {
                     mb: "2px",
                   }}
                 />
-                {open ? <ExpandLess /> : <ExpandMore />}
+                {openInventario ? <ExpandLess /> : <ExpandMore />}
               </ListItemButton>
-
-              <Collapse in={open} timeout="auto" unmountOnExit>
+              <Collapse in={openInventario} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding={true}>
-                  <ListItemButton sx={{ pl: 3, heigth: 30 }}>
+                  <ListItemButton
+                    sx={{ pl: 3, heigth: 30 }}
+                    onClick={() => navigate("/predios-administrativos")}
+                  >
                     <ListItemIcon sx={{ minWidth: 30 }}>
                       <ApartmentIcon />
                     </ListItemIcon>
@@ -211,7 +261,11 @@ export const MenuLateral: React.FC = ({ children }) => {
                     />
                   </ListItemButton>
                 </List>
-                <List component="div" disablePadding={true}>
+                <List
+                  component="div"
+                  disablePadding={true}
+                  onClick={() => navigate("/ubs")}
+                >
                   <ListItemButton sx={{ pl: 3, heigth: 30 }}>
                     <ListItemIcon sx={{ minWidth: 30 }}>
                       <HealingIcon />
@@ -227,7 +281,10 @@ export const MenuLateral: React.FC = ({ children }) => {
                   </ListItemButton>
                 </List>
               </Collapse>
-              <ListItemButton sx={{ height: 30 }}>
+              <ListItemButton
+                sx={{ height: 30 }}
+                onClick={() => navigate("/relatorios")}
+              >
                 <ListItemIcon sx={{ minWidth: 30 }}>
                   <AssessmentIcon />
                 </ListItemIcon>
@@ -256,67 +313,7 @@ export const MenuLateral: React.FC = ({ children }) => {
                     Administrador
                   </ListSubheader>
                 }
-              >
-                <ListItemButton
-                  sx={{ height: 30 }}
-                  onClick={handleClickDrawerCadastroAdmin}
-                >
-                  <ListItemIcon sx={{ minWidth: 30 }}>
-                    <Icon>add</Icon>
-                  </ListItemIcon>
-                  <ListItemText
-                    primary="Cadastro Geral"
-                    primaryTypographyProps={{
-                      fontSize: 14,
-                      fontWeight: "medium",
-                      lineHeight: "20px",
-                      mb: "2px",
-                    }}
-                  />
-                  {openCadastroAdmin ? <ExpandLess /> : <ExpandMore />}
-                </ListItemButton>
-                <Collapse in={openCadastroAdmin} timeout="auto" unmountOnExit>
-                  <ListItemButton sx={{ pl: 3, heigth: 30 }}>
-                    <ListItemIcon sx={{ minWidth: 30 }}>
-                      <FolderSpecialIcon />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary="Cadastrar Organização"
-                      primaryTypographyProps={{
-                        fontSize: 14,
-                        lineHeight: "20px",
-                        mb: "2px",
-                      }}
-                    />
-                  </ListItemButton>
-                  <ListItemButton sx={{ pl: 3, heigth: 30 }}>
-                    <ListItemIcon sx={{ minWidth: 30 }}>
-                      <AddLocationIcon />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary="Cadastrar Entidade"
-                      primaryTypographyProps={{
-                        fontSize: 14,
-                        lineHeight: "20px",
-                        mb: "2px",
-                      }}
-                    />
-                  </ListItemButton>
-                  <ListItemButton sx={{ pl: 3, heigth: 30 }}>
-                    <ListItemIcon sx={{ minWidth: 30 }}>
-                      <PersonAddIcon />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary="Cadastrar Usuários"
-                      primaryTypographyProps={{
-                        fontSize: 14,
-                        lineHeight: "20px",
-                        mb: "2px",
-                      }}
-                    />
-                  </ListItemButton>
-                </Collapse>
-              </List>
+              ></List>
             </Box>
           </Box>
           <Box>

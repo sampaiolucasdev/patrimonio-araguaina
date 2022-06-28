@@ -1,5 +1,24 @@
 export * from "./dashboard/Dashboard";
-export * from "./pessoas/ListagemDePessoas";
-export * from "./pessoas/DetalheDePessoas";
-export * from "./cidades/ListagemDeCidades";
-export * from "./cidades/DetalheDeCidades";
+export * from "./movimentacoes/ListagemDeMovimentacao";
+export * from "./movimentacoes/DetalheDeMovimentacao";
+
+export * from "./departamento/ListagemDeDepartamento";
+export * from "./departamento/DetalheDeDepartamento";
+
+export * from "./bens/DetalheDeBens";
+export * from "./bens/ListagemDeBens";
+
+export * from "./setor/DetalheDeSetor";
+export * from "./setor/ListagemDeSetor";
+
+export * from "./usuario/DetalheDeUsuario";
+export * from "./usuario/ListagemDeUsuario";
+
+export * from "./predios-administrativos/DetalheDePrediosAdmin";
+export * from "./predios-administrativos/ListagemDePrediosAdmin";
+
+export * from "./ubs/DetalheDeUbs";
+export * from "./ubs/ListagemDeUbs";
+
+export * from "./relatorios/DetalheDeRelatorios";
+export * from "./relatorios/ListagemDeRelatorios";
