@@ -9,6 +9,7 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  ListSubheader,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
@@ -23,6 +24,14 @@ import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import MoveUpIcon from "@mui/icons-material/MoveUp";
+import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
+import InventoryIcon from "@mui/icons-material/Inventory";
+import ApartmentIcon from "@mui/icons-material/Apartment";
+import HealingIcon from "@mui/icons-material/Healing";
+import FolderSpecialIcon from "@mui/icons-material/FolderSpecial";
+import AddLocationIcon from "@mui/icons-material/AddLocation";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import AssessmentIcon from "@mui/icons-material/Assessment";
 
 interface IListItemLinkProps {
   to: string;
@@ -64,19 +73,19 @@ export const MenuLateral: React.FC = ({ children }) => {
   const { logout } = useAuthContext();
 
   const [open, setOpen] = useState(true);
-  const [openSUPAB, setOpenSUPAB] = useState(true);
-  const [openSUPADM, setOpenSUPADM] = useState(true);
+  const [openCadastro, setOpenCadastro] = useState(true);
+  const [openCadastroAdmin, setOpenCadastroAdmin] = useState(true);
   const [openSUPAE, setOpenSUPAE] = useState(true);
   const [openSUPVISA, setOpenSUPVISA] = useState(true);
 
   const handleClickDrawer = () => {
     setOpen(!open);
   };
-  const handleClickDrawerSUPAB = () => {
-    setOpenSUPAB(!openSUPAB);
+  const handleClickDrawerCadastro = () => {
+    setOpenCadastro(!openCadastro);
   };
-  const handleClickDrawerSUPADM = () => {
-    setOpenSUPADM(!openSUPADM);
+  const handleClickDrawerCadastroAdmin = () => {
+    setOpenCadastroAdmin(!openCadastroAdmin);
   };
   const handleClickDrawerSUPAE = () => {
     setOpenSUPAE(!openSUPAE);
@@ -114,399 +123,231 @@ export const MenuLateral: React.FC = ({ children }) => {
             />
           </Box>
           <Divider />
-          <List
-            component="nav"
-            aria-labelledby="nested-list-subheader"
-            sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
-          >
-            <ListItemButton>
-              <ListItemIcon>
-                <Icon>home</Icon>
-              </ListItemIcon>
-              <ListItemText primary="Página Inicial" />
-            </ListItemButton>
+          <Box flex={1}>
+            <List
+              component="nav"
+              aria-labelledby="nested-list-subheader"
+              sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+              subheader={
+                <ListSubheader component="div" id="nested-list-subheader">
+                  Navegação
+                </ListSubheader>
+              }
+            >
+              <ListItemButton sx={{ height: 30 }}>
+                <ListItemIcon sx={{ minWidth: 30 }}>
+                  <Icon>home</Icon>
+                </ListItemIcon>
+                <ListItemText
+                  primary="Página Inicial"
+                  primaryTypographyProps={{
+                    fontSize: 14,
+                    fontWeight: "medium",
+                    lineHeight: "20px",
+                    mb: "2px",
+                  }}
+                />
+              </ListItemButton>
 
-            <ListItemButton>
-              <ListItemIcon>
-                <Icon>add</Icon>
-              </ListItemIcon>
-              <ListItemText primary="Cadastrar Patrimônio" />
-            </ListItemButton>
+              <ListItemButton sx={{ height: 30 }}>
+                <ListItemIcon sx={{ minWidth: 30 }}>
+                  <AppRegistrationIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Cadastrar Bem"
+                  primaryTypographyProps={{
+                    fontSize: 14,
+                    fontWeight: "medium",
+                    lineHeight: "20px",
+                    mb: "2px",
+                  }}
+                />
+              </ListItemButton>
 
-            <ListItemButton>
-              <ListItemIcon>
-                <MoveUpIcon />
-              </ListItemIcon>
-              <ListItemText primary="Registrar Movimentação" />
-            </ListItemButton>
-            {/* MULTILEVEL GERAL */}
-            <ListItemButton onClick={handleClickDrawer}>
-              <ListItemIcon>
-                <Icon>storage</Icon>
-              </ListItemIcon>
-              <ListItemText primary="Relação de Bens" />
-              {open ? <ExpandLess /> : <ExpandMore />}
-            </ListItemButton>
+              <ListItemButton sx={{ height: 30 }}>
+                <ListItemIcon sx={{ minWidth: 30 }}>
+                  <MoveUpIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Movimentações"
+                  primaryTypographyProps={{
+                    fontSize: 14,
+                    fontWeight: "medium",
+                    lineHeight: "20px",
+                    mb: "2px",
+                  }}
+                />
+              </ListItemButton>
 
-            <Collapse in={open} timeout="auto" unmountOnExit>
-              {/* MULTILEVEL SUPAB */}
-              <List component="div" disablePadding={true}>
-                <ListItemButton sx={{ pl: 4 }} onClick={handleClickDrawerSUPAB}>
-                  <ListItemIcon>
-                    <LocationOnIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="SUPAB" />
-                  {openSUPAB ? <ExpandLess /> : <ExpandMore />}
-                </ListItemButton>
-                {/* FILHOS SUPAB */}
-                <Collapse in={openSUPAB} timeout="auto" unmountOnExit>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="Salão" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="Diretoria" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="Logística" />
-                    </ListItemButton>
-                  </List>
-                </Collapse>
-                {/* MULTILEVEL SUPVISA */}
-              </List>
-              <List component="div" disablePadding={true}>
+              <ListItemButton onClick={handleClickDrawer} sx={{ height: 30 }}>
+                <ListItemIcon sx={{ minWidth: 30 }}>
+                  <InventoryIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Inventário"
+                  primaryTypographyProps={{
+                    fontSize: 14,
+                    fontWeight: "medium",
+                    lineHeight: "20px",
+                    mb: "2px",
+                  }}
+                />
+                {open ? <ExpandLess /> : <ExpandMore />}
+              </ListItemButton>
+
+              <Collapse in={open} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding={true}>
+                  <ListItemButton sx={{ pl: 3, heigth: 30 }}>
+                    <ListItemIcon sx={{ minWidth: 30 }}>
+                      <ApartmentIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="Prédios Administrativos"
+                      primaryTypographyProps={{
+                        fontSize: 14,
+                        lineHeight: "20px",
+                        mb: "2px",
+                      }}
+                    />
+                  </ListItemButton>
+                </List>
+                <List component="div" disablePadding={true}>
+                  <ListItemButton sx={{ pl: 3, heigth: 30 }}>
+                    <ListItemIcon sx={{ minWidth: 30 }}>
+                      <HealingIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="UBS"
+                      primaryTypographyProps={{
+                        fontSize: 14,
+                        lineHeight: "20px",
+                        mb: "2px",
+                      }}
+                    />
+                  </ListItemButton>
+                </List>
+              </Collapse>
+              <ListItemButton sx={{ height: 30 }}>
+                <ListItemIcon sx={{ minWidth: 30 }}>
+                  <AssessmentIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Relatórios"
+                  primaryTypographyProps={{
+                    fontSize: 14,
+                    fontWeight: "medium",
+                    lineHeight: "20px",
+                    mb: "2px",
+                  }}
+                />
+              </ListItemButton>
+            </List>
+            <Box>
+              <List
+                component="nav"
+                aria-labelledby="nested-list-subheader"
+                sx={{
+                  width: "100%",
+                  maxWidth: 360,
+                  bgcolor: "background.paper",
+                }}
+                subheader={
+                  <ListSubheader component="div" id="nested-list-subheader">
+                    Administrador
+                  </ListSubheader>
+                }
+              >
                 <ListItemButton
-                  sx={{ pl: 4 }}
-                  onClick={handleClickDrawerSUPVISA}
+                  sx={{ height: 30 }}
+                  onClick={handleClickDrawerCadastroAdmin}
                 >
-                  <ListItemIcon>
-                    <LocationOnIcon />
+                  <ListItemIcon sx={{ minWidth: 30 }}>
+                    <Icon>add</Icon>
                   </ListItemIcon>
-                  <ListItemText primary="SUPVISA" />
-                  {openSUPVISA ? <ExpandLess /> : <ExpandMore />}
+                  <ListItemText
+                    primary="Cadastro Geral"
+                    primaryTypographyProps={{
+                      fontSize: 14,
+                      fontWeight: "medium",
+                      lineHeight: "20px",
+                      mb: "2px",
+                    }}
+                  />
+                  {openCadastroAdmin ? <ExpandLess /> : <ExpandMore />}
                 </ListItemButton>
-                {/* FILHOS SUPVISA */}
-                <Collapse in={openSUPVISA} timeout="auto" unmountOnExit>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="Sede" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="Vigilância Epidemiológica" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="Vigilância Ambiental" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="Vigilância Sanitária" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="CCZ" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="CEREST" />
-                    </ListItemButton>
-                  </List>
-                </Collapse>
-                {/* MULTILEVEL SUPADM */}
-              </List>
-              <List
-                component="div"
-                disablePadding={true}
-                onClick={handleClickDrawerSUPADM}
-              >
-                <ListItemButton sx={{ pl: 4 }}>
-                  <ListItemIcon>
-                    <LocationOnIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="SUPADM" />
-                  {openSUPADM ? <ExpandLess /> : <ExpandMore />}
-                </ListItemButton>
-                {/* FILHOS SUPADM */}
-                <Collapse in={openSUPADM} timeout="auto" unmountOnExit>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="Sede" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="Ouvidoria" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="NAT" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="DIRECON" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="Manutenção" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="RH" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="NEP" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="ASSEJUR" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="Compras" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="TI" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="Transporte" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="Auditoria" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="Keila" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="Planejamento" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="Financeiro" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="Teleatendimento" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="Centro Logístico" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="Depósito Patrimônio" />
-                    </ListItemButton>
-                  </List>
-                </Collapse>
-                {/* MULTILEVEL SUPAE */}
-              </List>
-              <List
-                component="div"
-                disablePadding={true}
-                onClick={handleClickDrawerSUPAE}
-              >
-                <ListItemButton sx={{ pl: 4 }}>
-                  <ListItemIcon>
-                    <LocationOnIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="SUPAE" />
-                  {openSUPAE ? <ExpandLess /> : <ExpandMore />}
-                </ListItemButton>
-                {/* FILHOS SUPAE */}
-                <Collapse in={openSUPAE} timeout="auto" unmountOnExit>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="Sede" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="CAPS AD III" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="Regulação" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="SAMU" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="CEO" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="Centro de Fisioterapia" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding={true}>
-                    <ListItemButton sx={{ pl: 6 }}>
-                      <ListItemIcon>
-                        <LocationOnIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="Clinica Mundo Autista" />
-                    </ListItemButton>
-                  </List>
+                <Collapse in={openCadastroAdmin} timeout="auto" unmountOnExit>
+                  <ListItemButton sx={{ pl: 3, heigth: 30 }}>
+                    <ListItemIcon sx={{ minWidth: 30 }}>
+                      <FolderSpecialIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="Cadastrar Organização"
+                      primaryTypographyProps={{
+                        fontSize: 14,
+                        lineHeight: "20px",
+                        mb: "2px",
+                      }}
+                    />
+                  </ListItemButton>
+                  <ListItemButton sx={{ pl: 3, heigth: 30 }}>
+                    <ListItemIcon sx={{ minWidth: 30 }}>
+                      <AddLocationIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="Cadastrar Entidade"
+                      primaryTypographyProps={{
+                        fontSize: 14,
+                        lineHeight: "20px",
+                        mb: "2px",
+                      }}
+                    />
+                  </ListItemButton>
+                  <ListItemButton sx={{ pl: 3, heigth: 30 }}>
+                    <ListItemIcon sx={{ minWidth: 30 }}>
+                      <PersonAddIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary="Cadastrar Usuários"
+                      primaryTypographyProps={{
+                        fontSize: 14,
+                        lineHeight: "20px",
+                        mb: "2px",
+                      }}
+                    />
+                  </ListItemButton>
                 </Collapse>
               </List>
-              <List component="div" disablePadding={true}>
-                <ListItemButton sx={{ pl: 4 }}>
-                  <ListItemIcon>
-                    <LocationOnIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Gabinete" />
-                </ListItemButton>
-              </List>
-            </Collapse>
-          </List>
+            </Box>
+          </Box>
           <Box>
             <List component="nav">
-              <ListItemButton onClick={toggleTheme}>
+              <ListItemButton onClick={toggleTheme} sx={{ height: 30 }}>
                 <ListItemIcon>
                   <Icon>dark_mode</Icon>
                 </ListItemIcon>
-                <ListItemText primary="Alternar Tema" />
+                <ListItemText
+                  primary="Alternar Tema"
+                  primaryTypographyProps={{
+                    fontSize: 15,
+                    fontWeight: "medium",
+                    lineHeight: "20px",
+                    mb: "2px",
+                  }}
+                />
               </ListItemButton>
-              <ListItemButton onClick={logout}>
+              <ListItemButton onClick={logout} sx={{ height: 30 }}>
                 <ListItemIcon>
                   <Icon>logout</Icon>
                 </ListItemIcon>
-                <ListItemText primary="Sair" />
+                <ListItemText
+                  primary="Sair"
+                  primaryTypographyProps={{
+                    fontSize: 15,
+                    fontWeight: "medium",
+                    lineHeight: "20px",
+                    mb: "2px",
+                  }}
+                />
               </ListItemButton>
             </List>
           </Box>
