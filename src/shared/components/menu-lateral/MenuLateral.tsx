@@ -8,19 +8,13 @@ import {
   List,
   ListItemButton,
   ListItemIcon,
-  ListItemSecondaryAction,
   ListItemText,
   ListSubheader,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
 import { useState } from "react";
-import {
-  Navigate,
-  useMatch,
-  useNavigate,
-  useResolvedPath,
-} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   useAppThemeContext,
   useAuthContext,
@@ -33,8 +27,6 @@ import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import HealingIcon from "@mui/icons-material/Healing";
-import FolderSpecialIcon from "@mui/icons-material/FolderSpecial";
-import AddLocationIcon from "@mui/icons-material/AddLocation";
 import PersonIcon from "@mui/icons-material/Person";
 import HomeIcon from "@mui/icons-material/Home";
 import AssessmentIcon from "@mui/icons-material/Assessment";
@@ -44,14 +36,13 @@ export const MenuLateral: React.FC = ({ children }) => {
   const theme = useTheme();
   const smDown = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const { isDrawerOpen, toggleDrawerOpen, drawerOptions } = useDrawerContext();
+  const { isDrawerOpen, toggleDrawerOpen } = useDrawerContext();
   const { toggleTheme } = useAppThemeContext();
   const { logout } = useAuthContext();
   const navigate = useNavigate();
 
   const [openInventario, setOpenInventario] = useState(false);
   const [openCadastro, setOpenCadastro] = useState(false);
-  //const [openCadastroAdmin, setOpenCadastroAdmin] = useState(true);
 
   const handleClickDrawerInventario = () => {
     setOpenInventario(!openInventario);
@@ -61,9 +52,6 @@ export const MenuLateral: React.FC = ({ children }) => {
     setOpenCadastro(!openCadastro);
     openInventario ? setOpenInventario(!openInventario) : null;
   };
-  // const handleClickDrawerCadastroAdmin = () => {
-  //   setOpenCadastroAdmin(!openCadastroAdmin);
-  // };
 
   return (
     <>

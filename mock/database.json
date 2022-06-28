@@ -9,10 +9,6 @@
   ],
   "cidades": [
     {
-      "nome": "Palmas",
-      "id": 3
-    },
-    {
       "nome": "Recife",
       "id": 4
     },
