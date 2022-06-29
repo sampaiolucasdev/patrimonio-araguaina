@@ -19,9 +19,9 @@ import { Enviroment } from "../../shared/enviroment";
 import { useDebounce } from "../../shared/hooks";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import {
-  IListagemCidade,
-  CidadesService,
-} from "../../shared/services/api/cidades/CidadesService";
+  IListagemDepartamento,
+  DepartamentoService,
+} from "../../shared/services/api/DepartamentoService";
 
 export const ListagemDeDepartamento: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -29,7 +29,7 @@ export const ListagemDeDepartamento: React.FC = () => {
   /**Passar próx como ', false' cancela o firstDelay */
   const navigate = useNavigate();
 
-  const [rows, setRows] = useState<IListagemCidade[]>([]);
+  const [rows, setRows] = useState<IListagemDepartamento[]>([]);
   const [isLoading, setIsLoading] = useState(true); //Feedback visual de carregamento
   const [totalCount, setTotalCount] = useState(0);
 
@@ -44,7 +44,7 @@ export const ListagemDeDepartamento: React.FC = () => {
   useEffect(() => {
     setIsLoading(true);
     debounce(() => {
-      CidadesService.getAll(pagina, busca).then((result) => {
+      DepartamentoService.getAll(pagina, busca).then((result) => {
         setIsLoading(false);
         if (result instanceof Error) {
           alert(result.message);
@@ -69,14 +69,14 @@ export const ListagemDeDepartamento: React.FC = () => {
      * a linha com o id que está sendo apagado (oldRow.id !== id).
      */
     if (confirm("Deseja apagar?")) {
-      CidadesService.deleteById(id).then((result) => {
+      DepartamentoService.deleteById(id).then((result) => {
         if (result instanceof Error) {
           alert(result.message);
         } else {
           setRows((oldRows) => {
             return [...oldRows.filter((oldRow) => oldRow.id !== id)];
           });
-          alert("Registro apagado com sucesso!");
+          alert("Departamento apagado com sucesso!");
         }
       });
     }
@@ -93,8 +93,8 @@ export const ListagemDeDepartamento: React.FC = () => {
         <FerramentasDaListagem
           mostrarInputBusca
           textoDaBusca={busca}
-          textoBotaoNovo="Nova"
-          aoClicarEmNovo={() => navigate("/cidades/detalhe/nova")}
+          textoBotaoNovo="Adicionar"
+          aoClicarEmNovo={() => navigate("/departamento/detalhe/nova")}
           aoMudarTextoDeBusca={(texto) =>
             setSearchParams({ busca: texto, pagina: "1" }, { replace: true })
           }
@@ -122,7 +122,7 @@ export const ListagemDeDepartamento: React.FC = () => {
                   </IconButton>
                   <IconButton
                     size="small"
-                    onClick={() => navigate(`/cidades/detalhe/${row.id}`)}
+                    onClick={() => navigate(`/departamento/detalhe/${row.id}`)}
                   >
                     <Icon>edit</Icon>
                   </IconButton>

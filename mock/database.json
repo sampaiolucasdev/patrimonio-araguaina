@@ -33,6 +33,24 @@
       "id": 9
     }
   ],
+  "departamento": [
+    {
+      "id": 3,
+      "nome": "SUPVISA"
+    },
+    {
+      "id": 4,
+      "nome": "SUPAE"
+    },
+    {
+      "id": 5,
+      "nome": "SUPAB"
+    },
+    {
+      "nome": "SUPADM",
+      "id": 6
+    }
+  ],
   "auth": {
     "accessToken": "aaaaaa.bbbbbb.cccccc"
   }
