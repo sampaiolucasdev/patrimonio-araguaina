@@ -18,19 +18,19 @@ interface IFerramentasDeDetalheProps {
   mostrarBotaoVoltar?: boolean;
   mostrarBotaoApagar?: boolean;
   mostrarBotaoSalvar?: boolean;
-  mostrarBotaoSalvarEFechar?: boolean;
+  //mostrarBotaoSalvarEFechar?: boolean;
 
   mostrarBotaoNovoCarregando?: boolean;
   mostrarBotaoVoltarCarregando?: boolean;
   mostrarBotaoApagarCarregando?: boolean;
   mostrarBotaoSalvarCarregando?: boolean;
-  mostrarBotaoSalvarEFecharCarregando?: boolean;
+  //mostrarBotaoSalvarEFecharCarregando?: boolean;
 
   aoClicarEmNovo?: () => void;
   aoClicarEmVoltar?: () => void;
   aoClicarEmApagar?: () => void;
   aoClicarEmSalvar?: () => void;
-  aoClicarEmSalvarEFechar?: () => void;
+  //aoClicarEmSalvarEFechar?: () => void;
 }
 export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
   textoBotaoNovo = "Novo",
@@ -38,19 +38,19 @@ export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
   mostrarBotaoVoltar = true,
   mostrarBotaoApagar = true,
   mostrarBotaoSalvar = true,
-  mostrarBotaoSalvarEFechar = false,
+  //mostrarBotaoSalvarEFechar = false,
 
   mostrarBotaoNovoCarregando = false,
   mostrarBotaoVoltarCarregando = false,
   mostrarBotaoApagarCarregando = false,
   mostrarBotaoSalvarCarregando = false,
-  mostrarBotaoSalvarEFecharCarregando = false,
+  //mostrarBotaoSalvarEFecharCarregando = false,
 
   aoClicarEmNovo,
   aoClicarEmVoltar,
   aoClicarEmApagar,
   aoClicarEmSalvar,
-  aoClicarEmSalvarEFechar,
+  //aoClicarEmSalvarEFechar,
 }) => {
   const smDown = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
   const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
@@ -87,7 +87,7 @@ export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
 
       {mostrarBotaoSalvarCarregando && <Skeleton width={110} height={60} />}
 
-      {mostrarBotaoSalvarEFechar &&
+      {/* {mostrarBotaoSalvarEFechar &&
         !mostrarBotaoSalvarEFecharCarregando &&
         !smDown &&
         !mdDown && (
@@ -111,7 +111,7 @@ export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
 
       {mostrarBotaoSalvarEFecharCarregando && !smDown && !mdDown && (
         <Skeleton width={180} height={60} />
-      )}
+      )} */}
 
       {mostrarBotaoApagar && !mostrarBotaoApagarCarregando && (
         <Button
@@ -158,10 +158,8 @@ export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
       )}
 
       {mostrarBotaoVoltar &&
-        (mostrarBotaoNovo ||
-          mostrarBotaoApagar ||
-          mostrarBotaoSalvar ||
-          mostrarBotaoSalvarEFechar) && (
+        (mostrarBotaoNovo || mostrarBotaoApagar || mostrarBotaoSalvar) && (
+        // mostrarBotaoSalvarEFechar
           <Divider variant="middle" orientation="vertical" />
         )}
 

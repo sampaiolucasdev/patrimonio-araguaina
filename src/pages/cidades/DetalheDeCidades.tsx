@@ -125,11 +125,11 @@ export const DetalheDeCidades: React.FC = () => {
       barraDeFerramentas={
         <FerramentasDeDetalhe
           textoBotaoNovo="Nova"
-          mostrarBotaoSalvarEFechar
+          //mostrarBotaoSalvarEFechar
           mostrarBotaoNovo={id !== "nova"}
           mostrarBotaoApagar={id !== "nova"}
           aoClicarEmSalvar={save}
-          aoClicarEmSalvarEFechar={saveAndClose}
+          //aoClicarEmSalvarEFechar={saveAndClose}
           aoClicarEmVoltar={() => navigate("/cidades")}
           aoClicarEmApagar={() => {
             handleDelete(Number(id));

@@ -22,6 +22,8 @@ import {
   IListagemDepartamento,
   DepartamentoService,
 } from "../../shared/services/api/DepartamentoService";
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 export const ListagemDeDepartamento: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -50,7 +52,6 @@ export const ListagemDeDepartamento: React.FC = () => {
           alert(result.message);
         } else {
           console.log(result);
-
           setTotalCount(result.totalCount);
           setRows(result.data);
         }
@@ -58,7 +59,7 @@ export const ListagemDeDepartamento: React.FC = () => {
     });
   }, [busca, pagina]);
 
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: number, nome: string) => {
     /**
      * deleteById retorna uma promessa de resultado ou erro.
      * Quando (.then) essa promessa ocorrer, vai ter um result
@@ -68,18 +69,31 @@ export const ListagemDeDepartamento: React.FC = () => {
      * state com todas as linhas do state anterior(...), filtrando exceto
      * a linha com o id que está sendo apagado (oldRow.id !== id).
      */
-    if (confirm("Deseja apagar?")) {
-      DepartamentoService.deleteById(id).then((result) => {
-        if (result instanceof Error) {
-          alert(result.message);
-        } else {
-          setRows((oldRows) => {
-            return [...oldRows.filter((oldRow) => oldRow.id !== id)];
-          });
-          alert("Departamento apagado com sucesso!");
-        }
-      });
-    }
+    Swal.fire({
+      title: "Deseja excluir ?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      showDenyButton: false,
+      confirmButtonText: "Sim",
+      cancelButtonText: "Cancelar",
+      denyButtonText: "Não",
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        DepartamentoService.deleteById(id).then((result) => {
+          if (result instanceof Error) {
+            alert(result.message);
+          } else {
+            setRows((oldRows) => {
+              return [...oldRows.filter((oldRow) => oldRow.id !== id)];
+            });
+            toast.success(` ${nome} excluído com sucesso!`);
+          }
+        });
+      }
+    });
   };
 
   return (
@@ -117,7 +131,10 @@ export const ListagemDeDepartamento: React.FC = () => {
             {rows.map((row) => (
               <TableRow key={row.id}>
                 <TableCell>
-                  <IconButton size="small" onClick={() => handleDelete(row.id)}>
+                  <IconButton
+                    size="small"
+                    onClick={() => handleDelete(row.id, row.nome)}
+                  >
                     <Icon>delete</Icon>
                   </IconButton>
                   <IconButton

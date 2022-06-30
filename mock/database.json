@@ -1,21 +1,6 @@
 {
-  "pessoas": [
-    {
-      "nomeCompleto": "Lucas",
-      "email": "lsampaio32@gmail.com",
-      "cidadeId": 4,
-      "id": 1
-    }
-  ],
+  "pessoas": [],
   "cidades": [
-    {
-      "nome": "Recife",
-      "id": 4
-    },
-    {
-      "nome": "Gurupi",
-      "id": 5
-    },
     {
       "nome": "Surubim",
       "id": 6
@@ -35,20 +20,12 @@
   ],
   "departamento": [
     {
-      "id": 3,
-      "nome": "SUPVISA"
+      "nome": "supadm",
+      "id": 2
     },
     {
-      "id": 4,
-      "nome": "SUPAE"
-    },
-    {
-      "id": 5,
-      "nome": "SUPAB"
-    },
-    {
-      "nome": "SUPADM",
-      "id": 6
+      "nome": "rerere",
+      "id": 3
     }
   ],
   "auth": {

@@ -7,6 +7,8 @@ import { DepartamentoService } from "../../shared/services/api/DepartamentoServi
 import { VTextField, VForm, useVForm, IVFormErrors } from "../../shared/forms";
 import { FerramentasDeDetalhe } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 interface IFormData {
   nome: string;
@@ -16,7 +18,7 @@ const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
 });
 
 export const DetalheDeDepartamento: React.FC = () => {
-  const { formRef, save, saveAndClose, isSaveAndClose } = useVForm();
+  const { formRef, saveAndClose, isSaveAndClose } = useVForm();
   const { id = "nova" } = useParams<"id">();
   const navigate = useNavigate();
 
@@ -58,6 +60,7 @@ export const DetalheDeDepartamento: React.FC = () => {
               alert(result.message);
             } else {
               if (isSaveAndClose()) {
+                toast.success(` ${nome} adicionado com sucesso!`);
                 navigate("/departamento");
               } else {
                 navigate(`/departamento/detalhe/${result}`);
@@ -74,6 +77,7 @@ export const DetalheDeDepartamento: React.FC = () => {
               alert(result.message);
             } else {
               if (isSaveAndClose()) {
+                toast.success("Departamento atualizado com sucesso!");
                 navigate("/departamento");
               }
             }
@@ -108,28 +112,42 @@ export const DetalheDeDepartamento: React.FC = () => {
      * state com todas as linhas do state anterior(...), filtrando exceto
      * a linha com o id que está sendo apagado (oldRow.id !== id).
      */
-    if (confirm("Deseja apagar?")) {
-      DepartamentoService.deleteById(id).then((result) => {
-        if (result instanceof Error) {
-          alert(result.message);
-        } else {
-          alert("Departamento apagado com sucesso!");
-          navigate("/departamento");
-        }
-      });
-    }
+    Swal.fire({
+      title: "Deseja excluir ?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      showDenyButton: false,
+      confirmButtonText: "Sim",
+      cancelButtonText: "Cancelar",
+      denyButtonText: "Não",
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        DepartamentoService.deleteById(id).then((result) => {
+          if (result instanceof Error) {
+            alert(result.message);
+          } else {
+            toast.success("Departamento excluído com sucesso!");
+            navigate("/departamento");
+          }
+        });
+      }
+    });
   };
+
   return (
     <LayoutBaseDePagina
       titulo={id === "nova" ? "Cadastrar Novo Departamento" : nome}
       barraDeFerramentas={
         <FerramentasDeDetalhe
           //textoBotaoNovo="Adicionar"
-          mostrarBotaoSalvarEFechar
+          //mostrarBotaoSalvarEFechar
           //mostrarBotaoNovo={id !== "nova"}
           mostrarBotaoApagar={id !== "nova"}
-          //aoClicarEmSalvar={save}
-          aoClicarEmSalvarEFechar={saveAndClose}
+          aoClicarEmSalvar={saveAndClose}
+          //aoClicarEmSalvarEFechar={saveAndClose}
           aoClicarEmVoltar={() => navigate("/departamento")}
           aoClicarEmApagar={() => {
             handleDelete(Number(id));
