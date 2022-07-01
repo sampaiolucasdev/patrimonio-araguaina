@@ -10,16 +10,16 @@ import {
   DetalheDeRelatorios,
   DetalheDeMovimentacao,
   ListagemDeMovimentacao,
-  DetalheDeDepartamento,
-  ListagemDeDepartamento,
-  DetalheDeUbs,
-  ListagemDeUbs,
   DetalheDeSetor,
   ListagemDeSetor,
+  DetalheDeUbs,
+  ListagemDeUbs,
   ListagemDeUsuario,
   DetalheDeUsuario,
   DetalheDePrediosAdmin,
   ListagemDePrediosAdmin,
+  ListagemDeDepartamento,
+  DetalheDeDepartamento,
 } from "../pages";
 
 export const AppRoutes = () => {

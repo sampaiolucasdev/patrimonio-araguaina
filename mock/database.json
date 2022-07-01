@@ -20,12 +20,38 @@
   ],
   "departamento": [
     {
-      "nome": "supadm",
-      "id": 2
+      "id": 2,
+      "nome": "buceta"
     },
     {
       "nome": "rerere",
       "id": 3
+    },
+    {
+      "nome": "teste",
+      "id": 4
+    },
+    {
+      "nome": "bhayron",
+      "id": 5
+    },
+    {
+      "nome": "nykael",
+      "id": 6
+    }
+  ],
+  "setor": [
+    {
+      "nome": "Compras",
+      "id": 2
+    },
+    {
+      "nome": "RH",
+      "id": 3
+    },
+    {
+      "nome": "Tecnologia",
+      "id": 4
     }
   ],
   "auth": {

@@ -31,6 +31,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import HomeIcon from "@mui/icons-material/Home";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import prefeituraLogo from "../../../assets/prefeitura-logo-redonda.png";
+import PieChartIcon from "@mui/icons-material/PieChart";
 
 export const MenuLateral: React.FC = ({ children }) => {
   const theme = useTheme();
@@ -150,7 +151,7 @@ export const MenuLateral: React.FC = ({ children }) => {
                   onClick={() => navigate("/setor")}
                 >
                   <ListItemIcon sx={{ minWidth: 30 }}>
-                    <Icon></Icon>
+                    <PieChartIcon />
                   </ListItemIcon>
                   <ListItemText
                     primary="Setor"

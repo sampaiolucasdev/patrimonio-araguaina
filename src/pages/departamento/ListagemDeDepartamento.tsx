@@ -89,7 +89,7 @@ export const ListagemDeDepartamento: React.FC = () => {
             setRows((oldRows) => {
               return [...oldRows.filter((oldRow) => oldRow.id !== id)];
             });
-            toast.success(` ${nome} excluído com sucesso!`);
+            toast.success(` ${nome} Departamento excluído com sucesso!`);
           }
         });
       }

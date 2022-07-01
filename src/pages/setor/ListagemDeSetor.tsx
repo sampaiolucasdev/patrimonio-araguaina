@@ -1,9 +1,14 @@
 import {
+  Box,
+  FormControl,
   Icon,
   IconButton,
+  InputLabel,
   LinearProgress,
+  MenuItem,
   Pagination,
   Paper,
+  Select,
   Table,
   TableBody,
   TableCell,
@@ -19,9 +24,15 @@ import { Enviroment } from "../../shared/enviroment";
 import { useDebounce } from "../../shared/hooks";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import {
-  IListagemCidade,
-  CidadesService,
-} from "../../shared/services/api/cidades/CidadesService";
+  IListagemSetor,
+  SetorService,
+} from "../../shared/services/api/SetorService";
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
+import {
+  DepartamentoService,
+  IListagemDepartamento,
+} from "../../shared/services/api/DepartamentoService";
 
 export const ListagemDeSetor: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -29,7 +40,8 @@ export const ListagemDeSetor: React.FC = () => {
   /**Passar próx como ', false' cancela o firstDelay */
   const navigate = useNavigate();
 
-  const [rows, setRows] = useState<IListagemCidade[]>([]);
+  const [rows, setRows] = useState<IListagemSetor[]>([]);
+  const [rowsDepart, setRowsDepart] = useState<IListagemDepartamento[]>([]);
   const [isLoading, setIsLoading] = useState(true); //Feedback visual de carregamento
   const [totalCount, setTotalCount] = useState(0);
 
@@ -41,16 +53,16 @@ export const ListagemDeSetor: React.FC = () => {
     return Number(searchParams.get("pagina") || "1");
   }, [searchParams]);
 
+  // GET SETOR
   useEffect(() => {
     setIsLoading(true);
     debounce(() => {
-      CidadesService.getAll(pagina, busca).then((result) => {
+      SetorService.getAll(pagina, busca).then((result) => {
         setIsLoading(false);
         if (result instanceof Error) {
           alert(result.message);
         } else {
           console.log(result);
-
           setTotalCount(result.totalCount);
           setRows(result.data);
         }
@@ -58,7 +70,22 @@ export const ListagemDeSetor: React.FC = () => {
     });
   }, [busca, pagina]);
 
-  const handleDelete = (id: number) => {
+  //GET DEPARTAMENTO
+  useEffect(() => {
+    debounce(() => {
+      DepartamentoService.getAll(pagina, busca).then((result) => {
+        if (result instanceof Error) {
+          alert(result.message);
+        } else {
+          console.log(result.data);
+
+          setRowsDepart(result.data);
+        }
+      });
+    });
+  }, [busca]);
+
+  const handleDelete = (id: number, nome: string) => {
     /**
      * deleteById retorna uma promessa de resultado ou erro.
      * Quando (.then) essa promessa ocorrer, vai ter um result
@@ -68,23 +95,36 @@ export const ListagemDeSetor: React.FC = () => {
      * state com todas as linhas do state anterior(...), filtrando exceto
      * a linha com o id que está sendo apagado (oldRow.id !== id).
      */
-    if (confirm("Deseja apagar?")) {
-      CidadesService.deleteById(id).then((result) => {
-        if (result instanceof Error) {
-          alert(result.message);
-        } else {
-          setRows((oldRows) => {
-            return [...oldRows.filter((oldRow) => oldRow.id !== id)];
-          });
-          alert("Registro apagado com sucesso!");
-        }
-      });
-    }
+    Swal.fire({
+      title: `Deseja excluir ${nome} ?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      showDenyButton: false,
+      confirmButtonText: "Sim",
+      cancelButtonText: "Cancelar",
+      denyButtonText: "Não",
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        SetorService.deleteById(id).then((result) => {
+          if (result instanceof Error) {
+            alert(result.message);
+          } else {
+            setRows((oldRows) => {
+              return [...oldRows.filter((oldRow) => oldRow.id !== id)];
+            });
+            toast.success(` ${nome} excluído com sucesso!`);
+          }
+        });
+      }
+    });
   };
 
   return (
     <LayoutBaseDePagina
-      titulo="Listagem de Setores"
+      titulo="Listagem de Setor"
       barraDeFerramentas={
         /**
          * Faz com que o que seja digitado no imput de busca, seja adicionado
@@ -93,14 +133,24 @@ export const ListagemDeSetor: React.FC = () => {
         <FerramentasDaListagem
           mostrarInputBusca
           textoDaBusca={busca}
-          textoBotaoNovo="Nova"
-          aoClicarEmNovo={() => navigate("/cidades/detalhe/nova")}
+          textoBotaoNovo="Adicionar"
+          aoClicarEmNovo={() => navigate("/setor/detalhe/nova")}
           aoMudarTextoDeBusca={(texto) =>
             setSearchParams({ busca: texto, pagina: "1" }, { replace: true })
           }
         />
       }
     >
+      <Box sx={{ minWidth: 120 }}>
+        <FormControl fullWidth>
+          <InputLabel>Selecione o Departamento</InputLabel>
+          <Select value={rowsDepart} onChange={() => setRowsDepart}>
+            {rowsDepart.map((row) => (
+              <MenuItem key={row.id}>{row.nome}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
       <TableContainer
         component={Paper}
         variant="outlined"
@@ -117,12 +167,15 @@ export const ListagemDeSetor: React.FC = () => {
             {rows.map((row) => (
               <TableRow key={row.id}>
                 <TableCell>
-                  <IconButton size="small" onClick={() => handleDelete(row.id)}>
+                  <IconButton
+                    size="small"
+                    onClick={() => handleDelete(row.id, row.nome)}
+                  >
                     <Icon>delete</Icon>
                   </IconButton>
                   <IconButton
                     size="small"
-                    onClick={() => navigate(`/cidades/detalhe/${row.id}`)}
+                    onClick={() => navigate(`/setor/detalhe/${row.id}`)}
                   >
                     <Icon>edit</Icon>
                   </IconButton>
