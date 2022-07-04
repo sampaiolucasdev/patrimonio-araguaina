@@ -8,7 +8,7 @@ import {
   MenuItem,
   Pagination,
   Paper,
-  Select,
+  SelectChangeEvent,
   Table,
   TableBody,
   TableCell,
@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import Select from "react-select";
 import { FerramentasDaListagem } from "../../shared/components";
 import { Enviroment } from "../../shared/enviroment";
 import { useDebounce } from "../../shared/hooks";
@@ -42,6 +43,7 @@ export const ListagemDeSetor: React.FC = () => {
 
   const [rows, setRows] = useState<IListagemSetor[]>([]);
   const [rowsDepart, setRowsDepart] = useState<IListagemDepartamento[]>([]);
+  const [selectedItem, setSelectedItem] = useState();
   const [isLoading, setIsLoading] = useState(true); //Feedback visual de carregamento
   const [totalCount, setTotalCount] = useState(0);
 
@@ -52,6 +54,11 @@ export const ListagemDeSetor: React.FC = () => {
   const pagina = useMemo(() => {
     return Number(searchParams.get("pagina") || "1");
   }, [searchParams]);
+
+  const depart = rowsDepart.map((row) => ({
+    value: row.id,
+    label: row.nome,
+  }));
 
   // GET SETOR
   useEffect(() => {
@@ -122,6 +129,10 @@ export const ListagemDeSetor: React.FC = () => {
     });
   };
 
+  // const handleChange = (event: SelectChangeEvent) => {
+  //   setSelectedItem(event.target.value);
+  // };
+
   return (
     <LayoutBaseDePagina
       titulo="Listagem de Setor"
@@ -144,13 +155,15 @@ export const ListagemDeSetor: React.FC = () => {
       <Box sx={{ minWidth: 120 }}>
         <FormControl fullWidth>
           <InputLabel>Selecione o Departamento</InputLabel>
-          <Select value={rowsDepart} onChange={() => setRowsDepart}>
-            {rowsDepart.map((row) => (
-              <MenuItem key={row.id}>{row.nome}</MenuItem>
-            ))}
-          </Select>
+          <Select
+            value={selectedItem}
+            options={depart}
+            isClearable
+            //onChange={handleChange}
+          />
         </FormControl>
       </Box>
+      {console.log(selectedItem)};
       <TableContainer
         component={Paper}
         variant="outlined"
