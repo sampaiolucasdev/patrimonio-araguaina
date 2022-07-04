@@ -1,6 +1,13 @@
-import { useEffect, useState } from "react";
-import { Box, Grid, LinearProgress, Paper, Typography } from "@mui/material";
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import {
+  Box,
+  FormControl,
+  Grid,
+  LinearProgress,
+  Paper,
+  Typography,
+} from "@mui/material";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import * as yup from "yup";
 
 import { SetorService } from "../../shared/services/api/SetorService";
@@ -9,6 +16,12 @@ import { FerramentasDeDetalhe } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import Select from "react-select";
+import {
+  DepartamentoService,
+  IListagemDepartamento,
+} from "../../shared/services/api/DepartamentoService";
+import { useDebounce } from "../../shared/hooks";
 
 interface IFormData {
   nome: string;
@@ -21,10 +34,24 @@ export const DetalheDeSetor: React.FC = () => {
   const { formRef, saveAndClose, isSaveAndClose } = useVForm();
   const { id = "nova" } = useParams<"id">();
   const navigate = useNavigate();
+  const { debounce } = useDebounce();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [rowsDepart, setRowsDepart] = useState<IListagemDepartamento[]>([]);
+  const [selectedItem, setSelectedItem] = useState<IListagemDepartamento[]>([]);
 
   const [isLoading, setIsLoading] = useState(false);
   const [nome, setNome] = useState("");
 
+  const busca = useMemo(() => {
+    return searchParams.get("busca") || "";
+  }, [searchParams]);
+
+  const pagina = useMemo(() => {
+    return Number(searchParams.get("pagina") || "1");
+  }, [searchParams]);
+
+  //GET SETOR
   useEffect(() => {
     if (id !== "nova") {
       setIsLoading(true);
@@ -48,12 +75,33 @@ export const DetalheDeSetor: React.FC = () => {
     }
   }, [id]);
 
+  //GET DEPARTAMENTO
+  useEffect(() => {
+    debounce(() => {
+      DepartamentoService.getAll(pagina, busca).then((result) => {
+        if (result instanceof Error) {
+          alert(result.message);
+        } else {
+          console.log(result.data);
+          setRowsDepart(result.data);
+        }
+      });
+    });
+  }, [busca]);
+
+  const depart = rowsDepart.map((row) => ({
+    value: row.id,
+    label: row.nome,
+  }));
+
   const handleSave = (dados: IFormData) => {
     formValidationSchema
       .validate(dados, { abortEarly: false })
       .then((dadosValidados) => {
         setIsLoading(true);
         if (id === "nova") {
+          console.log(dadosValidados);
+
           SetorService.create(dadosValidados).then((result) => {
             setIsLoading(false);
             if (result instanceof Error) {
@@ -61,9 +109,9 @@ export const DetalheDeSetor: React.FC = () => {
             } else {
               if (isSaveAndClose()) {
                 toast.success(` ${nome} adicionado com sucesso!`);
-                navigate("/departamento");
+                navigate("/setor");
               } else {
-                navigate(`/departamento/detalhe/${result}`);
+                navigate(`/setor/detalhe/${result}`);
               }
             }
           });
@@ -77,7 +125,7 @@ export const DetalheDeSetor: React.FC = () => {
               alert(result.message);
             } else {
               if (isSaveAndClose()) {
-                toast.success("Departamento atualizado com sucesso!");
+                toast.success("Setor atualizado com sucesso!");
                 navigate("/setor");
               }
             }
@@ -129,7 +177,7 @@ export const DetalheDeSetor: React.FC = () => {
           if (result instanceof Error) {
             alert(result.message);
           } else {
-            toast.success("Departamento excluído com sucesso!");
+            toast.success("Setor excluído com sucesso!");
             navigate("/setor");
           }
         });
@@ -137,9 +185,13 @@ export const DetalheDeSetor: React.FC = () => {
     });
   };
 
+  // const handleChange(e){
+  //   console.log(e)
+  //   setSelectedItem({id:e.value, nome:e.label})
+  // }
   return (
     <LayoutBaseDePagina
-      titulo={id === "nova" ? "Cadastrar Novo Departamento" : nome}
+      titulo={id === "nova" ? "Cadastrar Novo Setor" : nome}
       barraDeFerramentas={
         <FerramentasDeDetalhe
           //textoBotaoNovo="Adicionar"
@@ -152,7 +204,7 @@ export const DetalheDeSetor: React.FC = () => {
           aoClicarEmApagar={() => {
             handleDelete(Number(id));
           }}
-          aoClicarEmNovo={() => navigate("/setor/detalhe/nova")}
+          //aoClicarEmNovo={() => navigate("/setor/detalhe/nova")}
         />
       }
     >
@@ -170,14 +222,31 @@ export const DetalheDeSetor: React.FC = () => {
                 <LinearProgress variant="indeterminate" />
               </Grid>
             )}
-
             <Grid item>
-              <Typography variant="h6">Editar Informações</Typography>
+              <Typography variant="h6">Selecione o Departamento</Typography>
             </Grid>
 
+            <Grid container item direction="column" spacing={2}>
+              <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
+                <FormControl fullWidth>
+                  <Select
+                    //value={selectedItem}
+                    options={depart}
+                    isClearable
+                    onChange={(values) => setSelectedItem(values)}
+                    placeholder="Departamentos"
+                  />
+                </FormControl>
+              </Grid>
+            </Grid>
+
+            <Grid item>
+              <Typography variant="h6">Nome do Setor</Typography>
+            </Grid>
             <Grid container item direction="row" spacing={2}>
               <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
                 <VTextField
+                  size="small"
                   fullWidth
                   name="nome"
                   disabled={isLoading} //Desabilita o textfield quando estiver carregando

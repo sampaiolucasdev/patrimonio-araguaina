@@ -1,14 +1,9 @@
 import {
-  Box,
-  FormControl,
   Icon,
   IconButton,
-  InputLabel,
   LinearProgress,
-  MenuItem,
   Pagination,
   Paper,
-  SelectChangeEvent,
   Table,
   TableBody,
   TableCell,
@@ -19,7 +14,6 @@ import {
 } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import Select from "react-select";
 import { FerramentasDaListagem } from "../../shared/components";
 import { Enviroment } from "../../shared/enviroment";
 import { useDebounce } from "../../shared/hooks";
@@ -30,10 +24,6 @@ import {
 } from "../../shared/services/api/SetorService";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
-import {
-  DepartamentoService,
-  IListagemDepartamento,
-} from "../../shared/services/api/DepartamentoService";
 
 export const ListagemDeSetor: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -42,8 +32,6 @@ export const ListagemDeSetor: React.FC = () => {
   const navigate = useNavigate();
 
   const [rows, setRows] = useState<IListagemSetor[]>([]);
-  const [rowsDepart, setRowsDepart] = useState<IListagemDepartamento[]>([]);
-  const [selectedItem, setSelectedItem] = useState();
   const [isLoading, setIsLoading] = useState(true); //Feedback visual de carregamento
   const [totalCount, setTotalCount] = useState(0);
 
@@ -54,11 +42,6 @@ export const ListagemDeSetor: React.FC = () => {
   const pagina = useMemo(() => {
     return Number(searchParams.get("pagina") || "1");
   }, [searchParams]);
-
-  const depart = rowsDepart.map((row) => ({
-    value: row.id,
-    label: row.nome,
-  }));
 
   // GET SETOR
   useEffect(() => {
@@ -76,21 +59,6 @@ export const ListagemDeSetor: React.FC = () => {
       });
     });
   }, [busca, pagina]);
-
-  //GET DEPARTAMENTO
-  useEffect(() => {
-    debounce(() => {
-      DepartamentoService.getAll(pagina, busca).then((result) => {
-        if (result instanceof Error) {
-          alert(result.message);
-        } else {
-          console.log(result.data);
-
-          setRowsDepart(result.data);
-        }
-      });
-    });
-  }, [busca]);
 
   const handleDelete = (id: number, nome: string) => {
     /**
@@ -152,18 +120,6 @@ export const ListagemDeSetor: React.FC = () => {
         />
       }
     >
-      <Box sx={{ minWidth: 120 }}>
-        <FormControl fullWidth>
-          <InputLabel>Selecione o Departamento</InputLabel>
-          <Select
-            value={selectedItem}
-            options={depart}
-            isClearable
-            //onChange={handleChange}
-          />
-        </FormControl>
-      </Box>
-      {console.log(selectedItem)};
       <TableContainer
         component={Paper}
         variant="outlined"
