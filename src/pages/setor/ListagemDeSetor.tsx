@@ -24,6 +24,7 @@ import {
 } from "../../shared/services/api/SetorService";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import InfoIcon from "@mui/icons-material/Info";
 
 export const ListagemDeSetor: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -128,7 +129,7 @@ export const ListagemDeSetor: React.FC = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell width={100}>Ações</TableCell>
+              <TableCell width={110}>Ações</TableCell>
               <TableCell>Nome</TableCell>
             </TableRow>
           </TableHead>
@@ -147,6 +148,12 @@ export const ListagemDeSetor: React.FC = () => {
                     onClick={() => navigate(`/setor/detalhe/${row.id}`)}
                   >
                     <Icon>edit</Icon>
+                  </IconButton>
+                  <IconButton
+                    size="small"
+                    onClick={() => navigate(`/setor/detalhe/${row.id}`)}
+                  >
+                    <InfoIcon />
                   </IconButton>
                 </TableCell>
                 <TableCell>{row.nome}</TableCell>

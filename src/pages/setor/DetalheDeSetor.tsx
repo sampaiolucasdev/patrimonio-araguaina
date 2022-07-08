@@ -11,7 +11,13 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import * as yup from "yup";
 
 import { SetorService } from "../../shared/services/api/SetorService";
-import { VTextField, VForm, useVForm, IVFormErrors } from "../../shared/forms";
+import {
+  VTextField,
+  VForm,
+  useVForm,
+  VSelect,
+  IVFormErrors,
+} from "../../shared/forms";
 import { FerramentasDeDetalhe } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import Swal from "sweetalert2";
@@ -38,7 +44,7 @@ export const DetalheDeSetor: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [rowsDepart, setRowsDepart] = useState<IListagemDepartamento[]>([]);
-  const [selectedItem, setSelectedItem] = useState<IListagemDepartamento[]>([]);
+  const [selectedItem, setSelectedItem] = useState<IListagemDepartamento>();
 
   const [isLoading, setIsLoading] = useState(false);
   const [nome, setNome] = useState("");
@@ -191,7 +197,7 @@ export const DetalheDeSetor: React.FC = () => {
   // }
   return (
     <LayoutBaseDePagina
-      titulo={id === "nova" ? "Cadastrar Novo Setor" : nome}
+      titulo={id === "nova" ? "Cadastrar Novo Setor" : "Editar " + nome}
       barraDeFerramentas={
         <FerramentasDeDetalhe
           //textoBotaoNovo="Adicionar"
@@ -233,7 +239,7 @@ export const DetalheDeSetor: React.FC = () => {
                     //value={selectedItem}
                     options={depart}
                     isClearable
-                    onChange={(values) => setSelectedItem(values)}
+                    //onChange={(event) => setSelectedItem({event.label})}
                     placeholder="Departamentos"
                   />
                 </FormControl>
