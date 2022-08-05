@@ -51,9 +51,9 @@ export const AppRoutes = () => {
       <Route path="/bens" element={<ListagemDeBens />} />
       <Route path="/bens/detalhe/:id" element={<DetalheDeBens />} />
 
-      <Route path="/movimentacoes" element={<ListagemDeMovimentacao />} />
+      <Route path="/movimentacao" element={<ListagemDeMovimentacao />} />
       <Route
-        path="/movimentacoes/detalhe/:id"
+        path="/movimentacao/detalhe/:id"
         element={<DetalheDeMovimentacao />}
       />
 

@@ -12,6 +12,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import { yellow } from "@mui/material/colors";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { FerramentasDaListagem } from "../../shared/components";
@@ -19,9 +20,9 @@ import { Enviroment } from "../../shared/enviroment";
 import { useDebounce } from "../../shared/hooks";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import {
-  IListagemCidade,
-  CidadesService,
-} from "../../shared/services/api/cidades/CidadesService";
+  IListagemMovimentacao,
+  MovimentacaoService,
+} from "../../shared/services/api/MovimentacaoService";
 
 export const ListagemDeMovimentacao: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -29,7 +30,7 @@ export const ListagemDeMovimentacao: React.FC = () => {
   /**Passar próx como ', false' cancela o firstDelay */
   const navigate = useNavigate();
 
-  const [rows, setRows] = useState<IListagemCidade[]>([]);
+  const [rows, setRows] = useState<IListagemMovimentacao[]>([]);
   const [isLoading, setIsLoading] = useState(true); //Feedback visual de carregamento
   const [totalCount, setTotalCount] = useState(0);
 
@@ -44,7 +45,7 @@ export const ListagemDeMovimentacao: React.FC = () => {
   useEffect(() => {
     setIsLoading(true);
     debounce(() => {
-      CidadesService.getAll(pagina, busca).then((result) => {
+      MovimentacaoService.getAll(pagina, busca).then((result) => {
         setIsLoading(false);
         if (result instanceof Error) {
           alert(result.message);
@@ -69,7 +70,7 @@ export const ListagemDeMovimentacao: React.FC = () => {
      * a linha com o id que está sendo apagado (oldRow.id !== id).
      */
     if (confirm("Deseja apagar?")) {
-      CidadesService.deleteById(id).then((result) => {
+      MovimentacaoService.deleteById(id).then((result) => {
         if (result instanceof Error) {
           alert(result.message);
         } else {
@@ -94,7 +95,7 @@ export const ListagemDeMovimentacao: React.FC = () => {
           mostrarInputBusca
           textoDaBusca={busca}
           textoBotaoNovo="Nova"
-          aoClicarEmNovo={() => navigate("/cidades/detalhe/nova")}
+          aoClicarEmNovo={() => navigate("/movimentacao/detalhe/nova")}
           aoMudarTextoDeBusca={(texto) =>
             setSearchParams({ busca: texto, pagina: "1" }, { replace: true })
           }
@@ -122,9 +123,9 @@ export const ListagemDeMovimentacao: React.FC = () => {
                   </IconButton>
                   <IconButton
                     size="small"
-                    onClick={() => navigate(`/cidades/detalhe/${row.id}`)}
+                    onClick={() => navigate(`/movimentacao/detalhe/${row.id}`)}
                   >
-                    <Icon>edit</Icon>
+                    <Icon sx={{ color: yellow[400] }}>edit</Icon>
                   </IconButton>
                 </TableCell>
                 <TableCell>{row.nome}</TableCell>
