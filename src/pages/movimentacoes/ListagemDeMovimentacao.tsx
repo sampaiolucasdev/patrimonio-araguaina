@@ -95,7 +95,7 @@ export const ListagemDeMovimentacao: React.FC = () => {
           mostrarInputBusca
           textoDaBusca={busca}
           textoBotaoNovo="Nova"
-          aoClicarEmNovo={() => navigate("/movimentacao/detalhe/nova")}
+          aoClicarEmNovo={() => navigate("/movimentacao/nova")}
           aoMudarTextoDeBusca={(texto) =>
             setSearchParams({ busca: texto, pagina: "1" }, { replace: true })
           }
@@ -110,8 +110,16 @@ export const ListagemDeMovimentacao: React.FC = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell width={100}>Ações</TableCell>
-              <TableCell>Nome</TableCell>
+              <TableCell width={50}>Ações</TableCell>
+              <TableCell>Id</TableCell>
+              <TableCell>Origem</TableCell>
+              <TableCell>Destino</TableCell>
+              <TableCell>Data</TableCell>
+              <TableCell>Qnt</TableCell>
+              <TableCell>Num Série</TableCell>
+              <TableCell>Est Cons.</TableCell>
+              <TableCell>Descrição</TableCell>
+              <TableCell>Valor</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -128,7 +136,15 @@ export const ListagemDeMovimentacao: React.FC = () => {
                     <Icon sx={{ color: yellow[400] }}>edit</Icon>
                   </IconButton>
                 </TableCell>
-                <TableCell>{row.nome}</TableCell>
+                <TableCell>{row.id}</TableCell>
+                <TableCell>{row.origem}</TableCell>
+                <TableCell>{row.destino}</TableCell>
+                <TableCell>{row.data}</TableCell>
+                <TableCell>{row.qtd}</TableCell>
+                <TableCell>{row.numSerie}</TableCell>
+                <TableCell>{row.estConservacao}</TableCell>
+                <TableCell>{row.descricao}</TableCell>
+                <TableCell>{row.valor}</TableCell>
               </TableRow>
             ))}
           </TableBody>

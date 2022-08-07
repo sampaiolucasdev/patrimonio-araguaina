@@ -21,6 +21,7 @@ import {
   ListagemDeDepartamento,
   DetalheDeDepartamento,
 } from "../pages";
+import { NovaMovimentacao } from "../pages/movimentacoes/NovaMovimentacao";
 
 export const AppRoutes = () => {
   const { setDrawerOptions } = useDrawerContext();
@@ -56,6 +57,7 @@ export const AppRoutes = () => {
         path="/movimentacao/detalhe/:id"
         element={<DetalheDeMovimentacao />}
       />
+      <Route path="/movimentacao/nova" element={<NovaMovimentacao />} />
 
       <Route path="/departamento" element={<ListagemDeDepartamento />} />
       <Route

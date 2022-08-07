@@ -3,11 +3,25 @@ import { Api } from "./axios-config";
 
 export interface IListagemMovimentacao {
   id: number;
-  nome: string;
+  origem: string;
+  destino: string;
+  data: Date;
+  qtd: number;
+  numSerie: string;
+  estConservacao: string;
+  descricao: string;
+  valor: number;
 }
 export interface IDetalheMovimentacao {
   id: number;
-  nome: string;
+  origem: string;
+  destino: string;
+  data: Date;
+  qtd: number;
+  numSerie: string;
+  estConservacao: string;
+  descricao: string;
+  valor: number;
 }
 type TMovimentacaoComTotalCount = {
   data: IListagemMovimentacao[];
