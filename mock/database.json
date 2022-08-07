@@ -63,23 +63,12 @@
       "id": 1,
       "origem": "SUPVISA",
       "destino": "TI",
-      "data": "",
+      "data": "2022-08-07",
       "qtd": 1,
       "numSerie": "080846",
       "estConservacao": "Novo",
       "descricao": "ESTABILIZADOR SMS 1400VA",
-      "valor": "700"
-    },
-    {
-      "id": 1,
-      "origem": "SUPVISA",
-      "destino": "TI",
-      "data": "",
-      "qtd": 1,
-      "numSerie": "080846",
-      "estConservacao": "Novo",
-      "descricao": "ESTABILIZADOR SMS 1400VA",
-      "valor": "700"
+      "valor": 700
     }
   ],
   "auth": {
