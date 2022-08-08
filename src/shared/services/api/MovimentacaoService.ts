@@ -32,10 +32,10 @@ const getAll = async (
   filter = ""
 ): Promise<TMovimentacaoComTotalCount | Error> => {
   try {
-    const urlRelativa = `/movimentacao?_page=${page}&_limit=${Enviroment.LIMITE_DE_LINHAS}&nome_like=${filter}`;
+    const urlRelativa = `/movimentacao?_page=${page}&_limit=${Enviroment.LIMITE_DE_LINHAS}`;
 
     const { data, headers } = await Api.get(urlRelativa);
-
+    console.log(data);
     if (data) {
       return {
         data,

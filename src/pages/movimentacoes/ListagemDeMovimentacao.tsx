@@ -47,11 +47,10 @@ export const ListagemDeMovimentacao: React.FC = () => {
     debounce(() => {
       MovimentacaoService.getAll(pagina, busca).then((result) => {
         setIsLoading(false);
+        console.log(result);
         if (result instanceof Error) {
           alert(result.message);
         } else {
-          console.log(result);
-
           setTotalCount(result.totalCount);
           setRows(result.data);
         }
