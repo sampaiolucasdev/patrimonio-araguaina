@@ -19,6 +19,7 @@ import { FerramentasDaListagem } from "../../shared/components";
 import { Enviroment } from "../../shared/enviroment";
 import { useDebounce } from "../../shared/hooks";
 import { LayoutBaseDePagina } from "../../shared/layouts";
+import InfoIcon from "@mui/icons-material/Info";
 import {
   IListagemMovimentacao,
   MovimentacaoService,
@@ -110,40 +111,30 @@ export const ListagemDeMovimentacao: React.FC = () => {
           <TableHead>
             <TableRow>
               <TableCell width={50}>Ações</TableCell>
-              <TableCell>Id</TableCell>
               <TableCell>Origem</TableCell>
               <TableCell>Destino</TableCell>
               <TableCell>Data</TableCell>
-              <TableCell>Qnt</TableCell>
-              <TableCell>Num Série</TableCell>
-              <TableCell>Est Cons.</TableCell>
-              <TableCell>Descrição</TableCell>
-              <TableCell>Valor</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {rows.map((row) => (
               <TableRow key={row.id}>
                 <TableCell>
-                  <IconButton size="small" onClick={() => handleDelete(row.id)}>
-                    <Icon>delete</Icon>
-                  </IconButton>
                   <IconButton
                     size="small"
                     onClick={() => navigate(`/movimentacao/detalhe/${row.id}`)}
                   >
-                    <Icon sx={{ color: yellow[400] }}>edit</Icon>
+                    <InfoIcon />
                   </IconButton>
                 </TableCell>
-                <TableCell>{row.id}</TableCell>
                 <TableCell>{row.origem}</TableCell>
                 <TableCell>{row.destino}</TableCell>
                 <TableCell>{row.data}</TableCell>
-                <TableCell>{row.qtd}</TableCell>
+                {/* <TableCell>{row.qtd}</TableCell>
                 <TableCell>{row.numSerie}</TableCell>
                 <TableCell>{row.estConservacao}</TableCell>
                 <TableCell>{row.descricao}</TableCell>
-                <TableCell>{row.valor}</TableCell>
+                <TableCell>{row.valor}</TableCell> */}
               </TableRow>
             ))}
           </TableBody>

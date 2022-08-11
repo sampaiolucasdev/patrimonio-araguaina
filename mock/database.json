@@ -67,7 +67,106 @@
       "qtd": 1,
       "numSerie": "080846",
       "estConservacao": "Novo",
-      "descricao": "ESTABILIZADOR SMS 1400VA",
+      "descricao": ["ESTABILIZADOR SMS 1400VA", "MONITOR BLUECASE 20"],
+      "valor": 700
+    },
+    {
+      "id": 2,
+      "origem": "SUPVISA",
+      "destino": "TI",
+      "data": "2022-08-07",
+      "qtd": 1,
+      "numSerie": "080846",
+      "estConservacao": "Novo",
+      "descricao": ["ESTABILIZADOR SMS 1400VA", "MONITOR BLUECASE 20"],
+      "valor": 700
+    },
+    {
+      "id": 3,
+      "origem": "SUPADM",
+      "destino": "TI",
+      "data": "2022-08-07",
+      "qtd": 1,
+      "numSerie": "080846",
+      "estConservacao": "Novo",
+      "descricao": ["ESTABILIZADOR SMS 1400VA", "MONITOR BLUECASE 20"],
+      "valor": 700
+    },
+    {
+      "id": 4,
+      "origem": "SUPAE",
+      "destino": "TI",
+      "data": "2022-08-07",
+      "qtd": 1,
+      "numSerie": "080846",
+      "estConservacao": "Novo",
+      "descricao": ["ESTABILIZADOR SMS 1400VA", "MONITOR BLUECASE 20"],
+      "valor": 700
+    },
+    {
+      "id": 5,
+      "origem": "SUPAB",
+      "destino": "TI",
+      "data": "2022-08-07",
+      "qtd": 1,
+      "numSerie": "080846",
+      "estConservacao": "Novo",
+      "descricao": ["ESTABILIZADOR SMS 1400VA", "MONITOR BLUECASE 20"],
+      "valor": 700
+    },
+    {
+      "id": 6,
+      "origem": "TESTE",
+      "destino": "TI",
+      "data": "2022-08-07",
+      "qtd": 1,
+      "numSerie": "080846",
+      "estConservacao": "Novo",
+      "descricao": ["ESTABILIZADOR SMS 1400VA", "MONITOR BLUECASE 20"],
+      "valor": 700
+    },
+    {
+      "id": 7,
+      "origem": "LUCAS",
+      "destino": "teste",
+      "data": "2022-08-07",
+      "qtd": 1,
+      "numSerie": "080846",
+      "estConservacao": "Novo",
+      "descricao": ["ESTABILIZADOR SMS 1400VA", "MONITOR BLUECASE 20"],
+      "valor": 700
+    },
+    {
+      "id": 8,
+      "origem": "LUCAS",
+      "destino": "TI",
+      "data": "2022-08-07",
+      "qtd": 1,
+      "numSerie": "080846",
+      "estConservacao": "Novo",
+      "descricao": ["ESTABILIZADOR SMS 1400VA", "MONITOR BLUECASE 20"],
+      "valor": 700
+    },
+    {
+      "id": 9,
+      "origem": "SUPVISA",
+      "destino": "TI",
+      "data": "2022-08-07",
+      "qtd": 1,
+      "numSerie": "080846",
+      "estConservacao": "Novo",
+      "descricao": ["ESTABILIZADOR SMS 1400VA", "MONITOR BLUECASE 20"],
+      "valor": 700
+    },
+    {
+      "id": 10,
+      "origem": "SUPVISA",
+      "destino": "TI",
+      "data": "2022-08-07",
+      "qtd": 1,
+      "numSerie": "080846",
+      "estConservacao": "Novo",
+      "descricao": ["ESTABILIZADOR SMS 1400VA", "MONITOR BLUECASE 20"],
       "valor": 700
     }
   ],

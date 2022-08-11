@@ -9,7 +9,7 @@ export interface IListagemMovimentacao {
   qtd: number;
   numSerie: string;
   estConservacao: string;
-  descricao: string;
+  descricao: string[];
   valor: number;
 }
 export interface IDetalheMovimentacao {
@@ -20,7 +20,7 @@ export interface IDetalheMovimentacao {
   qtd: number;
   numSerie: string;
   estConservacao: string;
-  descricao: string;
+  descricao: string[];
   valor: number;
 }
 type TMovimentacaoComTotalCount = {
@@ -32,7 +32,7 @@ const getAll = async (
   filter = ""
 ): Promise<TMovimentacaoComTotalCount | Error> => {
   try {
-    const urlRelativa = `/movimentacao?_page=${page}&_limit=${Enviroment.LIMITE_DE_LINHAS}`;
+    const urlRelativa = `/movimentacao?_page=${page}&_limit=${Enviroment.LIMITE_DE_LINHAS}&origem_like=${filter}||destino_like=${filter}`;
 
     const { data, headers } = await Api.get(urlRelativa);
     console.log(data);
