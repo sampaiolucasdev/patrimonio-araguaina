@@ -13,36 +13,28 @@ import {
   TableRow,
 } from "@mui/material";
 import { FerramentasDaListagem } from "../../shared/components";
-import { Enviroment } from "../../shared/enviroment";
-import { useDebounce } from "../../shared/hooks";
 import { LayoutBaseDePagina } from "../../shared/layouts";
-import InfoIcon from "@mui/icons-material/Info";
-import {
-  IListagemMovimentacao,
-  MovimentacaoService,
-} from "../../shared/services/api/MovimentacaoService";
+import { MovimentacaoService } from "../../shared/services/api/MovimentacaoService";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-export const DetalheDeMovimentacao: React.FC = (id) => {
+export const DetalheDeMovimentacao: React.FC = () => {
   //const { id = "nova" } = useParams<"id">();
   const navigate = useNavigate();
-  const [rows, setRows] = useState<IListagemMovimentacao[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
   const [origem, setOrigem] = useState("");
   const [destino, setDestino] = useState("");
-  const [data, setData] = useState(new Date());
+  const [data, setData] = useState({});
   const [qnt, setQtd] = useState(0);
   const [numserie, setNumserie] = useState("");
   const [estconservacao, setEstconservacao] = useState("");
   const [descricao, setDescricao] = useState([""]);
   const [valor, setValor] = useState(0);
+  const { id = "nova" } = useParams<"id">();
 
   useEffect(() => {
     if (id !== "nova") {
       setIsLoading(true);
-      console.log(id);
 
       MovimentacaoService.getById(Number(id)).then((result) => {
         setIsLoading(false);
@@ -63,6 +55,7 @@ export const DetalheDeMovimentacao: React.FC = (id) => {
       });
     }
   }, [id]);
+  console.log(id);
 
   return (
     <LayoutBaseDePagina
@@ -86,7 +79,6 @@ export const DetalheDeMovimentacao: React.FC = (id) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell width={50}>Ações</TableCell>
               <TableCell>Origem</TableCell>
               <TableCell>Destino</TableCell>
               <TableCell>Data</TableCell>
@@ -99,14 +91,6 @@ export const DetalheDeMovimentacao: React.FC = (id) => {
           </TableHead>
           <TableBody>
             <TableRow>
-              <TableCell>
-                <IconButton
-                  size="small"
-                  onClick={() => navigate(`/movimentacao/detalhe/${id}`)}
-                >
-                  <InfoIcon />
-                </IconButton>
-              </TableCell>
               <TableCell>{origem}</TableCell>
               <TableCell>{destino}</TableCell>
               <TableCell>{data}</TableCell>
