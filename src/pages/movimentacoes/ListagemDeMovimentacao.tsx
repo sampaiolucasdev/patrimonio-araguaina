@@ -48,7 +48,7 @@ export const ListagemDeMovimentacao: React.FC = () => {
     debounce(() => {
       MovimentacaoService.getAll(pagina, busca).then((result) => {
         setIsLoading(false);
-        console.log(result);
+        //console.log(result);
         if (result instanceof Error) {
           alert(result.message);
         } else {

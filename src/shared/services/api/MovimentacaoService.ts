@@ -5,22 +5,22 @@ export interface IListagemMovimentacao {
   id: number;
   origem: string;
   destino: string;
-  data: Date;
+  data: string;
   qtd: number;
   numSerie: string;
   estConservacao: string;
-  descricao: string[];
+  descricao?: string[];
   valor: number;
 }
 export interface IDetalheMovimentacao {
   id: number;
   origem: string;
   destino: string;
-  data: Date;
+  data: string;
   qtd: number;
   numSerie: string;
   estConservacao: string;
-  descricao: string[];
+  descricao?: string[];
   valor: number;
 }
 type TMovimentacaoComTotalCount = {

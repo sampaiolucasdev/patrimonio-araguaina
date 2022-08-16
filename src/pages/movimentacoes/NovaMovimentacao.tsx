@@ -1,20 +1,54 @@
-import { useEffect, useState } from "react";
-import { Box, Grid, LinearProgress, Paper, Typography } from "@mui/material";
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import {
+  Box,
+  debounce,
+  Grid,
+  LinearProgress,
+  Paper,
+  Select,
+  Typography,
+} from "@mui/material";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import * as yup from "yup";
 
-import { DepartamentoService as MovimentacaoService } from "../../shared/services/api/DepartamentoService";
-import { VTextField, VForm, useVForm, IVFormErrors } from "../../shared/forms";
+import { MovimentacaoService } from "../../shared/services/api/MovimentacaoService";
+import {
+  VTextField,
+  VForm,
+  useVForm,
+  IVFormErrors,
+  VSelect,
+} from "../../shared/forms";
 import { FerramentasDeDetalhe } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import {
+  IListagemSetor,
+  SetorService,
+} from "../../shared/services/api/SetorService";
 
 interface IFormData {
-  nome: string;
+  id?: number;
+  origem: string;
+  destino: string;
+  data: string;
+  qtd: number;
+  numSerie: string;
+  estConservacao: string;
+  descricao: string[];
+  valor: number;
 }
 const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
-  nome: yup.string().required().min(3),
+  id: yup.number(),
+  origem: yup.string().required(),
+  destino: yup.string().required(),
+  data: yup.string().required(),
+  qtd: yup.number().required().min(1),
+  numSerie: yup.string().required().min(4),
+  estConservacao: yup.string().required().min(1),
+  descricao: yup.array(),
+  valor: yup.number().required().min(1),
 });
 
 export const NovaMovimentacao: React.FC = () => {
@@ -23,69 +57,75 @@ export const NovaMovimentacao: React.FC = () => {
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [destino, setDestino] = useState("");
+  const [setor, setSetor] = useState<IListagemSetor[]>();
   const [nome, setNome] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const busca = useMemo(() => {
+    return searchParams.get("busca") || "";
+  }, [searchParams]);
+
+  const pagina = useMemo(() => {
+    return Number(searchParams.get("pagina") || "1");
+  }, [searchParams]);
+
+  // useEffect(() => {
+  //   if (id !== "nova") {
+  //     setIsLoading(true);
+
+  //     MovimentacaoService.getById(Number(id)).then((result) => {
+  //       setIsLoading(false);
+  //       if (result instanceof Error) {
+  //         alert(result.message);
+  //         navigate("/departamento");
+  //       } else {
+  //         setNome(result.nome);
+  //         console.log(result);
+
+  //         formRef.current?.setData(result);
+  //       }
+  //     });
+  //   } else {
+  //     formRef.current?.setData({
+  //       nome: "",
+  //     });
+  //   }
+  // }, [id]);
 
   useEffect(() => {
-    if (id !== "nova") {
-      setIsLoading(true);
-
-      MovimentacaoService.getById(Number(id)).then((result) => {
+    setIsLoading(false);
+    debounce(() => {
+      SetorService.getAll(pagina, busca).then((result) => {
         setIsLoading(false);
         if (result instanceof Error) {
           alert(result.message);
-          navigate("/departamento");
         } else {
-          setNome(result.nome);
+          setSetor(result.data);
           console.log(result);
-
-          formRef.current?.setData(result);
         }
       });
-    } else {
-      formRef.current?.setData({
-        nome: "",
-      });
-    }
-  }, [id]);
+    });
+  }, [busca, pagina]);
 
   const handleSave = (dados: IFormData) => {
     formValidationSchema
       .validate(dados, { abortEarly: false })
       .then((dadosValidados) => {
         setIsLoading(true);
-        if (id === "nova") {
-          MovimentacaoService.create(dadosValidados).then((result) => {
-            setIsLoading(false);
-            if (result instanceof Error) {
-              alert(result.message);
+        MovimentacaoService.create(dadosValidados).then((result) => {
+          setIsLoading(false);
+          if (result instanceof Error) {
+            alert(result.message);
+          } else {
+            if (isSaveAndClose()) {
+              toast.success(` ${nome} adicionado com sucesso!`);
+              navigate("/movimentacao");
             } else {
-              if (isSaveAndClose()) {
-                toast.success(` ${nome} adicionado com sucesso!`);
-                navigate("/movimentacao");
-              } else {
-                navigate(`/movimentacao/detalhe/${result}`);
-              }
+              navigate(`/movimentacao/detalhe/${result}`);
             }
-          });
-        } else {
-          MovimentacaoService.updateById(Number(id), {
-            id: Number(id),
-            ...dadosValidados,
-          }).then((result) => {
-            setIsLoading(false);
-            if (result instanceof Error) {
-              alert(result.message);
-            } else {
-              if (isSaveAndClose()) {
-                toast.success("Departamento atualizado com sucesso!");
-                navigate("/movimentacao");
-              }
-            }
-            // else {
-            //   navigate(`/cidades/detalhe/${result}`);
-            // }
-          });
-        }
+          }
+        });
       })
       .catch((errors: yup.ValidationError) => {
         const validationErrors: IVFormErrors = {};
@@ -150,7 +190,7 @@ export const NovaMovimentacao: React.FC = () => {
           //aoClicarEmSalvarEFechar={saveAndClose}
           aoClicarEmVoltar={() => navigate("/movimentacao")}
           aoClicarEmApagar={() => {
-            handleDelete(Number(id));
+            //handleDelete(Number(id));
           }}
           aoClicarEmNovo={() => navigate("/movimentacao/detalhe/nova")}
         />
@@ -177,19 +217,21 @@ export const NovaMovimentacao: React.FC = () => {
 
             <Grid container item direction="row" spacing={2}>
               <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
-                <VTextField
+                <VSelect
                   fullWidth
                   name="origem"
                   disabled={isLoading} //Desabilita o textfield quando estiver carregando
                   label="Origem"
                   onChange={(e) => setNome(e.target.value)} //Altera o nome da cidade no <h1> quando for alterado no textfield
                 />
-                <VTextField
+                <Select
+                  value={setor}
                   fullWidth
                   name="destino"
                   disabled={isLoading} //Desabilita o textfield quando estiver carregando
                   label="Destino"
-                  onChange={(e) => setNome(e.target.value)} //Altera o nome da cidade no <h1> quando for alterado no textfield
+                  autoWidth
+                  onChange={(event) => setDestino(event.target.name)} //Altera o nome da cidade no <h1> quando for alterado no textfield
                 />
                 <VTextField
                   fullWidth

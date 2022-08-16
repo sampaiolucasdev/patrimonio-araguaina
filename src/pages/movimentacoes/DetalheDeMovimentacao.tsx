@@ -21,10 +21,11 @@ import { useEffect, useState } from "react";
 export const DetalheDeMovimentacao: React.FC = () => {
   //const { id = "nova" } = useParams<"id">();
   const navigate = useNavigate();
+  const data2 = new Date().toLocaleTimeString();
   const [isLoading, setIsLoading] = useState(true);
   const [origem, setOrigem] = useState("");
   const [destino, setDestino] = useState("");
-  const [data, setData] = useState({});
+  const [data, setData] = useState(data2);
   const [qnt, setQtd] = useState(0);
   const [numserie, setNumserie] = useState("");
   const [estconservacao, setEstconservacao] = useState("");
@@ -48,14 +49,14 @@ export const DetalheDeMovimentacao: React.FC = () => {
           setQtd(result.qtd);
           setNumserie(result.numSerie);
           setEstconservacao(result.estConservacao);
-          setDescricao(result.descricao);
+          setDescricao(result.descricao!);
           setValor(result.valor);
-          console.log(result);
+          //console.log(result);
         }
       });
     }
   }, [id]);
-  console.log(id);
+  //console.log(id);
 
   return (
     <LayoutBaseDePagina
