@@ -5,20 +5,13 @@ import {
   Grid,
   LinearProgress,
   Paper,
-  Select,
   Typography,
 } from "@mui/material";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import * as yup from "yup";
-
+import Select from "react-select";
 import { MovimentacaoService } from "../../shared/services/api/MovimentacaoService";
-import {
-  VTextField,
-  VForm,
-  useVForm,
-  IVFormErrors,
-  VSelect,
-} from "../../shared/forms";
+import { VTextField, VForm, useVForm, IVFormErrors } from "../../shared/forms";
 import { FerramentasDeDetalhe } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import Swal from "sweetalert2";
@@ -27,6 +20,8 @@ import {
   IListagemSetor,
   SetorService,
 } from "../../shared/services/api/SetorService";
+import { useDebounce } from "../../shared/hooks";
+import { width } from "@mui/system";
 
 interface IFormData {
   id?: number;
@@ -55,13 +50,13 @@ export const NovaMovimentacao: React.FC = () => {
   const { formRef, saveAndClose, isSaveAndClose } = useVForm();
   const { id = "nova" } = useParams<"id">();
   const navigate = useNavigate();
+  const { debounce } = useDebounce();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [destino, setDestino] = useState("");
-  const [setor, setSetor] = useState<IListagemSetor[]>();
+  const [setor, setSetor] = useState<IListagemSetor[]>([]);
+  const [selectedsetor, setSelectedSetor] = useState(0);
   const [nome, setNome] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
-
   const busca = useMemo(() => {
     return searchParams.get("busca") || "";
   }, [searchParams]);
@@ -70,43 +65,26 @@ export const NovaMovimentacao: React.FC = () => {
     return Number(searchParams.get("pagina") || "1");
   }, [searchParams]);
 
-  // useEffect(() => {
-  //   if (id !== "nova") {
-  //     setIsLoading(true);
-
-  //     MovimentacaoService.getById(Number(id)).then((result) => {
-  //       setIsLoading(false);
-  //       if (result instanceof Error) {
-  //         alert(result.message);
-  //         navigate("/departamento");
-  //       } else {
-  //         setNome(result.nome);
-  //         console.log(result);
-
-  //         formRef.current?.setData(result);
-  //       }
-  //     });
-  //   } else {
-  //     formRef.current?.setData({
-  //       nome: "",
-  //     });
-  //   }
-  // }, [id]);
-
   useEffect(() => {
-    setIsLoading(false);
+    setIsLoading(true);
     debounce(() => {
       SetorService.getAll(pagina, busca).then((result) => {
         setIsLoading(false);
         if (result instanceof Error) {
           alert(result.message);
         } else {
-          setSetor(result.data);
           console.log(result);
+          setSetor(result.data);
         }
       });
     });
   }, [busca, pagina]);
+
+  const mapSetor = setor.map((row) => ({
+    value: row.id,
+    label: row.nome,
+  }));
+  const selectStyles = { width: `${8 * mapSetor.length + 100}px` };
 
   const handleSave = (dados: IFormData) => {
     formValidationSchema
@@ -176,22 +154,16 @@ export const NovaMovimentacao: React.FC = () => {
       }
     });
   };
+  console.log(selectedsetor);
 
   return (
     <LayoutBaseDePagina
       titulo={id === "nova" ? "Registrar Movimentação" : nome}
       barraDeFerramentas={
         <FerramentasDeDetalhe
-          //textoBotaoNovo="Adicionar"
-          //mostrarBotaoSalvarEFechar
-          //mostrarBotaoNovo={id !== "nova"}
           mostrarBotaoApagar={id !== "nova"}
           aoClicarEmSalvar={saveAndClose}
-          //aoClicarEmSalvarEFechar={saveAndClose}
           aoClicarEmVoltar={() => navigate("/movimentacao")}
-          aoClicarEmApagar={() => {
-            //handleDelete(Number(id));
-          }}
           aoClicarEmNovo={() => navigate("/movimentacao/detalhe/nova")}
         />
       }
@@ -215,24 +187,40 @@ export const NovaMovimentacao: React.FC = () => {
               <Typography variant="h6">Detalhes da Movimentação</Typography>
             </Grid>
 
-            <Grid container item direction="row" spacing={2}>
-              <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
-                <VSelect
-                  fullWidth
-                  name="origem"
-                  disabled={isLoading} //Desabilita o textfield quando estiver carregando
-                  label="Origem"
-                  onChange={(e) => setNome(e.target.value)} //Altera o nome da cidade no <h1> quando for alterado no textfield
-                />
+            <Grid container item direction="column" spacing={2}>
+              <Grid
+                item
+                direction="column"
+                xs={12}
+                sm={12}
+                md={6}
+                lg={4}
+                xl={2}
+              >
                 <Select
-                  value={setor}
-                  fullWidth
-                  name="destino"
-                  disabled={isLoading} //Desabilita o textfield quando estiver carregando
-                  label="Destino"
-                  autoWidth
-                  onChange={(event) => setDestino(event.target.name)} //Altera o nome da cidade no <h1> quando for alterado no textfield
+                  options={mapSetor}
+                  name="origem"
+                  isDisabled={isLoading}
+                  onChange={(e) => setSelectedSetor(e!.value)}
                 />
+              </Grid>
+              <Grid
+                item
+                direction="column"
+                xs={12}
+                sm={12}
+                md={6}
+                lg={4}
+                xl={2}
+              >
+                <Select
+                  options={mapSetor}
+                  name="destino"
+                  isDisabled={isLoading}
+                  onChange={(e) => setSelectedSetor(e!.value)}
+                />
+              </Grid>
+              <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
                 <VTextField
                   fullWidth
                   name="qtd"

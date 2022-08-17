@@ -40,6 +40,24 @@ const getAll = async (
   }
 };
 
+const getAllSelect = async (): Promise<IListagemSetor | Error> => {
+  try {
+    const urlRelativa = "/setor";
+
+    const { data, headers } = await Api.get(urlRelativa);
+
+    if (data) {
+      return data;
+    }
+    return new Error("Erro ao listar os registros");
+  } catch (error) {
+    console.error(error);
+    return new Error(
+      (error as { message: string }).message || "Erro ao listar os registros"
+    );
+  }
+};
+
 const getById = async (id: number): Promise<IDetalheSetor | Error> => {
   try {
     const { data } = await Api.get(`/setor/${id}`);
@@ -105,4 +123,5 @@ export const SetorService = {
   create,
   updateById,
   deleteById,
+  getAllSelect,
 };
