@@ -1,17 +1,26 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   Box,
+  Button,
   debounce,
   Grid,
+  Icon,
   LinearProgress,
   Paper,
   Typography,
 } from "@mui/material";
+import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import * as yup from "yup";
 import Select from "react-select";
 import { MovimentacaoService } from "../../shared/services/api/MovimentacaoService";
-import { VTextField, VForm, useVForm, IVFormErrors } from "../../shared/forms";
+import {
+  VTextField,
+  VForm,
+  useVForm,
+  IVFormErrors,
+  VSelect,
+} from "../../shared/forms";
 import { FerramentasDeDetalhe } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import Swal from "sweetalert2";
@@ -161,10 +170,10 @@ export const NovaMovimentacao: React.FC = () => {
       titulo={id === "nova" ? "Registrar Movimentação" : nome}
       barraDeFerramentas={
         <FerramentasDeDetalhe
+          mostrarBotaoNovo={false}
           mostrarBotaoApagar={id !== "nova"}
           aoClicarEmSalvar={saveAndClose}
           aoClicarEmVoltar={() => navigate("/movimentacao")}
-          aoClicarEmNovo={() => navigate("/movimentacao/detalhe/nova")}
         />
       }
     >
@@ -187,40 +196,33 @@ export const NovaMovimentacao: React.FC = () => {
               <Typography variant="h6">Detalhes da Movimentação</Typography>
             </Grid>
 
-            <Grid container item direction="column" spacing={2}>
-              <Grid
-                item
-                direction="column"
-                xs={12}
-                sm={12}
-                md={6}
-                lg={4}
-                xl={2}
-              >
-                <Select
-                  options={mapSetor}
-                  name="origem"
-                  isDisabled={isLoading}
-                  onChange={(e) => setSelectedSetor(e!.value)}
-                />
+            <Grid container item direction="row" spacing={2}>
+              <Grid container item direction="row" spacing={2}>
+                <Grid item direction="row" xs={6} sm={12} md={6} lg={4} xl={2}>
+                  <VSelect
+                    helperText="teste"
+                    value={mapSetor}
+                    name="origem"
+                    //isDisabled={isLoading}
+                    onChange={(e) => setSelectedSetor(Number(e.target.value))}
+                  />
+                </Grid>
+                <Grid item direction="row" xs={6} sm={12} md={6} lg={4} xl={2}>
+                  <Select
+                    options={mapSetor}
+                    name="destino"
+                    isDisabled={isLoading}
+                    onChange={(e) => setSelectedSetor(e!.value)}
+                  />
+                </Grid>
               </Grid>
-              <Grid
-                item
-                direction="column"
-                xs={12}
-                sm={12}
-                md={6}
-                lg={4}
-                xl={2}
-              >
-                <Select
-                  options={mapSetor}
-                  name="destino"
-                  isDisabled={isLoading}
-                  onChange={(e) => setSelectedSetor(e!.value)}
-                />
+
+              <Grid item direction="row">
+                <Typography variant="h6">Detalhes dos Bens</Typography>
               </Grid>
-              <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
+
+              <Grid container item direction="row" spacing={2}></Grid>
+              <Grid direction="row" item xs={12} sm={12} md={6} lg={4} xl={2}>
                 <VTextField
                   fullWidth
                   name="qtd"
@@ -228,16 +230,9 @@ export const NovaMovimentacao: React.FC = () => {
                   label="Quantidade"
                   onChange={(e) => setNome(e.target.value)} //Altera o nome da cidade no <h1> quando for alterado no textfield
                 />
-                <Grid item>
-                  <Typography variant="h6">Detalhes dos Bens</Typography>
-                </Grid>
-                <VTextField
-                  fullWidth
-                  name="numSerie"
-                  disabled={isLoading} //Desabilita o textfield quando estiver carregando
-                  label="Número de Série"
-                  onChange={(e) => setNome(e.target.value)} //Altera o nome da cidade no <h1> quando for alterado no textfield
-                />
+              </Grid>
+
+              <Grid direction="row" item xs={12} sm={12} md={6} lg={4} xl={2}>
                 <VTextField
                   fullWidth
                   name="estConservacao"
@@ -245,6 +240,9 @@ export const NovaMovimentacao: React.FC = () => {
                   label="Estado de Conservação"
                   onChange={(e) => setNome(e.target.value)} //Altera o nome da cidade no <h1> quando for alterado no textfield
                 />
+              </Grid>
+
+              <Grid direction="row" item xs={12} sm={12} md={6} lg={4} xl={2}>
                 <VTextField
                   fullWidth
                   name="descricao"
@@ -252,16 +250,24 @@ export const NovaMovimentacao: React.FC = () => {
                   label="Descrição"
                   onChange={(e) => setNome(e.target.value)} //Altera o nome da cidade no <h1> quando for alterado no textfield
                 />
-                <VTextField
-                  fullWidth
-                  name="valor"
-                  disabled={isLoading} //Desabilita o textfield quando estiver carregando
-                  label="Valor"
-                  onChange={(e) => setNome(e.target.value)} //Altera o nome da cidade no <h1> quando for alterado no textfield
-                />
+              </Grid>
+
+              <Grid direction="row" item xs={12} sm={12} md={6} lg={4} xl={2}>
+                <Button startIcon={<Icon>add</Icon>} variant="contained">
+                  adicionar
+                </Button>
               </Grid>
             </Grid>
           </Grid>
+        </Box>
+        <Box
+          margin={1}
+          display="flex"
+          flexDirection="column"
+          component={Paper}
+          variant="outlined"
+        >
+          <DataGrid />
         </Box>
         {/* {[1, 2, 3, 4].map((_, index) => (
           <Scope key="" path={`endereco[${index}]`}>
