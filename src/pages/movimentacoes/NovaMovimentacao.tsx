@@ -1,8 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import {
   Box,
   Button,
-  debounce,
   Grid,
   Icon,
   LinearProgress,
@@ -10,27 +9,16 @@ import {
   Typography,
 } from "@mui/material";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
-import Select from "react-select";
 import { MovimentacaoService } from "../../shared/services/api/MovimentacaoService";
-import {
-  VTextField,
-  VForm,
-  useVForm,
-  IVFormErrors,
-  VSelect,
-} from "../../shared/forms";
+import { VTextField, VForm, useVForm, IVFormErrors } from "../../shared/forms";
 import { FerramentasDeDetalhe } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
-import {
-  IListagemSetor,
-  SetorService,
-} from "../../shared/services/api/SetorService";
-import { useDebounce } from "../../shared/hooks";
-import { AutoCompleteMovimentacao } from "./components/AutoCompleteMovimentacao";
+import { AutoCompleteOrigem } from "./components/AutoCompleteOrigem";
+import { AutoCompleteDestino } from "./components/AutoCompleteDestino";
 
 interface IFormData {
   id?: number;
@@ -59,44 +47,39 @@ export const NovaMovimentacao: React.FC = () => {
   const { formRef, saveAndClose, isSaveAndClose } = useVForm();
   const { id = "nova" } = useParams<"id">();
   const navigate = useNavigate();
-  const { debounce } = useDebounce();
-
   const [isLoading, setIsLoading] = useState(false);
-  const [setor, setSetor] = useState<IListagemSetor[]>([]);
-  const [selectedsetor, setSelectedSetor] = useState(0);
   const [nome, setNome] = useState("");
-  const [searchParams, setSearchParams] = useSearchParams();
 
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 90 },
+    { field: "numSerie", headerName: "Número de Série", width: 130 },
     {
-      field: "firstName",
-      headerName: "First name",
-      width: 150,
-      editable: true,
+      field: "estConservacao",
+      headerName: "Estado de Conservação",
+      width: 190,
+      editable: false,
     },
     {
-      field: "lastName",
-      headerName: "Last name",
+      field: "descricao",
+      headerName: "Descrição",
       width: 150,
-      editable: true,
+      editable: false,
     },
     {
-      field: "age",
-      headerName: "Age",
+      field: "valor",
+      headerName: "Valor",
       type: "number",
       width: 110,
-      editable: true,
+      editable: false,
     },
-    {
-      field: "fullName",
-      headerName: "Full name",
-      description: "This column has a value getter and is not sortable.",
-      sortable: false,
-      width: 160,
-      valueGetter: (params: GridValueGetterParams) =>
-        `${params.row.firstName || ""} ${params.row.lastName || ""}`,
-    },
+    // {
+    //   field: "fullName",
+    //   headerName: "Full name",
+    //   description: "This column has a value getter and is not sortable.",
+    //   sortable: false,
+    //   width: 160,
+    //   valueGetter: (params: GridValueGetterParams) =>
+    //     `${params.row.firstName || ""} ${params.row.lastName || ""}`,
+    // },
   ];
   // const selectStyles = { width: `${8 * mapSetor.length + 100}px` };
   const rows = [
@@ -179,7 +162,6 @@ export const NovaMovimentacao: React.FC = () => {
       }
     });
   };
-  console.log(selectedsetor);
 
   return (
     <LayoutBaseDePagina
@@ -215,10 +197,10 @@ export const NovaMovimentacao: React.FC = () => {
             <Grid container item direction="row" spacing={2}>
               <Grid container item direction="row" spacing={2}>
                 <Grid item direction="row" xs={6} sm={12} md={6} lg={4} xl={2}>
-                  <AutoCompleteMovimentacao isExternalLoading={isLoading} />
+                  <AutoCompleteOrigem isExternalLoading={isLoading} />
                 </Grid>
                 <Grid item direction="row" xs={6} sm={12} md={6} lg={4} xl={2}>
-                  <AutoCompleteMovimentacao isExternalLoading={isLoading} />
+                  <AutoCompleteDestino isExternalLoading={isLoading} />
                 </Grid>
               </Grid>
 
@@ -227,7 +209,7 @@ export const NovaMovimentacao: React.FC = () => {
               </Grid>
 
               <Grid container item direction="row" spacing={2}></Grid>
-              <Grid direction="row" item xs={12} sm={12} md={6} lg={4} xl={2}>
+              {/* <Grid direction="row" item xs={12} sm={12} md={6} lg={4} xl={2}>
                 <VTextField
                   fullWidth
                   name="qtd"
@@ -235,7 +217,7 @@ export const NovaMovimentacao: React.FC = () => {
                   label="Quantidade"
                   onChange={(e) => setNome(e.target.value)} //Altera o nome da cidade no <h1> quando for alterado no textfield
                 />
-              </Grid>
+              </Grid> */}
 
               <Grid direction="row" item xs={12} sm={12} md={6} lg={4} xl={2}>
                 <VTextField
@@ -271,14 +253,14 @@ export const NovaMovimentacao: React.FC = () => {
           flexDirection="column"
           component={Paper}
           variant="outlined"
-          sx={{ height: 400, width: "100%" }}
+          sx={{ height: 400 }}
         >
           <DataGrid
+            checkboxSelection
             rows={rows}
             columns={columns}
             pageSize={5}
             rowsPerPageOptions={[5]}
-            checkboxSelection
             disableSelectionOnClick
             experimentalFeatures={{ newEditingApi: true }}
           />

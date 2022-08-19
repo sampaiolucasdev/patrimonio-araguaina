@@ -13,11 +13,11 @@ type TAutoCompleteOption = {
 interface IAutoCompleteMovimentacaoProps {
   isExternalLoading?: boolean;
 }
-export const AutoCompleteMovimentacao: React.FC<
-  IAutoCompleteMovimentacaoProps
-> = ({ isExternalLoading = false }) => {
+export const AutoCompleteOrigem: React.FC<IAutoCompleteMovimentacaoProps> = ({
+  isExternalLoading = false,
+}) => {
   const { fieldName, registerField, defaultValue, error, clearError } =
-    useField("cidadeId");
+    useField("origem");
   const { debounce } = useDebounce();
 
   const [selectedId, setSelectedId] = useState<number | undefined>(
@@ -49,11 +49,12 @@ export const AutoCompleteMovimentacao: React.FC<
           console.log(result);
 
           setOpcoes(
-            result.data.map((cidade) => ({
-              id: cidade.id,
-              label: cidade.nome,
+            result.data.map((setor) => ({
+              id: setor.id,
+              label: setor.nome,
             }))
           );
+          //console.log(selectedId); MOSTRAR ID PARA ENVIAR PARA O BANCO E MANIPULAR
         }
       });
     });
@@ -91,7 +92,12 @@ export const AutoCompleteMovimentacao: React.FC<
         ) : undefined
       }
       renderInput={(params) => (
-        <TextField {...params} label="" error={!!error} helperText={error} />
+        <TextField
+          {...params}
+          label="Origem"
+          error={!!error}
+          helperText={error}
+        />
       )}
     />
   );
