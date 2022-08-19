@@ -30,6 +30,7 @@ import {
   SetorService,
 } from "../../shared/services/api/SetorService";
 import { useDebounce } from "../../shared/hooks";
+import { AutoCompleteMovimentacao } from "./components/AutoCompleteMovimentacao";
 
 interface IFormData {
   id?: number;
@@ -65,33 +66,7 @@ export const NovaMovimentacao: React.FC = () => {
   const [selectedsetor, setSelectedSetor] = useState(0);
   const [nome, setNome] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
-  const busca = useMemo(() => {
-    return searchParams.get("busca") || "";
-  }, [searchParams]);
 
-  const pagina = useMemo(() => {
-    return Number(searchParams.get("pagina") || "1");
-  }, [searchParams]);
-
-  useEffect(() => {
-    setIsLoading(true);
-    debounce(() => {
-      SetorService.getAll(pagina, busca).then((result) => {
-        setIsLoading(false);
-        if (result instanceof Error) {
-          alert(result.message);
-        } else {
-          console.log(result);
-          setSetor(result.data);
-        }
-      });
-    });
-  }, [busca, pagina]);
-
-  const mapSetor = setor.map((row) => ({
-    value: row.id,
-    label: row.nome,
-  }));
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 90 },
     {
@@ -240,21 +215,10 @@ export const NovaMovimentacao: React.FC = () => {
             <Grid container item direction="row" spacing={2}>
               <Grid container item direction="row" spacing={2}>
                 <Grid item direction="row" xs={6} sm={12} md={6} lg={4} xl={2}>
-                  <VSelect
-                    helperText="teste"
-                    value={mapSetor}
-                    name="origem"
-                    //isDisabled={isLoading}
-                    onChange={(e) => setSelectedSetor(Number(e.target.value))}
-                  />
+                  <AutoCompleteMovimentacao isExternalLoading={isLoading} />
                 </Grid>
                 <Grid item direction="row" xs={6} sm={12} md={6} lg={4} xl={2}>
-                  <Select
-                    options={mapSetor}
-                    name="destino"
-                    isDisabled={isLoading}
-                    onChange={(e) => setSelectedSetor(e!.value)}
-                  />
+                  <AutoCompleteMovimentacao isExternalLoading={isLoading} />
                 </Grid>
               </Grid>
 

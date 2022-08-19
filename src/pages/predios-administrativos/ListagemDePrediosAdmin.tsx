@@ -21,7 +21,7 @@ import { LayoutBaseDePagina } from "../../shared/layouts";
 import {
   IListagemCidade,
   CidadesService,
-} from "../../shared/services/api/cidades/CidadesService";
+} from "../../shared/services/api/cidades/MovimentacaoService";
 
 export const ListagemDePrediosAdmin: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();

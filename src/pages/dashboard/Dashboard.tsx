@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import { FerramentasDaListagem } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
-import { CidadesService } from "../../shared/services/api/cidades/CidadesService";
+import { CidadesService } from "../../shared/services/api/cidades/MovimentacaoService";
 import { PessoasService } from "../../shared/services/api/pessoas/PessoasService";
 
 export const Dashboard = () => {
