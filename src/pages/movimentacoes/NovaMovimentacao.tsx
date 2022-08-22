@@ -264,6 +264,9 @@ export const NovaMovimentacao: React.FC = () => {
             rowsPerPageOptions={[5]}
             disableSelectionOnClick
             experimentalFeatures={{ newEditingApi: true }}
+            onSelectionModelChange={(data) => {
+              console.log(data);
+            }}
           />
         </Box>
         {/* {[1, 2, 3, 4].map((_, index) => (
