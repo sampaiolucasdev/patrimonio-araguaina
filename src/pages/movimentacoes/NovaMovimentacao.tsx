@@ -8,7 +8,7 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, ptBR } from "@mui/x-data-grid";
 import { useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
 import { MovimentacaoService } from "../../shared/services/api/MovimentacaoService";
@@ -256,6 +256,7 @@ export const NovaMovimentacao: React.FC = () => {
           sx={{ height: 400 }}
         >
           <DataGrid
+            localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
             checkboxSelection
             rows={rows}
             columns={columns}
