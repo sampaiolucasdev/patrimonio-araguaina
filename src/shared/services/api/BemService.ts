@@ -3,11 +3,25 @@ import { Api } from "./axios-config";
 
 export interface IListagemBens {
   id: number;
-  nome: string;
+  descricao: string;
+  marca: string;
+  modelo: string;
+  imagen: string;
+  origem: string;
+  estConservacao: number;
+  valor: number;
+  numSerie: string;
 }
 export interface IDetalheBens {
   id: number;
-  nome: string;
+  descricao: string;
+  marca: string;
+  modelo: string;
+  imagen: string;
+  origem: string;
+  estConservacao: number;
+  valor: number;
+  numSerie: string;
 }
 type TBensComTotalCount = {
   data: IListagemBens[];
@@ -18,7 +32,7 @@ const getAll = async (
   filter = ""
 ): Promise<TBensComTotalCount | Error> => {
   try {
-    const urlRelativa = `/departamento?_page=${page}&_limit=${Enviroment.LIMITE_DE_LINHAS}&nome_like=${filter}`;
+    const urlRelativa = `/bens?_page=${page}&_limit=${Enviroment.LIMITE_DE_LINHAS}&nome_like=${filter}`;
 
     const { data, headers } = await Api.get(urlRelativa);
 
@@ -41,7 +55,7 @@ const getAll = async (
 
 const getById = async (id: number): Promise<IDetalheBens | Error> => {
   try {
-    const { data } = await Api.get(`/departamento/${id}`);
+    const { data } = await Api.get(`/bens/${id}`);
 
     if (data) {
       return data;
@@ -59,7 +73,7 @@ const create = async (
   dados: Omit<IDetalheBens, "id">
 ): Promise<number | Error> => {
   try {
-    const { data } = await Api.post<IDetalheBens>("/departamento/", dados);
+    const { data } = await Api.post<IDetalheBens>("/bens/", dados);
 
     if (data) {
       return data.id;
@@ -78,7 +92,7 @@ const updateById = async (
   dados: IDetalheBens
 ): Promise<void | Error> => {
   try {
-    await Api.put(`/departamento/${id}`, dados);
+    await Api.put(`/bens/${id}`, dados);
   } catch (error) {
     console.error(error);
     return new Error(
@@ -89,7 +103,7 @@ const updateById = async (
 
 const deleteById = async (id: number): Promise<void | Error> => {
   try {
-    await Api.delete(`/departamento/${id}`);
+    await Api.delete(`/bens/${id}`);
   } catch (error) {
     console.error(error);
     return new Error(
@@ -98,7 +112,7 @@ const deleteById = async (id: number): Promise<void | Error> => {
   }
 };
 
-export const DepartamentoService = {
+export const BemService = {
   getAll,
   getById,
   create,

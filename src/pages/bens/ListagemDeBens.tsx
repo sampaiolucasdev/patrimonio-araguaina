@@ -18,10 +18,6 @@ import { FerramentasDaListagem } from "../../shared/components";
 import { Enviroment } from "../../shared/enviroment";
 import { useDebounce } from "../../shared/hooks";
 import { LayoutBaseDePagina } from "../../shared/layouts";
-import {
-  IListagemCidade,
-  CidadesService,
-} from "../../shared/services/api/cidades/MovimentacaoService";
 
 export const ListagemDeBens: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -29,7 +25,7 @@ export const ListagemDeBens: React.FC = () => {
   /**Passar próx como ', false' cancela o firstDelay */
   const navigate = useNavigate();
 
-  const [rows, setRows] = useState<IListagemCidade[]>([]);
+  const [rows, setRows] = useState<IListagemDeBens[]>([]);
   const [isLoading, setIsLoading] = useState(true); //Feedback visual de carregamento
   const [totalCount, setTotalCount] = useState(0);
 
@@ -44,7 +40,7 @@ export const ListagemDeBens: React.FC = () => {
   useEffect(() => {
     setIsLoading(true);
     debounce(() => {
-      CidadesService.getAll(pagina, busca).then((result) => {
+      BemService.getAll(pagina, busca).then((result) => {
         setIsLoading(false);
         if (result instanceof Error) {
           alert(result.message);
@@ -69,7 +65,7 @@ export const ListagemDeBens: React.FC = () => {
      * a linha com o id que está sendo apagado (oldRow.id !== id).
      */
     if (confirm("Deseja apagar?")) {
-      CidadesService.deleteById(id).then((result) => {
+      BemService.deleteById(id).then((result) => {
         if (result instanceof Error) {
           alert(result.message);
         } else {
@@ -94,7 +90,7 @@ export const ListagemDeBens: React.FC = () => {
           mostrarInputBusca
           textoDaBusca={busca}
           textoBotaoNovo="Nova"
-          aoClicarEmNovo={() => navigate("/cidades/detalhe/nova")}
+          aoClicarEmNovo={() => navigate("/bens/detalhe/nova")}
           aoMudarTextoDeBusca={(texto) =>
             setSearchParams({ busca: texto, pagina: "1" }, { replace: true })
           }
@@ -122,7 +118,7 @@ export const ListagemDeBens: React.FC = () => {
                   </IconButton>
                   <IconButton
                     size="small"
-                    onClick={() => navigate(`/cidades/detalhe/${row.id}`)}
+                    onClick={() => navigate(`/bens/detalhe/${row.id}`)}
                   >
                     <Icon>edit</Icon>
                   </IconButton>
