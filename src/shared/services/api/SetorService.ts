@@ -19,7 +19,8 @@ const getAll = async (
   filter = ""
 ): Promise<TSetorComTotalCount | Error> => {
   try {
-    const urlRelativa = `/setor?_page=${page}&_limit=${Enviroment.LIMITE_DE_LINHAS}&nome_like=${filter}`;
+    //setor?limit=5&offset=0&role=admin
+    const urlRelativa = `/setor?offset=1&limit=${Enviroment.LIMITE_DE_LINHAS}&role=admin`;
 
     const { data, headers } = await Api.get(urlRelativa);
 

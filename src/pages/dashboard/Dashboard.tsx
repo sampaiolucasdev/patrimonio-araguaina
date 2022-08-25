@@ -16,7 +16,12 @@ export const Dashboard = () => {
   useEffect(() => {
     setIsLoadingCidades(true);
     setIsLoadingPessoas(true);
+    const token: any = JSON.parse(
+      localStorage.getItem("APP_ACCESS_TOKEN") || ""
+    );
+    const token2: any = token["access_token"];
 
+    console.log(token2);
     CidadesService.getAll(1).then((result) => {
       setIsLoadingCidades(false);
       if (result instanceof Error) {

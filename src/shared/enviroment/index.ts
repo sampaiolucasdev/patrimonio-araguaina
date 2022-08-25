@@ -14,5 +14,5 @@ export const Enviroment = {
   /**
    * URL base de consulta dos dados da aplicação
    */
-  URL_BASE: "http://localhost:3333",
+  URL_BASE: "https://api-nosso-patrimonio.herokuapp.com",
 };
