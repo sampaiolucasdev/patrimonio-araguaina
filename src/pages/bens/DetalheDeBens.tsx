@@ -3,18 +3,33 @@ import { Box, Grid, LinearProgress, Paper, Typography } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
 
-import { DepartamentoService } from "../../shared/services/api/DepartamentoService";
 import { VTextField, VForm, useVForm, IVFormErrors } from "../../shared/forms";
 import { FerramentasDeDetalhe } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import { BemService } from "../../shared/services/api/BemService";
+import { AutoCompleteOrigem } from "../movimentacoes/components/AutoCompleteOrigem";
 
 interface IFormData {
-  nome: string;
+  descricao: string;
+  marca: string;
+  modelo: string;
+  imagem: string;
+  origem: string;
+  estConservacao: number;
+  valor: number;
+  numSerie: string;
 }
 const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
-  nome: yup.string().required().min(3),
+  descricao: yup.string().required(),
+  marca: yup.string().required(),
+  modelo: yup.string().required(),
+  imagem: yup.string().required(),
+  origem: yup.string().required(),
+  estConservacao: yup.number().required().min(1),
+  valor: yup.number().required().min(1),
+  numSerie: yup.string().required().min(4),
 });
 
 export const DetalheDeBens: React.FC = () => {
@@ -23,7 +38,14 @@ export const DetalheDeBens: React.FC = () => {
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [nome, setNome] = useState("");
+  const [selectedOrigem, setSelectedOrigem] = useState(0);
+  const [numSerie, setNumSerie] = useState("");
+  const [marca, setMarca] = useState("");
+  const [modelo, setModelo] = useState("");
+  const [valor, setValor] = useState(0);
+  const [descricao, setDescricao] = useState("");
+  const [estConservacao, setEstConservacao] = useState(0);
+  const [imagem, setImagem] = useState("");
 
   useEffect(() => {
     if (id !== "nova") {
@@ -35,7 +57,7 @@ export const DetalheDeBens: React.FC = () => {
           alert(result.message);
           navigate("/bens");
         } else {
-          setNome(result.nome);
+          setDescricao(result.descricao);
           console.log(result);
 
           formRef.current?.setData(result);
@@ -49,43 +71,26 @@ export const DetalheDeBens: React.FC = () => {
   }, [id]);
 
   const handleSave = (dados: IFormData) => {
+    //console.log(dados);
     formValidationSchema
       .validate(dados, { abortEarly: false })
       .then((dadosValidados) => {
+        //console.log("dados validados", dadosValidados);
         setIsLoading(true);
-        if (id === "nova") {
-          BemService.create(dadosValidados).then((result) => {
-            setIsLoading(false);
-            if (result instanceof Error) {
-              alert(result.message);
+        BemService.create(dadosValidados).then((result) => {
+          setIsLoading(false);
+          //console.log(result);
+          if (result instanceof Error) {
+            alert(result.message);
+          } else {
+            if (isSaveAndClose()) {
+              toast.success(` ${descricao} adicionado com sucesso!`);
+              navigate("/bens");
             } else {
-              if (isSaveAndClose()) {
-                toast.success(` ${nome} adicionado com sucesso!`);
-                navigate("/bens");
-              } else {
-                navigate(`/bens/detalhe/${result}`);
-              }
+              navigate(`/bens/detalhe/${result}`);
             }
-          });
-        } else {
-          BemService.updateById(Number(id), {
-            id: Number(id),
-            ...dadosValidados,
-          }).then((result) => {
-            setIsLoading(false);
-            if (result instanceof Error) {
-              alert(result.message);
-            } else {
-              if (isSaveAndClose()) {
-                toast.success("Bem atualizado com sucesso!");
-                navigate("/bens");
-              }
-            }
-            // else {
-            //   navigate(`/cidades/detalhe/${result}`);
-            // }
-          });
-        }
+          }
+        });
       })
       .catch((errors: yup.ValidationError) => {
         const validationErrors: IVFormErrors = {};
@@ -139,20 +144,16 @@ export const DetalheDeBens: React.FC = () => {
 
   return (
     <LayoutBaseDePagina
-      titulo={id === "nova" ? "Cadastrar Novo Bem" : nome}
+      titulo={id === "nova" ? "Cadastrar Novo Bem" : descricao}
       barraDeFerramentas={
         <FerramentasDeDetalhe
-          //textoBotaoNovo="Adicionar"
-          //mostrarBotaoSalvarEFechar
-          //mostrarBotaoNovo={id !== "nova"}
+          mostrarBotaoNovo={false}
           mostrarBotaoApagar={id !== "nova"}
           aoClicarEmSalvar={saveAndClose}
-          //aoClicarEmSalvarEFechar={saveAndClose}
           aoClicarEmVoltar={() => navigate("/bens")}
           aoClicarEmApagar={() => {
             handleDelete(Number(id));
           }}
-          aoClicarEmNovo={() => navigate("/bens/detalhe/nova")}
         />
       }
     >
@@ -172,17 +173,85 @@ export const DetalheDeBens: React.FC = () => {
             )}
 
             <Grid item>
-              <Typography variant="h6">Editar Informações</Typography>
+              <Typography variant="h6">Local e Identificação</Typography>
             </Grid>
 
             <Grid container item direction="row" spacing={2}>
-              <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
+              <Grid container item direction="row" spacing={2}>
+                <Grid item direction="row" xs={6} sm={12} md={6} lg={4} xl={2}>
+                  <AutoCompleteOrigem isExternalLoading={isLoading} />
+                </Grid>
+                <Grid item direction="row" xs={6} sm={12} md={6} lg={4} xl={2}>
+                  <VTextField
+                    fullWidth
+                    name="numSerie"
+                    disabled={isLoading} //Desabilita o textfield quando estiver carregando
+                    label="Número de Série"
+                    onChange={(e) => setNumSerie(e.target.value)} //Altera o nome da cidade no <h1> quando for alterado no textfield
+                  />
+                </Grid>
+              </Grid>
+              <Grid item direction="row">
+                <Typography variant="h6">Características</Typography>
+              </Grid>
+              <Grid container item direction="row" spacing={2}></Grid>
+              <Grid direction="row" item xs={12} sm={12} md={6} lg={4} xl={2}>
                 <VTextField
                   fullWidth
-                  name="nome"
+                  name="marca"
                   disabled={isLoading} //Desabilita o textfield quando estiver carregando
-                  label="Nome"
-                  onChange={(e) => setNome(e.target.value)} //Altera o nome da cidade no <h1> quando for alterado no textfield
+                  label="Marca"
+                  onChange={(e) => setMarca(e.target.value)} //Altera o nome da cidade no <h1> quando for alterado no textfield
+                />
+              </Grid>
+              <Grid direction="row" item xs={12} sm={12} md={6} lg={4} xl={2}>
+                <VTextField
+                  fullWidth
+                  name="modelo"
+                  disabled={isLoading} //Desabilita o textfield quando estiver carregando
+                  label="Modelo"
+                  onChange={(e) => setModelo(e.target.value)} //Altera o nome da cidade no <h1> quando for alterado no textfield
+                />
+              </Grid>
+              <Grid direction="row" item xs={12} sm={12} md={6} lg={4} xl={2}>
+                <VTextField
+                  fullWidth
+                  name="valor"
+                  disabled={isLoading} //Desabilita o textfield quando estiver carregando
+                  label="Valor"
+                  onChange={(e) => setValor(Number(e.target.value))} //Altera o nome da cidade no <h1> quando for alterado no textfield
+                />
+              </Grid>
+              <Grid container item direction="row" spacing={2}></Grid>
+              <Grid item direction="row">
+                <Typography variant="h6">Detalhes</Typography>
+              </Grid>
+              <Grid container item direction="row" spacing={2}></Grid>
+              <Grid direction="row" item xs={12} sm={12} md={6} lg={4} xl={2}>
+                <VTextField
+                  fullWidth
+                  name="descricao"
+                  disabled={isLoading} //Desabilita o textfield quando estiver carregando
+                  label="Descrição"
+                  onChange={(e) => setDescricao(e.target.value)} //Altera o nome da cidade no <h1> quando for alterado no textfield
+                />
+              </Grid>
+              <Grid direction="row" item xs={12} sm={12} md={6} lg={4} xl={2}>
+                <VTextField
+                  fullWidth
+                  name="estConservacao"
+                  disabled={isLoading} //Desabilita o textfield quando estiver carregando
+                  label="Estado de Conservação"
+                  onChange={(e) => setEstConservacao(Number(e.target.value))} //Altera o nome da cidade no <h1> quando for alterado no textfield
+                />
+              </Grid>
+              <Grid direction="row" item xs={12} sm={12} md={6} lg={4} xl={2}>
+                <VTextField
+                  fullWidth
+                  name="imagem"
+                  disabled={isLoading} //Desabilita o textfield quando estiver carregando
+                  label="Imagem"
+                  onChange={(e) => setImagem(e.target.value)} //Altera o nome da cidade no <h1> quando for alterado no textfield
                 />
               </Grid>
             </Grid>

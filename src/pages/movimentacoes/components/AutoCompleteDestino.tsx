@@ -88,7 +88,7 @@ export const AutoCompleteDestino: React.FC<IAutoCompleteMovimentacaoProps> = ({
       }}
       popupIcon={
         isExternalLoading || isLoading ? (
-          <CircularProgress size={28} />
+          <CircularProgress size={26} />
         ) : undefined
       }
       renderInput={(params) => (

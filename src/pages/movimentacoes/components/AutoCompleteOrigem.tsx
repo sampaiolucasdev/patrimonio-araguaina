@@ -23,7 +23,6 @@ export const AutoCompleteOrigem: React.FC<IAutoCompleteMovimentacaoProps> = ({
   const [selectedId, setSelectedId] = useState<number | undefined>(
     defaultValue
   );
-
   const [opcoes, setOpcoes] = useState<TAutoCompleteOption[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [busca, setBusca] = useState("");
@@ -46,7 +45,7 @@ export const AutoCompleteOrigem: React.FC<IAutoCompleteMovimentacaoProps> = ({
         if (result instanceof Error) {
           alert(result.message);
         } else {
-          console.log(result);
+          //console.log(result);
 
           setOpcoes(
             result.data.map((setor) => ({
@@ -54,7 +53,7 @@ export const AutoCompleteOrigem: React.FC<IAutoCompleteMovimentacaoProps> = ({
               label: setor.nome,
             }))
           );
-          //console.log(selectedId); MOSTRAR ID PARA ENVIAR PARA O BANCO E MANIPULAR
+          //console.log(selectedId); //MOSTRAR ID PARA ENVIAR PARA O BANCO E MANIPULAR
         }
       });
     });
@@ -65,6 +64,7 @@ export const AutoCompleteOrigem: React.FC<IAutoCompleteMovimentacaoProps> = ({
 
     const selectedOption = opcoes.find((opcao) => opcao.id === selectedId);
     if (!selectedOption) return null;
+    //console.log(selectedOption);
 
     return selectedOption;
   }, [selectedId, opcoes]);
@@ -88,7 +88,7 @@ export const AutoCompleteOrigem: React.FC<IAutoCompleteMovimentacaoProps> = ({
       }}
       popupIcon={
         isExternalLoading || isLoading ? (
-          <CircularProgress size={28} />
+          <CircularProgress size={26} />
         ) : undefined
       }
       renderInput={(params) => (

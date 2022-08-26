@@ -17,7 +17,7 @@ export interface IDetalheBens {
   descricao: string;
   marca: string;
   modelo: string;
-  imagen: string;
+  imagem: string;
   origem: string;
   estConservacao: number;
   valor: number;
@@ -32,7 +32,7 @@ const getAll = async (
   filter = ""
 ): Promise<TBensComTotalCount | Error> => {
   try {
-    const urlRelativa = `/bens?_page=${page}&_limit=${Enviroment.LIMITE_DE_LINHAS}&nome_like=${filter}`;
+    const urlRelativa = `/bens?_page=${page}&_limit=${Enviroment.LIMITE_DE_LINHAS}&numSerie_like=${filter}`;
 
     const { data, headers } = await Api.get(urlRelativa);
 
@@ -69,6 +69,7 @@ const getById = async (id: number): Promise<IDetalheBens | Error> => {
   }
 };
 
+//: Omit<IDetalheBens, "id">
 const create = async (
   dados: Omit<IDetalheBens, "id">
 ): Promise<number | Error> => {

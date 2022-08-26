@@ -17,8 +17,6 @@ import { FerramentasDeDetalhe } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
-import { AutoCompleteOrigem } from "./components/AutoCompleteOrigem";
-import { AutoCompleteDestino } from "./components/AutoCompleteDestino";
 
 interface IFormData {
   id?: number;
@@ -196,12 +194,24 @@ export const NovoBem: React.FC = () => {
 
             <Grid container item direction="row" spacing={2}>
               <Grid container item direction="row" spacing={2}>
-                <Grid item direction="row" xs={6} sm={12} md={6} lg={4} xl={2}>
-                  <AutoCompleteOrigem isExternalLoading={isLoading} />
-                </Grid>
-                <Grid item direction="row" xs={6} sm={12} md={6} lg={4} xl={2}>
-                  <AutoCompleteDestino isExternalLoading={isLoading} />
-                </Grid>
+                <Grid
+                  item
+                  direction="row"
+                  xs={6}
+                  sm={12}
+                  md={6}
+                  lg={4}
+                  xl={2}
+                ></Grid>
+                <Grid
+                  item
+                  direction="row"
+                  xs={6}
+                  sm={12}
+                  md={6}
+                  lg={4}
+                  xl={2}
+                ></Grid>
               </Grid>
 
               <Grid item direction="row">

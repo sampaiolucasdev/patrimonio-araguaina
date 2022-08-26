@@ -18,6 +18,10 @@ import { FerramentasDaListagem } from "../../shared/components";
 import { Enviroment } from "../../shared/enviroment";
 import { useDebounce } from "../../shared/hooks";
 import { LayoutBaseDePagina } from "../../shared/layouts";
+import {
+  BemService,
+  IListagemBens,
+} from "../../shared/services/api/BemService";
 
 export const ListagemDeBens: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -25,7 +29,7 @@ export const ListagemDeBens: React.FC = () => {
   /**Passar próx como ', false' cancela o firstDelay */
   const navigate = useNavigate();
 
-  const [rows, setRows] = useState<IListagemDeBens[]>([]);
+  const [rows, setRows] = useState<IListagemBens[]>([]);
   const [isLoading, setIsLoading] = useState(true); //Feedback visual de carregamento
   const [totalCount, setTotalCount] = useState(0);
 
@@ -48,35 +52,35 @@ export const ListagemDeBens: React.FC = () => {
           console.log(result);
 
           setTotalCount(result.totalCount);
-          setRows(result.data);
+          //setRows(result.data);
         }
       });
     });
   }, [busca, pagina]);
 
-  const handleDelete = (id: number) => {
-    /**
-     * deleteById retorna uma promessa de resultado ou erro.
-     * Quando (.then) essa promessa ocorrer, vai ter um result
-     * Se esse result é uma instância de erro, então, alert
-     * mostrando o error na message. Se não, vai dar um setState(serRows)
-     * pegando o registro com o id específico que foi apagado, retorna um novo
-     * state com todas as linhas do state anterior(...), filtrando exceto
-     * a linha com o id que está sendo apagado (oldRow.id !== id).
-     */
-    if (confirm("Deseja apagar?")) {
-      BemService.deleteById(id).then((result) => {
-        if (result instanceof Error) {
-          alert(result.message);
-        } else {
-          setRows((oldRows) => {
-            return [...oldRows.filter((oldRow) => oldRow.id !== id)];
-          });
-          alert("Registro apagado com sucesso!");
-        }
-      });
-    }
-  };
+  // const handleDelete = (id: number) => {
+  //   /**
+  //    * deleteById retorna uma promessa de resultado ou erro.
+  //    * Quando (.then) essa promessa ocorrer, vai ter um result
+  //    * Se esse result é uma instância de erro, então, alert
+  //    * mostrando o error na message. Se não, vai dar um setState(serRows)
+  //    * pegando o registro com o id específico que foi apagado, retorna um novo
+  //    * state com todas as linhas do state anterior(...), filtrando exceto
+  //    * a linha com o id que está sendo apagado (oldRow.id !== id).
+  //    */
+  //   if (confirm("Deseja apagar?")) {
+  //     BemService.deleteById(id).then((result) => {
+  //       if (result instanceof Error) {
+  //         alert(result.message);
+  //       } else {
+  //         setRows((oldRows) => {
+  //           return [...oldRows.filter((oldRow) => oldRow.id !== id)];
+  //         });
+  //         alert("Registro apagado com sucesso!");
+  //       }
+  //     });
+  //   }
+  // };
 
   return (
     <LayoutBaseDePagina
@@ -113,7 +117,7 @@ export const ListagemDeBens: React.FC = () => {
             {rows.map((row) => (
               <TableRow key={row.id}>
                 <TableCell>
-                  <IconButton size="small" onClick={() => handleDelete(row.id)}>
+                  <IconButton size="small">
                     <Icon>delete</Icon>
                   </IconButton>
                   <IconButton
@@ -123,7 +127,7 @@ export const ListagemDeBens: React.FC = () => {
                     <Icon>edit</Icon>
                   </IconButton>
                 </TableCell>
-                <TableCell>{row.nome}</TableCell>
+                <TableCell>{row.descricao}</TableCell>
               </TableRow>
             ))}
           </TableBody>

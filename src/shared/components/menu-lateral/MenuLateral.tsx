@@ -180,7 +180,7 @@ export const MenuLateral: React.FC = ({ children }) => {
                 </ListItemButton>
                 <ListItemButton
                   sx={{ pl: 3, heigth: 30 }}
-                  onClick={() => navigate("/bens")}
+                  onClick={() => navigate("/bens/detalhe/nova")}
                 >
                   <ListItemIcon sx={{ minWidth: 30 }}>
                     <PersonIcon />
