@@ -53,6 +53,33 @@ const getAll = async (
   }
 };
 
+const getAllBySetor = async (
+  page = 1,
+  filter = "",
+  setor = 0
+): Promise<TBensComTotalCount | Error> => {
+  try {
+    const urlRelativa = `/bens?_page=${page}&_limit=${Enviroment.LIMITE_DE_LINHAS}&numSerie_like=${filter}&setor=${setor}`;
+
+    const { data, headers } = await Api.get(urlRelativa);
+
+    if (data) {
+      return {
+        data,
+        totalCount: Number(
+          headers["x-total-count"] || Enviroment.LIMITE_DE_LINHAS
+        ),
+      };
+    }
+    return new Error("Erro ao listar os registros");
+  } catch (error) {
+    console.error(error);
+    return new Error(
+      (error as { message: string }).message || "Erro ao listar os registros"
+    );
+  }
+};
+
 const getById = async (id: number): Promise<IDetalheBens | Error> => {
   try {
     const { data } = await Api.get(`/bens/${id}`);
@@ -119,4 +146,5 @@ export const BemService = {
   create,
   updateById,
   deleteById,
+  getAllBySetor,
 };

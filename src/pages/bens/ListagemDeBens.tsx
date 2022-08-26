@@ -32,6 +32,7 @@ export const ListagemDeBens: React.FC = () => {
   const [rows, setRows] = useState<IListagemBens[]>([]);
   const [isLoading, setIsLoading] = useState(true); //Feedback visual de carregamento
   const [totalCount, setTotalCount] = useState(0);
+  const [searchOrigem, setSearchOrigem] = useState("");
 
   const busca = useMemo(() => {
     return searchParams.get("busca") || "";
@@ -40,21 +41,24 @@ export const ListagemDeBens: React.FC = () => {
   const pagina = useMemo(() => {
     return Number(searchParams.get("pagina") || "1");
   }, [searchParams]);
-
   useEffect(() => {
     setIsLoading(true);
     debounce(() => {
-      BemService.getAll(pagina, busca).then((result) => {
-        setIsLoading(false);
-        if (result instanceof Error) {
-          alert(result.message);
-        } else {
-          console.log(result);
+      BemService.getAllBySetor(pagina, busca, Number(searchOrigem)).then(
+        (result) => {
+          setIsLoading(false);
+          if (result instanceof Error) {
+            alert(result.message);
+          } else {
+            console.log(result);
 
-          setTotalCount(result.totalCount);
-          //setRows(result.data);
+            setTotalCount(result.totalCount);
+            setRows(result.data);
+            setSearchOrigem(result.data[0].origem);
+            console.log("origem", searchOrigem);
+          }
         }
-      });
+      );
     });
   }, [busca, pagina]);
 
@@ -109,25 +113,25 @@ export const ListagemDeBens: React.FC = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell width={100}>Ações</TableCell>
-              <TableCell>Nome</TableCell>
+              <TableCell width={100}>Origem</TableCell>
+              <TableCell>Número de Série</TableCell>
+              <TableCell>Descrição</TableCell>
+              <TableCell>Marca</TableCell>
+              <TableCell>Modelo</TableCell>
+              <TableCell>Estado de Conservação</TableCell>
+              <TableCell>Valor</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {rows.map((row) => (
               <TableRow key={row.id}>
-                <TableCell>
-                  <IconButton size="small">
-                    <Icon>delete</Icon>
-                  </IconButton>
-                  <IconButton
-                    size="small"
-                    onClick={() => navigate(`/bens/detalhe/${row.id}`)}
-                  >
-                    <Icon>edit</Icon>
-                  </IconButton>
-                </TableCell>
+                <TableCell>{row.origem}</TableCell>
+                <TableCell>{row.numSerie}</TableCell>
                 <TableCell>{row.descricao}</TableCell>
+                <TableCell>{row.marca}</TableCell>
+                <TableCell>{row.modelo}</TableCell>
+                <TableCell>{row.estConservacao}</TableCell>
+                <TableCell>{row.valor}</TableCell>
               </TableRow>
             ))}
           </TableBody>
