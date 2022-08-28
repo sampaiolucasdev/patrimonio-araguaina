@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Box,
   Button,
+  debounce,
   Grid,
   Icon,
   LinearProgress,
@@ -9,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import { DataGrid, GridColDef, ptBR } from "@mui/x-data-grid";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import * as yup from "yup";
 import { MovimentacaoService } from "../../shared/services/api/MovimentacaoService";
 import { VTextField, VForm, useVForm, IVFormErrors } from "../../shared/forms";
@@ -19,6 +20,12 @@ import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import { AutoCompleteOrigem } from "./components/AutoCompleteOrigem";
 import { AutoCompleteDestino } from "./components/AutoCompleteDestino";
+import {
+  BemService,
+  IListagemBens,
+} from "../../shared/services/api/BemService";
+import { useDebounce } from "../../shared/hooks";
+import { IListagemSetor } from "../../shared/services/api/SetorService";
 
 interface IFormData {
   id?: number;
@@ -46,9 +53,39 @@ const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
 export const NovaMovimentacao: React.FC = () => {
   const { formRef, saveAndClose, isSaveAndClose } = useVForm();
   const { id = "nova" } = useParams<"id">();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { debounce } = useDebounce();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [nome, setNome] = useState("");
+  const [totalCount, setTotalCount] = useState(0);
+  const [searchByOrigem, setSearchByOrigem] = useState<IListagemBens[]>([]);
+
+  const busca = useMemo(() => {
+    return searchParams.get("busca") || "";
+  }, [searchParams]);
+
+  const pagina = useMemo(() => {
+    return Number(searchParams.get("pagina") || "1");
+  }, [searchParams]);
+
+  useEffect(() => {
+    setIsLoading(true);
+    debounce(() => {
+      BemService.getAllBySetor(pagina, busca).then((result) => {
+        setIsLoading(false);
+        if (result instanceof Error) {
+          alert(result.message);
+        } else {
+          console.log(result);
+          setTotalCount(result.totalCount);
+          setSearchByOrigem(result.data);
+          // setSearchOrigem(result.data[0].origem);
+          // console.log("origem", searchOrigem);
+        }
+      });
+    });
+  }, [busca, pagina]);
 
   const columns: GridColDef[] = [
     { field: "numSerie", headerName: "Número de Série", width: 130 },
@@ -71,29 +108,18 @@ export const NovaMovimentacao: React.FC = () => {
       width: 110,
       editable: false,
     },
-    // {
-    //   field: "fullName",
-    //   headerName: "Full name",
-    //   description: "This column has a value getter and is not sortable.",
-    //   sortable: false,
-    //   width: 160,
-    //   valueGetter: (params: GridValueGetterParams) =>
-    //     `${params.row.firstName || ""} ${params.row.lastName || ""}`,
-    // },
   ];
-  // const selectStyles = { width: `${8 * mapSetor.length + 100}px` };
-  const rows = [
-    { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },
-    { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42 },
-    { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45 },
-    { id: 4, lastName: "Stark", firstName: "Arya", age: 16 },
-    { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-    { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-    { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-    { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-    { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-  ];
-
+  {
+    searchByOrigem.map((row) => [
+      {
+        id: row.id,
+        numSerie: row.numSerie,
+        estConservacao: row.estConservacao,
+        descricao: row.descricao,
+        valor: row.valor,
+      },
+    ]);
+  }
   const handleSave = (dados: IFormData) => {
     formValidationSchema
       .validate(dados, { abortEarly: false })
@@ -258,7 +284,7 @@ export const NovaMovimentacao: React.FC = () => {
           <DataGrid
             localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
             checkboxSelection
-            rows={rows}
+            rows={searchByOrigem}
             columns={columns}
             pageSize={5}
             rowsPerPageOptions={[5]}

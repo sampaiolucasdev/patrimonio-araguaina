@@ -60,6 +60,7 @@
   ],
   "movimentacao": [
     {
+      "origem_id": 1,
       "id": 1,
       "origem": "SUPVISA",
       "destino": "TI",
@@ -74,6 +75,7 @@
       "valor": 700
     },
     {
+      "origem_id": 1,
       "id": 2,
       "origem": "SUPVISA",
       "destino": "TI",
@@ -88,6 +90,7 @@
       "valor": 700
     },
     {
+      "origem_id": 1,
       "id": 3,
       "origem": "SUPADM",
       "destino": "TI",
@@ -102,6 +105,7 @@
       "valor": 700
     },
     {
+      "origem_id": 2,
       "id": 4,
       "origem": "SUPAE",
       "destino": "TI",
@@ -116,6 +120,7 @@
       "valor": 700
     },
     {
+      "origem_id": 2,
       "id": 5,
       "origem": "SUPAB",
       "destino": "TI",
@@ -130,6 +135,7 @@
       "valor": 700
     },
     {
+      "origem_id": 3,
       "id": 6,
       "origem": "TESTE",
       "destino": "TI",
@@ -144,6 +150,7 @@
       "valor": 700
     },
     {
+      "origem_id": 3,
       "id": 7,
       "origem": "LUCAS",
       "destino": "teste",
@@ -158,6 +165,7 @@
       "valor": 700
     },
     {
+      "origem_id": 3,
       "id": 8,
       "origem": "LUCAS",
       "destino": "TI",
@@ -172,6 +180,7 @@
       "valor": 700
     },
     {
+      "origem_id": 1,
       "id": 9,
       "origem": "SUPVISA",
       "destino": "TI",
@@ -186,6 +195,7 @@
       "valor": 700
     },
     {
+      "origem_id": 2,
       "id": 10,
       "origem": "SUPVISA",
       "destino": "TI",
@@ -202,6 +212,7 @@
   ],
   "bens": [
     {
+      "origem_id": 1,
       "id": 1,
       "descricao": "MONITOR 22' 1080p",
       "marca": "POSITIVO",
@@ -213,6 +224,7 @@
       "numSerie": "084987"
     },
     {
+      "origem_id": 2,
       "numSerie": "1111111",
       "valor": 1111,
       "estConservacao": 111,
@@ -222,6 +234,28 @@
       "marca": "asd2s",
       "descricao": "asdss",
       "id": 2
+    },
+    {
+      "numSerie": "4879845",
+      "valor": 250,
+      "estConservacao": 1,
+      "origem": "2",
+      "imagem": "teste",
+      "modelo": "kit teclado",
+      "marca": "hp",
+      "descricao": "teclado e mouse",
+      "id": 3
+    },
+    {
+      "numSerie": "3232323",
+      "valor": 1112222,
+      "estConservacao": 2,
+      "origem": "3",
+      "imagem": "testee",
+      "modelo": "teste",
+      "marca": "teste",
+      "descricao": "tttttt",
+      "id": 4
     }
   ],
   "auth": {
