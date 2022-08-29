@@ -58,14 +58,12 @@ export const AutoCompleteOrigem: React.FC<IAutoCompleteMovimentacaoProps> = ({
       });
     });
   }, [busca, selectedId]);
-
   const autoCompleteSelectedOption = useMemo(() => {
     if (!selectedId) return null;
 
     const selectedOption = opcoes.find((opcao) => opcao.id === selectedId);
     if (!selectedOption) return null;
-    //console.log(selectedOption);
-
+    console.log("teste", selectedOption);
     return selectedOption;
   }, [selectedId, opcoes]);
 

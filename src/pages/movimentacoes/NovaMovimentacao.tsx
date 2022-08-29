@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { Children, useEffect, useMemo, useState } from "react";
 import {
   Box,
   Button,
@@ -38,6 +38,10 @@ interface IFormData {
   descricao: string[];
   valor: number;
 }
+type TAutoCompleteOption = {
+  id: number;
+  label: string;
+};
 const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
   id: yup.number(),
   origem: yup.string().required(),
@@ -60,6 +64,7 @@ export const NovaMovimentacao: React.FC = () => {
   const [nome, setNome] = useState("");
   const [totalCount, setTotalCount] = useState(0);
   const [searchByOrigem, setSearchByOrigem] = useState<IListagemBens[]>([]);
+  //const [getOrigemId, setGetOrigemId] = useState<TAutoCompleteOption[]>([]);
 
   const busca = useMemo(() => {
     return searchParams.get("busca") || "";
@@ -72,7 +77,7 @@ export const NovaMovimentacao: React.FC = () => {
   useEffect(() => {
     setIsLoading(true);
     debounce(() => {
-      BemService.getAllBySetor(pagina, busca).then((result) => {
+      BemService.getAllBySetor(pagina, busca, 3).then((result) => {
         setIsLoading(false);
         if (result instanceof Error) {
           alert(result.message);
@@ -154,40 +159,6 @@ export const NovaMovimentacao: React.FC = () => {
         formRef.current?.setErrors(validationErrors); //Mostra erro nas inputs
       });
   };
-  const handleDelete = (id: number) => {
-    /**
-     * deleteById retorna uma promessa de resultado ou erro.
-     * Quando (.then) essa promessa ocorrer, vai ter um result
-     * Se esse result é uma instância de erro, então, alert
-     * mostrando o error na message. Se não, vai dar um setState(serRows)
-     * pegando o registro com o id específico que foi apagado, retorna um novo
-     * state com todas as linhas do state anterior(...), filtrando exceto
-     * a linha com o id que está sendo apagado (oldRow.id !== id).
-     */
-    Swal.fire({
-      title: "Deseja excluir ?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      showDenyButton: false,
-      confirmButtonText: "Sim",
-      cancelButtonText: "Cancelar",
-      denyButtonText: "Não",
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        MovimentacaoService.deleteById(id).then((result) => {
-          if (result instanceof Error) {
-            alert(result.message);
-          } else {
-            toast.success("Departamento excluído com sucesso!");
-            navigate("/movimentacao");
-          }
-        });
-      }
-    });
-  };
 
   return (
     <LayoutBaseDePagina
@@ -250,7 +221,7 @@ export const NovaMovimentacao: React.FC = () => {
                   fullWidth
                   name="estConservacao"
                   disabled={isLoading} //Desabilita o textfield quando estiver carregando
-                  label="Estado de Conservação"
+                  label="Novo Estado de Conservação"
                   onChange={(e) => setNome(e.target.value)} //Altera o nome da cidade no <h1> quando for alterado no textfield
                 />
               </Grid>
@@ -263,12 +234,6 @@ export const NovaMovimentacao: React.FC = () => {
                   label="Descrição"
                   onChange={(e) => setNome(e.target.value)} //Altera o nome da cidade no <h1> quando for alterado no textfield
                 />
-              </Grid>
-
-              <Grid direction="row" item xs={12} sm={12} md={6} lg={4} xl={2}>
-                <Button startIcon={<Icon>add</Icon>} variant="contained">
-                  adicionar
-                </Button>
               </Grid>
             </Grid>
           </Grid>
