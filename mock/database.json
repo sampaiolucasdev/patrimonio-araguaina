@@ -184,7 +184,7 @@
     {
       "origem_id": 1,
       "id": 1,
-      "descricao": "MONITOR 22' 1080p",
+      "descricao": "ORIGEM ID 1",
       "marca": "POSITIVO",
       "modelo": "MKH86",
       "imagen": "imagem",
@@ -195,14 +195,14 @@
     },
     {
       "origem_id": 2,
-      "numSerie": "1111111",
+      "numSerie": "810978",
       "valor": 1111,
       "estConservacao": 111,
       "origem": "2",
       "imagem": "asdss",
       "modelo": "asd2s",
       "marca": "asd2s",
-      "descricao": "asdss",
+      "descricao": "ORIGEM ID 2",
       "id": 2
     },
     {
@@ -214,23 +214,35 @@
       "imagem": "teste",
       "modelo": "kit teclado",
       "marca": "hp",
-      "descricao": "teclado e mouse",
+      "descricao": "ORIGEM ID 2",
       "id": 3
     },
     {
       "origem_id": 3,
       "numSerie": "3232323",
-      "valor": 1112222,
+      "valor": 1222,
       "estConservacao": 2,
       "origem": "3",
       "imagem": "testee",
       "modelo": "teste",
       "marca": "teste",
-      "descricao": "tttttt",
+      "descricao": "ORIGEM ID 3",
       "id": 4
     },
     {
       "origem_id": 3,
+      "numSerie": "0887196",
+      "valor": 112,
+      "estConservacao": 2,
+      "origem": "3",
+      "imagem": "testee",
+      "modelo": "teste",
+      "marca": "teste",
+      "descricao": "ORIGEM ID 3",
+      "id": 5
+    },
+    {
+      "origem_id": 4,
       "numSerie": "3232323",
       "valor": 1112222,
       "estConservacao": 2,
@@ -238,20 +250,8 @@
       "imagem": "testee",
       "modelo": "teste",
       "marca": "teste",
-      "descricao": "tttttt",
-      "id": 4
-    },
-    {
-      "origem_id": 3,
-      "numSerie": "3232323",
-      "valor": 1112222,
-      "estConservacao": 2,
-      "origem": "3",
-      "imagem": "testee",
-      "modelo": "teste",
-      "marca": "teste",
-      "descricao": "tttttt",
-      "id": 4
+      "descricao": "ORIGEM ID 4",
+      "id": 6
     }
   ],
   "auth": {

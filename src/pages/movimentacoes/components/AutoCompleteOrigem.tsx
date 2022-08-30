@@ -12,9 +12,11 @@ type TAutoCompleteOption = {
 
 interface IAutoCompleteMovimentacaoProps {
   isExternalLoading?: boolean;
+  setPegarOrigemId?: React.Dispatch<React.SetStateAction<any>>;
 }
 export const AutoCompleteOrigem: React.FC<IAutoCompleteMovimentacaoProps> = ({
   isExternalLoading = false,
+  setPegarOrigemId: setPegarOrigemId,
 }) => {
   const { fieldName, registerField, defaultValue, error, clearError } =
     useField("origem");
@@ -64,6 +66,11 @@ export const AutoCompleteOrigem: React.FC<IAutoCompleteMovimentacaoProps> = ({
     const selectedOption = opcoes.find((opcao) => opcao.id === selectedId);
     if (!selectedOption) return null;
     console.log("teste", selectedOption);
+    // if (selectedOption) {
+    //   setGetOrigemId(selectedOption!);
+    // }
+    setPegarOrigemId!(selectedOption);
+
     return selectedOption;
   }, [selectedId, opcoes]);
 

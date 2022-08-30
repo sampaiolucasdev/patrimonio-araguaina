@@ -4,13 +4,13 @@ import { yellow, cyan } from "@mui/material/colors";
 export const LightTheme = createTheme({
   palette: {
     primary: {
-      main: yellow[700],
+      main: "#47a8ce",
       dark: yellow[800],
       light: yellow[500],
       contrastText: "#ffffff",
     },
     secondary: {
-      main: cyan[500],
+      main: "#da5f8d",
       dark: cyan[400],
       light: cyan[300],
       contrastText: "#ffffff",

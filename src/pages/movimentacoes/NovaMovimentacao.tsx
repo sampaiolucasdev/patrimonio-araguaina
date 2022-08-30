@@ -64,7 +64,10 @@ export const NovaMovimentacao: React.FC = () => {
   const [nome, setNome] = useState("");
   const [totalCount, setTotalCount] = useState(0);
   const [searchByOrigem, setSearchByOrigem] = useState<IListagemBens[]>([]);
-  //const [getOrigemId, setGetOrigemId] = useState<TAutoCompleteOption[]>([]);
+  const [pegarOrigemId, setPegarOrigemId] = useState<TAutoCompleteOption>({
+    label: "origem",
+    id: 0,
+  });
 
   const busca = useMemo(() => {
     return searchParams.get("busca") || "";
@@ -74,23 +77,27 @@ export const NovaMovimentacao: React.FC = () => {
     return Number(searchParams.get("pagina") || "1");
   }, [searchParams]);
 
+  console.log("aquii", pegarOrigemId.id);
+
   useEffect(() => {
     setIsLoading(true);
     debounce(() => {
-      BemService.getAllBySetor(pagina, busca, 3).then((result) => {
-        setIsLoading(false);
-        if (result instanceof Error) {
-          alert(result.message);
-        } else {
-          console.log(result);
-          setTotalCount(result.totalCount);
-          setSearchByOrigem(result.data);
-          // setSearchOrigem(result.data[0].origem);
-          // console.log("origem", searchOrigem);
+      BemService.getAllBySetor(pagina, busca, pegarOrigemId.id).then(
+        (result) => {
+          setIsLoading(false);
+          if (result instanceof Error) {
+            alert(result.message);
+          } else {
+            console.log(result);
+            setTotalCount(result.totalCount);
+            setSearchByOrigem(result.data);
+            // setSearchOrigem(result.data[0].origem);
+            // console.log("origem", searchOrigem);
+          }
         }
-      });
+      );
     });
-  }, [busca, pagina]);
+  }, [busca, pagina, pegarOrigemId]);
 
   const columns: GridColDef[] = [
     { field: "numSerie", headerName: "Número de Série", width: 130 },
@@ -194,7 +201,10 @@ export const NovaMovimentacao: React.FC = () => {
             <Grid container item direction="row" spacing={2}>
               <Grid container item direction="row" spacing={2}>
                 <Grid item direction="row" xs={6} sm={12} md={6} lg={4} xl={2}>
-                  <AutoCompleteOrigem isExternalLoading={isLoading} />
+                  <AutoCompleteOrigem
+                    setPegarOrigemId={setPegarOrigemId}
+                    isExternalLoading={isLoading}
+                  />
                 </Grid>
                 <Grid item direction="row" xs={6} sm={12} md={6} lg={4} xl={2}>
                   <AutoCompleteDestino isExternalLoading={isLoading} />
