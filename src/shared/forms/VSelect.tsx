@@ -3,6 +3,7 @@ import { TextField, TextFieldProps } from "@mui/material";
 import { useField } from "@unform/core";
 
 type TVSelectProps = TextFieldProps & {
+  id: number;
   name: string;
 };
 export const VSelect: React.FC<TVSelectProps> = ({ name, ...rest }) => {

@@ -1,12 +1,13 @@
-import { Children, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Box,
-  Button,
-  debounce,
+  FormControl,
   Grid,
-  Icon,
+  InputLabel,
   LinearProgress,
+  MenuItem,
   Paper,
+  Select,
   Typography,
 } from "@mui/material";
 import { DataGrid, GridColDef, ptBR } from "@mui/x-data-grid";
@@ -25,7 +26,6 @@ import {
   IListagemBens,
 } from "../../shared/services/api/BemService";
 import { useDebounce } from "../../shared/hooks";
-import { IListagemSetor } from "../../shared/services/api/SetorService";
 
 interface IFormData {
   id?: number;
@@ -37,6 +37,7 @@ interface IFormData {
   estConservacao: string;
   descricao: string[];
   valor: number;
+  selecionado: IListagemBens[];
 }
 type TAutoCompleteOption = {
   id: number;
@@ -52,6 +53,7 @@ const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
   estConservacao: yup.string().required().min(1),
   descricao: yup.array(),
   valor: yup.number().required().min(1),
+  selecionado: yup.array(),
 });
 
 export const NovaMovimentacao: React.FC = () => {
@@ -64,6 +66,7 @@ export const NovaMovimentacao: React.FC = () => {
   const [nome, setNome] = useState("");
   const [totalCount, setTotalCount] = useState(0);
   const [searchByOrigem, setSearchByOrigem] = useState<IListagemBens[]>([]);
+  const [valueEstConservacao, setValueEstConservacao] = useState(0);
   const [pegarOrigemId, setPegarOrigemId] = useState<TAutoCompleteOption>({
     label: "origem",
     id: 0,
@@ -77,7 +80,8 @@ export const NovaMovimentacao: React.FC = () => {
     return Number(searchParams.get("pagina") || "1");
   }, [searchParams]);
 
-  console.log("aquii", pegarOrigemId.id);
+  // console.log("aquii", pegarOrigemId.id);
+  // console.log("valueEstConservacao", valueEstConservacao);
 
   useEffect(() => {
     setIsLoading(true);
@@ -133,6 +137,8 @@ export const NovaMovimentacao: React.FC = () => {
     ]);
   }
   const handleSave = (dados: IFormData) => {
+    console.log("dados", dados);
+
     formValidationSchema
       .validate(dados, { abortEarly: false })
       .then((dadosValidados) => {
@@ -227,23 +233,25 @@ export const NovaMovimentacao: React.FC = () => {
               </Grid> */}
 
               <Grid direction="row" item xs={12} sm={12} md={6} lg={4} xl={2}>
-                <VTextField
-                  fullWidth
-                  name="estConservacao"
-                  disabled={isLoading} //Desabilita o textfield quando estiver carregando
-                  label="Novo Estado de Conservação"
-                  onChange={(e) => setNome(e.target.value)} //Altera o nome da cidade no <h1> quando for alterado no textfield
-                />
-              </Grid>
-
-              <Grid direction="row" item xs={12} sm={12} md={6} lg={4} xl={2}>
-                <VTextField
-                  fullWidth
-                  name="descricao"
-                  disabled={isLoading} //Desabilita o textfield quando estiver carregando
-                  label="Descrição"
-                  onChange={(e) => setNome(e.target.value)} //Altera o nome da cidade no <h1> quando for alterado no textfield
-                />
+                <FormControl fullWidth>
+                  <InputLabel id="estConservacao">
+                    Estado de Conservação
+                  </InputLabel>
+                  <Select
+                    labelId="estConservacao"
+                    id="estConservacao"
+                    value={valueEstConservacao}
+                    label="Estado de Conservação"
+                    onChange={(e) =>
+                      setValueEstConservacao(Number(e.target.value))
+                    }
+                  >
+                    <MenuItem value={1}>Novo</MenuItem>
+                    <MenuItem value={2}>Regular</MenuItem>
+                    <MenuItem value={3}>Bom</MenuItem>
+                    <MenuItem value={4}>Descarte</MenuItem>
+                  </Select>
+                </FormControl>
               </Grid>
             </Grid>
           </Grid>
