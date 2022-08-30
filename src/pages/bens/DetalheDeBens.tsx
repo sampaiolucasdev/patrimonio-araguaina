@@ -46,6 +46,7 @@ export const DetalheDeBens: React.FC = () => {
   const [descricao, setDescricao] = useState("");
   const [estConservacao, setEstConservacao] = useState(0);
   const [imagem, setImagem] = useState("");
+  const [pegarOrigemId, setPegarOrigemId] = useState<number>();
 
   useEffect(() => {
     if (id !== "nova") {
@@ -179,7 +180,12 @@ export const DetalheDeBens: React.FC = () => {
             <Grid container item direction="row" spacing={2}>
               <Grid container item direction="row" spacing={2}>
                 <Grid item direction="row" xs={6} sm={12} md={6} lg={4} xl={2}>
-                  <AutoCompleteOrigem isExternalLoading={isLoading} />
+                  <AutoCompleteOrigem
+                    onChange={() =>
+                      setPegarOrigemId(formRef.current?.getFieldValue("origem"))
+                    }
+                    isExternalLoading={isLoading}
+                  />
                 </Grid>
                 <Grid item direction="row" xs={6} sm={12} md={6} lg={4} xl={2}>
                   <VTextField

@@ -12,11 +12,11 @@ type TAutoCompleteOption = {
 
 interface IAutoCompleteMovimentacaoProps {
   isExternalLoading?: boolean;
-  setPegarOrigemId?: React.Dispatch<React.SetStateAction<any>>;
+  onChange: (id: number | undefined) => void;
 }
 export const AutoCompleteOrigem: React.FC<IAutoCompleteMovimentacaoProps> = ({
   isExternalLoading = false,
-  setPegarOrigemId: setPegarOrigemId,
+  onChange,
 }) => {
   const { fieldName, registerField, defaultValue, error, clearError } =
     useField("origem");
@@ -65,11 +65,6 @@ export const AutoCompleteOrigem: React.FC<IAutoCompleteMovimentacaoProps> = ({
 
     const selectedOption = opcoes.find((opcao) => opcao.id === selectedId);
     if (!selectedOption) return null;
-    console.log("teste", selectedOption);
-    // if (selectedOption) {
-    //   setGetOrigemId(selectedOption!);
-    // }
-    setPegarOrigemId!(selectedOption);
 
     return selectedOption;
   }, [selectedId, opcoes]);
@@ -90,6 +85,7 @@ export const AutoCompleteOrigem: React.FC<IAutoCompleteMovimentacaoProps> = ({
         setSelectedId(newValue?.id);
         setBusca("");
         clearError();
+        onChange(newValue?.id);
       }}
       popupIcon={
         isExternalLoading || isLoading ? (
