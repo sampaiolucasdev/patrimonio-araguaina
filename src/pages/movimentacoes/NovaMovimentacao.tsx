@@ -28,11 +28,12 @@ import {
 import { useDebounce } from "../../shared/hooks";
 
 interface IFormData {
-  id: number;
+  id?: number;
   origem: number;
   destino: number;
   valueEstConservacao: number;
   arrayIds: GridRowId[];
+  pegarOrigemId: number | undefined;
 }
 
 const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
@@ -41,6 +42,7 @@ const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
   destino: yup.number().required(),
   valueEstConservacao: yup.number().required(),
   arrayIds: yup.array().required(),
+  pegarOrigemId: yup.number().required(),
 });
 
 export const NovaMovimentacao: React.FC = () => {
@@ -55,6 +57,7 @@ export const NovaMovimentacao: React.FC = () => {
   const [searchByOrigem, setSearchByOrigem] = useState<IListagemBens[]>([]);
   const [valueEstConservacao, setValueEstConservacao] = useState(0);
   const [pegarOrigemId, setPegarOrigemId] = useState<number>();
+  const [pegarDestinoId, setPegarDestinoId] = useState<number>();
   const [arrayIds, setArrayIds] = useState<GridRowId[]>([]);
 
   //console.log("arrayIds", arrayIds);
@@ -122,7 +125,8 @@ export const NovaMovimentacao: React.FC = () => {
     ]);
   }
   const handleSave = (dados: IFormData) => {
-    console.log("dados", dados, valueEstConservacao);
+    // const datasa = [{ dados: dados }, { valueEst: valueEstConservacao }];
+    console.log("dados", dados);
 
     formValidationSchema
       .validate(dados, { abortEarly: false })
@@ -170,7 +174,17 @@ export const NovaMovimentacao: React.FC = () => {
         />
       }
     >
-      <VForm ref={formRef} onSubmit={handleSave}>
+      <VForm
+        ref={formRef}
+        onSubmit={() => {
+          handleSave({
+            valueEstConservacao,
+            pegarOrigemId,
+            pegarDestinoId,
+            arrayIds,
+          });
+        }}
+      >
         <Box
           margin={1}
           display="flex"
@@ -198,7 +212,10 @@ export const NovaMovimentacao: React.FC = () => {
                   />
                 </Grid>
                 <Grid item direction="row" xs={6} sm={12} md={6} lg={4} xl={2}>
-                  <AutoCompleteDestino isExternalLoading={isLoading} />
+                  <AutoCompleteDestino
+                    onChange={(id) => setPegarDestinoId(id)}
+                    isExternalLoading={isLoading}
+                  />
                 </Grid>
               </Grid>
 

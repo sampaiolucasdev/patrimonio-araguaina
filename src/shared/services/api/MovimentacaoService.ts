@@ -15,10 +15,11 @@ export interface IListagemMovimentacao {
 }
 export interface IDetalheMovimentacao {
   id: number;
-  origem: number;
-  destino: number;
+  origem?: number;
+  destino?: number;
   valueEstConservacao: number;
   arrayIds: GridRowId[];
+  pegarOrigemId: number;
 }
 type TMovimentacaoComTotalCount = {
   data: IListagemMovimentacao[];
@@ -66,7 +67,9 @@ const getById = async (id: number): Promise<IDetalheMovimentacao | Error> => {
   }
 };
 
-const create = async (dados: IDetalheMovimentacao): Promise<number | Error> => {
+const create = async (
+  dados: Omit<IDetalheMovimentacao, "id">
+): Promise<number | Error> => {
   try {
     const { data } = await Api.post<IDetalheMovimentacao>(
       "/movimentacao/",

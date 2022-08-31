@@ -12,9 +12,11 @@ type TAutoCompleteOption = {
 
 interface IAutoCompleteMovimentacaoProps {
   isExternalLoading?: boolean;
+  onChange: (id: number | undefined) => void;
 }
 export const AutoCompleteDestino: React.FC<IAutoCompleteMovimentacaoProps> = ({
   isExternalLoading = false,
+  onChange,
 }) => {
   const { fieldName, registerField, defaultValue, error, clearError } =
     useField("destino");
@@ -85,6 +87,7 @@ export const AutoCompleteDestino: React.FC<IAutoCompleteMovimentacaoProps> = ({
         setSelectedId(newValue?.id);
         setBusca("");
         clearError();
+        onChange(newValue?.id);
       }}
       popupIcon={
         isExternalLoading || isLoading ? (
