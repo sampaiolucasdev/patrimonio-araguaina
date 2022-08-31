@@ -10,7 +10,7 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import { DataGrid, GridColDef, ptBR } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridRowId, ptBR } from "@mui/x-data-grid";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import * as yup from "yup";
 import { MovimentacaoService } from "../../shared/services/api/MovimentacaoService";
@@ -28,32 +28,19 @@ import {
 import { useDebounce } from "../../shared/hooks";
 
 interface IFormData {
-  id?: number;
-  origem: string;
-  destino: string;
-  data: string;
-  qtd: number;
-  numSerie: string;
-  estConservacao: string;
-  descricao: string[];
-  valor: number;
-  selecionado: IListagemBens[];
-}
-type TAutoCompleteOption = {
   id: number;
-  label: string;
-};
+  origem: number;
+  destino: number;
+  valueEstConservacao: number;
+  arrayIds: GridRowId[];
+}
+
 const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
   id: yup.number(),
-  origem: yup.string().required(),
-  destino: yup.string().required(),
-  data: yup.string().required(),
-  qtd: yup.number().required().min(1),
-  numSerie: yup.string().required().min(4),
-  estConservacao: yup.string().required().min(1),
-  descricao: yup.array(),
-  valor: yup.number().required().min(1),
-  selecionado: yup.array(),
+  origem: yup.number().required(),
+  destino: yup.number().required(),
+  valueEstConservacao: yup.number().required(),
+  arrayIds: yup.array().required(),
 });
 
 export const NovaMovimentacao: React.FC = () => {
@@ -68,6 +55,9 @@ export const NovaMovimentacao: React.FC = () => {
   const [searchByOrigem, setSearchByOrigem] = useState<IListagemBens[]>([]);
   const [valueEstConservacao, setValueEstConservacao] = useState(0);
   const [pegarOrigemId, setPegarOrigemId] = useState<number>();
+  const [arrayIds, setArrayIds] = useState<GridRowId[]>([]);
+
+  //console.log("arrayIds", arrayIds);
 
   const busca = useMemo(() => {
     return searchParams.get("busca") || "";
@@ -77,8 +67,8 @@ export const NovaMovimentacao: React.FC = () => {
     return Number(searchParams.get("pagina") || "1");
   }, [searchParams]);
 
-  console.log("aquii", pegarOrigemId);
-  // console.log("valueEstConservacao", valueEstConservacao);
+  //console.log("aquii", pegarOrigemId);
+  //console.log("valueEstConservacao", valueEstConservacao);
 
   useEffect(() => {
     setIsLoading(true);
@@ -132,7 +122,7 @@ export const NovaMovimentacao: React.FC = () => {
     ]);
   }
   const handleSave = (dados: IFormData) => {
-    console.log("dados", dados);
+    console.log("dados", dados, valueEstConservacao);
 
     formValidationSchema
       .validate(dados, { abortEarly: false })
@@ -217,15 +207,6 @@ export const NovaMovimentacao: React.FC = () => {
               </Grid>
 
               <Grid container item direction="row" spacing={2}></Grid>
-              {/* <Grid direction="row" item xs={12} sm={12} md={6} lg={4} xl={2}>
-                <VTextField
-                  fullWidth
-                  name="qtd"
-                  disabled={isLoading} //Desabilita o textfield quando estiver carregando
-                  label="Quantidade"
-                  onChange={(e) => setNome(e.target.value)} //Altera o nome da cidade no <h1> quando for alterado no textfield
-                />
-              </Grid> */}
 
               <Grid direction="row" item xs={12} sm={12} md={6} lg={4} xl={2}>
                 <FormControl fullWidth>
@@ -233,6 +214,7 @@ export const NovaMovimentacao: React.FC = () => {
                     Estado de Conservação
                   </InputLabel>
                   <Select
+                    name="valueEstConservacao"
                     labelId="estConservacao"
                     id="estConservacao"
                     value={valueEstConservacao}
@@ -268,8 +250,8 @@ export const NovaMovimentacao: React.FC = () => {
             rowsPerPageOptions={[5]}
             disableSelectionOnClick
             experimentalFeatures={{ newEditingApi: true }}
-            onSelectionModelChange={(data) => {
-              console.log(data);
+            onSelectionModelChange={(ids) => {
+              setArrayIds(ids);
             }}
           />
         </Box>

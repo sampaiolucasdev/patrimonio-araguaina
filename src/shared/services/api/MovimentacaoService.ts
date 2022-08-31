@@ -1,3 +1,4 @@
+import { GridRowId } from "@mui/x-data-grid";
 import { Enviroment } from "../../enviroment";
 import { Api } from "./axios-config";
 
@@ -14,14 +15,10 @@ export interface IListagemMovimentacao {
 }
 export interface IDetalheMovimentacao {
   id: number;
-  origem: string;
-  destino: string;
-  data: string;
-  qtd: number;
-  numSerie: string;
-  estConservacao: string;
-  descricao?: string[];
-  valor: number;
+  origem: number;
+  destino: number;
+  valueEstConservacao: number;
+  arrayIds: GridRowId[];
 }
 type TMovimentacaoComTotalCount = {
   data: IListagemMovimentacao[];
@@ -69,9 +66,7 @@ const getById = async (id: number): Promise<IDetalheMovimentacao | Error> => {
   }
 };
 
-const create = async (
-  dados: Omit<IDetalheMovimentacao, "id">
-): Promise<number | Error> => {
+const create = async (dados: IDetalheMovimentacao): Promise<number | Error> => {
   try {
     const { data } = await Api.post<IDetalheMovimentacao>(
       "/movimentacao/",
