@@ -14,12 +14,11 @@ export interface IListagemMovimentacao {
   valor: number;
 }
 export interface IDetalheMovimentacao {
-  id: number;
-  origem?: number;
-  destino?: number;
+  //id: number;
   valueEstConservacao: number;
-  arrayIds: GridRowId[];
-  pegarOrigemId: number;
+  arrayIds: any;
+  pegarOrigemId: number | undefined;
+  pegarDestinoId: number | undefined;
 }
 type TMovimentacaoComTotalCount = {
   data: IListagemMovimentacao[];
@@ -51,7 +50,7 @@ const getAll = async (
   }
 };
 
-const getById = async (id: number): Promise<IDetalheMovimentacao | Error> => {
+const getById = async (id: number): Promise<IListagemMovimentacao | Error> => {
   try {
     const { data } = await Api.get(`/movimentacao/${id}`);
 
@@ -67,11 +66,29 @@ const getById = async (id: number): Promise<IDetalheMovimentacao | Error> => {
   }
 };
 
-const create = async (
-  dados: Omit<IDetalheMovimentacao, "id">
-): Promise<number | Error> => {
+const create = async (dados: IDetalheMovimentacao): Promise<number | Error> => {
   try {
     const { data } = await Api.post<IDetalheMovimentacao>(
+      "/movimentacao/",
+      dados
+    );
+
+    if (data) {
+      return data.valueEstConservacao;
+    }
+    return new Error("Erro ao criar o registro");
+  } catch (error) {
+    console.error(error);
+    return new Error(
+      (error as { message: string }).message || "Erro ao criar o registro"
+    );
+  }
+};
+const create2 = async (
+  dados: Omit<IListagemMovimentacao, "id">
+): Promise<number | Error> => {
+  try {
+    const { data } = await Api.post<IListagemMovimentacao>(
       "/movimentacao/",
       dados
     );
@@ -119,4 +136,5 @@ export const MovimentacaoService = {
   create,
   updateById,
   deleteById,
+  create2,
 };

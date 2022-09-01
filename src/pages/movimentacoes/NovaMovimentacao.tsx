@@ -10,11 +10,11 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import { DataGrid, GridColDef, GridRowId, ptBR } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, ptBR } from "@mui/x-data-grid";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import * as yup from "yup";
 import { MovimentacaoService } from "../../shared/services/api/MovimentacaoService";
-import { VTextField, VForm, useVForm, IVFormErrors } from "../../shared/forms";
+import { VForm, useVForm, IVFormErrors } from "../../shared/forms";
 import { FerramentasDeDetalhe } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import Swal from "sweetalert2";
@@ -28,21 +28,21 @@ import {
 import { useDebounce } from "../../shared/hooks";
 
 interface IFormData {
-  id?: number;
-  origem: number;
-  destino: number;
+  //id?: number;
   valueEstConservacao: number;
-  arrayIds: GridRowId[];
+  arrayIds: any;
   pegarOrigemId: number | undefined;
+  pegarDestinoId: number | undefined;
 }
 
 const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
-  id: yup.number(),
-  origem: yup.number().required(),
-  destino: yup.number().required(),
+  //id: yup.number(),
+  origem: yup.number(),
+  destino: yup.number(),
   valueEstConservacao: yup.number().required(),
-  arrayIds: yup.array().required(),
+  arrayIds: yup.array().of(yup.number().required()),
   pegarOrigemId: yup.number().required(),
+  pegarDestinoId: yup.number().required(),
 });
 
 export const NovaMovimentacao: React.FC = () => {
@@ -56,9 +56,9 @@ export const NovaMovimentacao: React.FC = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [searchByOrigem, setSearchByOrigem] = useState<IListagemBens[]>([]);
   const [valueEstConservacao, setValueEstConservacao] = useState(0);
-  const [pegarOrigemId, setPegarOrigemId] = useState<number>();
+  const [pegarOrigemId, setPegarOrigemId] = useState<number | undefined>();
   const [pegarDestinoId, setPegarDestinoId] = useState<number>();
-  const [arrayIds, setArrayIds] = useState<GridRowId[]>([]);
+  const [arrayIds, setArrayIds] = useState<number[]>([]);
 
   //console.log("arrayIds", arrayIds);
 
@@ -267,8 +267,8 @@ export const NovaMovimentacao: React.FC = () => {
             rowsPerPageOptions={[5]}
             disableSelectionOnClick
             experimentalFeatures={{ newEditingApi: true }}
-            onSelectionModelChange={(ids) => {
-              setArrayIds(ids);
+            onSelectionModelChange={(ids: number[]) => {
+              ids == undefined ? setArrayIds([0]) : setArrayIds(ids);
             }}
           />
         </Box>

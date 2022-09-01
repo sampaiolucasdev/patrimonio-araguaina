@@ -97,7 +97,7 @@ export const NovoBem: React.FC = () => {
       .validate(dados, { abortEarly: false })
       .then((dadosValidados) => {
         setIsLoading(true);
-        MovimentacaoService.create(dadosValidados).then((result) => {
+        MovimentacaoService.create2(dadosValidados).then((result) => {
           setIsLoading(false);
           if (result instanceof Error) {
             alert(result.message);
