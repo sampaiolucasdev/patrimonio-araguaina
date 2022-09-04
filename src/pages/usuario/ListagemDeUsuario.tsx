@@ -1,9 +1,14 @@
+import { Label } from "@mui/icons-material";
 import {
+  Avatar,
+  Box,
+  gridClasses,
   Icon,
   IconButton,
   LinearProgress,
   Pagination,
   Paper,
+  Switch,
   Table,
   TableBody,
   TableCell,
@@ -12,6 +17,8 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import { grey } from "@mui/material/colors";
+import { DataGrid, GridColDef, ptBR } from "@mui/x-data-grid";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { FerramentasDaListagem } from "../../shared/components";
@@ -19,9 +26,10 @@ import { Enviroment } from "../../shared/enviroment";
 import { useDebounce } from "../../shared/hooks";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import {
-  IListagemCidade,
-  CidadesService,
-} from "../../shared/services/api/cidades/MovimentacaoService";
+  IListagemUsuario,
+  UsuarioService,
+} from "../../shared/services/api/UsuarioService";
+import { UserActions } from "./components/UserActions";
 
 export const ListagemDeUsuario: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -29,9 +37,13 @@ export const ListagemDeUsuario: React.FC = () => {
   /**Passar próx como ', false' cancela o firstDelay */
   const navigate = useNavigate();
 
-  const [rows, setRows] = useState<IListagemCidade[]>([]);
+  const [userRows, setUserRows] = useState<IListagemUsuario[]>([]);
   const [isLoading, setIsLoading] = useState(true); //Feedback visual de carregamento
   const [totalCount, setTotalCount] = useState(0);
+  const [checked, setChecked] = useState(true);
+
+  //BOTÃO DE SALVAR
+  const [rowId, setRowId] = useState(null);
 
   const busca = useMemo(() => {
     return searchParams.get("busca") || "";
@@ -44,15 +56,14 @@ export const ListagemDeUsuario: React.FC = () => {
   useEffect(() => {
     setIsLoading(true);
     debounce(() => {
-      CidadesService.getAll(pagina, busca).then((result) => {
+      UsuarioService.getAll(pagina, busca).then((result) => {
         setIsLoading(false);
         if (result instanceof Error) {
           alert(result.message);
         } else {
-          console.log(result);
-
-          setTotalCount(result.totalCount);
-          setRows(result.data);
+          console.log("usuarios", result);
+          //setTotalCount(result.totalCount);
+          setUserRows(result.data);
         }
       });
     });
@@ -69,11 +80,11 @@ export const ListagemDeUsuario: React.FC = () => {
      * a linha com o id que está sendo apagado (oldRow.id !== id).
      */
     if (confirm("Deseja apagar?")) {
-      CidadesService.deleteById(id).then((result) => {
+      UsuarioService.deleteById(id).then((result) => {
         if (result instanceof Error) {
           alert(result.message);
         } else {
-          setRows((oldRows) => {
+          setUserRows((oldRows) => {
             return [...oldRows.filter((oldRow) => oldRow.id !== id)];
           });
           alert("Registro apagado com sucesso!");
@@ -81,6 +92,77 @@ export const ListagemDeUsuario: React.FC = () => {
       });
     }
   };
+
+  const handleChangeUserActivation = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setChecked(event.target.checked);
+  };
+
+  //TODO inserir useMemo tipado com o rowId de dependência para renderizar o button
+  const columns: GridColDef[] = [
+    {
+      field: "avatar",
+      headerName: "Avatar",
+      width: 70,
+      renderCell: (params) => <Avatar src={params.row.avatarURL} />,
+      sortable: false,
+      filterable: false,
+    },
+    {
+      field: "nome",
+      headerName: "Nome",
+      width: 130,
+      editable: true,
+      type: "string",
+    },
+    {
+      field: "userName",
+      headerName: "Usuário",
+      width: 190,
+      editable: true,
+      type: "string",
+    },
+    {
+      field: "role",
+      headerName: "Permissões",
+      width: 150,
+      type: "singleSelect",
+      editable: true,
+      valueOptions: ["colaborador", "admin"],
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      type: "number",
+      width: 110,
+      editable: true,
+      renderCell: (params) => (
+        <Switch
+          color="success"
+          checked={params.row.role}
+          onChange={handleChangeUserActivation}
+          inputProps={{ "aria-label": "controlled" }}
+        />
+      ),
+    },
+    {
+      field: "actions",
+      headerName: "Ações",
+      type: "actions",
+      renderCell: (params) => <UserActions {...{ params, rowId, setRowId }} />,
+    },
+  ];
+
+  userRows.map((row) => [
+    {
+      id: row.id,
+      nome: row.nome,
+      userName: row.userName,
+      role: row.role,
+      status: row.status,
+    },
+  ]);
 
   return (
     <LayoutBaseDePagina
@@ -101,72 +183,36 @@ export const ListagemDeUsuario: React.FC = () => {
         />
       }
     >
-      <TableContainer
+      <Box
+        margin={1}
+        display="flex"
+        flexDirection="column"
         component={Paper}
         variant="outlined"
-        sx={{ m: 1, width: "auto" }}
+        sx={{ height: 400 }}
       >
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell width={100}>Ações</TableCell>
-              <TableCell>Nome</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.id}>
-                <TableCell>
-                  <IconButton size="small" onClick={() => handleDelete(row.id)}>
-                    <Icon>delete</Icon>
-                  </IconButton>
-                  <IconButton
-                    size="small"
-                    onClick={() => navigate(`/cidades/detalhe/${row.id}`)}
-                  >
-                    <Icon>edit</Icon>
-                  </IconButton>
-                </TableCell>
-                <TableCell>{row.nome}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-
-          {/* Só renderiza o Componente LISTAGEM_VAZIA se
-                    for retornado 0 resultados e se a tela de loading não
-                    estiver presente */}
-
-          {totalCount === 0 && !isLoading && (
-            <caption>{Enviroment.LISTAGEM_VAZIA}</caption>
-          )}
-
-          <TableFooter>
-            {isLoading && ( //Exibe a linha de loading somente quando está carregando
-              <TableRow>
-                <TableCell colSpan={3}>
-                  <LinearProgress variant="indeterminate" />
-                </TableCell>
-              </TableRow>
-            )}
-            {totalCount > 0 && totalCount > Enviroment.LIMITE_DE_LINHAS && (
-              <TableRow>
-                <TableCell colSpan={3}>
-                  <Pagination
-                    onChange={(_, newPage) =>
-                      setSearchParams(
-                        { busca, pagina: newPage.toString() },
-                        { replace: true }
-                      )
-                    }
-                    page={pagina}
-                    count={Math.ceil(totalCount / Enviroment.LIMITE_DE_LINHAS)}
-                  />
-                </TableCell>
-              </TableRow>
-            )}
-          </TableFooter>
-        </Table>
-      </TableContainer>
+        <DataGrid
+          localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
+          rows={userRows}
+          columns={columns}
+          pageSize={5}
+          rowsPerPageOptions={[5]}
+          disableSelectionOnClick
+          experimentalFeatures={{ newEditingApi: true }}
+          //onSelectionModelChange
+          getRowSpacing={(params) => ({
+            top: params.isFirstVisible ? 0 : 1,
+            bottom: params.isLastVisible ? 0 : 1,
+          })}
+          // sx={{
+          //   [`& .${gridClasses.row}`]: {
+          //     bgcolor: (theme) =>
+          //       theme.palette.mode == "light" ? grey[200] : grey[900],
+          //   },
+          // }}
+          onCellEditCommit={(params) => setRowId(params.id)}
+        />
+      </Box>
     </LayoutBaseDePagina>
   );
 };

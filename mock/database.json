@@ -77,6 +77,13 @@
       "pegarDestinoId": 3,
       "arrayIds": [4, 5],
       "id": 11
+    },
+    {
+      "valueEstConservacao": 4,
+      "pegarOrigemId": 3,
+      "pegarDestinoId": 4,
+      "arrayIds": [4],
+      "id": 12
     }
   ],
   "bens": [
@@ -151,6 +158,32 @@
       "marca": "teste",
       "descricao": "ORIGEM ID 4",
       "id": 6
+    }
+  ],
+  "usuario": [
+    {
+      "id": 1,
+      "userName": "lucas@gmail.com",
+      "nome": "Lucas",
+      "role": "admin",
+      "status": true,
+      "avatarURL": "https://lh3.googleusercontent.com/U4SHcHck8kZlRL5ydme7Pg83jzZmE5TWbMvTV4NLMkLDtEvEjmRUHyAGPvuijioQTAYshYargqCDNE0yRg1w26RN-RpfPbkZWhd35aE7q7hrZKxn_5LVsOQepKtKjmFgXMgHBjDFoDN-WPJmLjwaQrxG_nNHuu0crYJxjBn-vUE7AZj2Jxu-x4OUA33_SJtrJsONmWplne7-27UB9wwlUVfTpkP85jpiIGaW0bHB3hXWu4cLTazvFgIHQ1QJY0pW_DWVkSgL8Obdp_4SUXBQ1p_obD1U2XPXfpS0W096JYPm49q4wfsKu9iGUDFLKtrq6D1T11FiNHTYXVNfakxFNdL-YfElrHvEbX7uyT1RbPPe-U316dOqe9wAH5YQpuyoIiZwNzCXiWChCdI38M6YP7I4BLpiGM3fsUdRr1lj_d0lZxjc_EVg7CisSpP7yYQpBTzZQWuvnerLlIyXPEOLWt19BMLI4CQAFN1oOWLCIU-q6gW_UxHnBE8U9wDDZX1ok7ejpJJy-fua1w3wV4Igj_qvO3H8t0CRaTgGSxxKrtQt7U75JmhBOPF01yRC7EIF_vXpd9rF8OVGFRp4H8EbEBu3P1qCFoItWE3O7a9pCoXPR10y_710u7l8nv1VdFLiVsQNOmlqzx37bLV5ZRJ5kiejCs2Q6X6h2-xi4xAJ0jFsnBnOXvlXJQvNnlf_AIkjp1dJYOPXMpDRf0bCi12A7FhXbqSwCODdOw6PTnGGr8aAUeQYxwSI8PmNPEz2rq8IJjj-s7DwctW2mQtBBAVL8uU44XttOqPjH3w=w528-h938-no?authuser=0"
+    },
+    {
+      "id": 4,
+      "userName": "eduardo@gmail.com",
+      "nome": "Eduardo",
+      "role": "colaborador",
+      "status": true,
+      "avatarURL": "https://lh3.googleusercontent.com/U4SHcHck8kZlRL5ydme7Pg83jzZmE5TWbMvTV4NLMkLDtEvEjmRUHyAGPvuijioQTAYshYargqCDNE0yRg1w26RN-RpfPbkZWhd35aE7q7hrZKxn_5LVsOQepKtKjmFgXMgHBjDFoDN-WPJmLjwaQrxG_nNHuu0crYJxjBn-vUE7AZj2Jxu-x4OUA33_SJtrJsONmWplne7-27UB9wwlUVfTpkP85jpiIGaW0bHB3hXWu4cLTazvFgIHQ1QJY0pW_DWVkSgL8Obdp_4SUXBQ1p_obD1U2XPXfpS0W096JYPm49q4wfsKu9iGUDFLKtrq6D1T11FiNHTYXVNfakxFNdL-YfElrHvEbX7uyT1RbPPe-U316dOqe9wAH5YQpuyoIiZwNzCXiWChCdI38M6YP7I4BLpiGM3fsUdRr1lj_d0lZxjc_EVg7CisSpP7yYQpBTzZQWuvnerLlIyXPEOLWt19BMLI4CQAFN1oOWLCIU-q6gW_UxHnBE8U9wDDZX1ok7ejpJJy-fua1w3wV4Igj_qvO3H8t0CRaTgGSxxKrtQt7U75JmhBOPF01yRC7EIF_vXpd9rF8OVGFRp4H8EbEBu3P1qCFoItWE3O7a9pCoXPR10y_710u7l8nv1VdFLiVsQNOmlqzx37bLV5ZRJ5kiejCs2Q6X6h2-xi4xAJ0jFsnBnOXvlXJQvNnlf_AIkjp1dJYOPXMpDRf0bCi12A7FhXbqSwCODdOw6PTnGGr8aAUeQYxwSI8PmNPEz2rq8IJjj-s7DwctW2mQtBBAVL8uU44XttOqPjH3w=w528-h938-no?authuser=0"
+    },
+    {
+      "id": 3,
+      "userName": "sampaio@gmail.com",
+      "nome": "Sampaio",
+      "role": "admin",
+      "status": false,
+      "avatarURL": "https://lh3.googleusercontent.com/U4SHcHck8kZlRL5ydme7Pg83jzZmE5TWbMvTV4NLMkLDtEvEjmRUHyAGPvuijioQTAYshYargqCDNE0yRg1w26RN-RpfPbkZWhd35aE7q7hrZKxn_5LVsOQepKtKjmFgXMgHBjDFoDN-WPJmLjwaQrxG_nNHuu0crYJxjBn-vUE7AZj2Jxu-x4OUA33_SJtrJsONmWplne7-27UB9wwlUVfTpkP85jpiIGaW0bHB3hXWu4cLTazvFgIHQ1QJY0pW_DWVkSgL8Obdp_4SUXBQ1p_obD1U2XPXfpS0W096JYPm49q4wfsKu9iGUDFLKtrq6D1T11FiNHTYXVNfakxFNdL-YfElrHvEbX7uyT1RbPPe-U316dOqe9wAH5YQpuyoIiZwNzCXiWChCdI38M6YP7I4BLpiGM3fsUdRr1lj_d0lZxjc_EVg7CisSpP7yYQpBTzZQWuvnerLlIyXPEOLWt19BMLI4CQAFN1oOWLCIU-q6gW_UxHnBE8U9wDDZX1ok7ejpJJy-fua1w3wV4Igj_qvO3H8t0CRaTgGSxxKrtQt7U75JmhBOPF01yRC7EIF_vXpd9rF8OVGFRp4H8EbEBu3P1qCFoItWE3O7a9pCoXPR10y_710u7l8nv1VdFLiVsQNOmlqzx37bLV5ZRJ5kiejCs2Q6X6h2-xi4xAJ0jFsnBnOXvlXJQvNnlf_AIkjp1dJYOPXMpDRf0bCi12A7FhXbqSwCODdOw6PTnGGr8aAUeQYxwSI8PmNPEz2rq8IJjj-s7DwctW2mQtBBAVL8uU44XttOqPjH3w=w528-h938-no?authuser=0"
     }
   ],
   "auth": {
