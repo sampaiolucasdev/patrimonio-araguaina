@@ -47,9 +47,12 @@ export const DetalheDeUsuario: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [nome, setNome] = useState("");
   const [userName, setUserName] = useState("");
-  const [role, setRole] = useState<boolean>();
-  const [status, setStatus] = useState<boolean>();
+  const [role, setRole] = useState<boolean>(false);
+  const [status, setStatus] = useState<boolean>(false);
   const [avatarURL, setAvatarURL] = useState("");
+
+  // const allData = formRef.current?.getData();
+  // console.log("allData", allData);
 
   useEffect(() => {
     if (id !== "nova") {
@@ -90,40 +93,22 @@ export const DetalheDeUsuario: React.FC = () => {
       .then((dadosValidados) => {
         console.log("validados", dadosValidados);
         setIsLoading(true);
-        if (id === "nova") {
-          UsuarioService.create(dadosValidados).then((result) => {
-            console.log("result", result);
-            setIsLoading(false);
-            if (result instanceof Error) {
-              alert(result.message);
-            } else {
-              if (isSaveAndClose()) {
-                navigate("/usuario");
-              } else {
-                navigate(`/usuario/detalhe/${result}`);
-              }
-            }
-          });
-        } else {
-          console.log("id", id);
 
-          UsuarioService.updateById(Number(id), {
-            id: Number(id),
-            ...dadosValidados,
-          }).then((result) => {
-            setIsLoading(false);
-            if (result instanceof Error) {
-              alert(result.message);
-            } else {
-              if (isSaveAndClose()) {
-                navigate("/usuario");
-              }
+        console.log("id", id);
+        UsuarioService.updateById(Number(id), dadosValidados).then((result) => {
+          console.log("result", result);
+          setIsLoading(false);
+          if (result instanceof Error) {
+            alert(result.message);
+          } else {
+            if (isSaveAndClose()) {
+              navigate("/usuario");
             }
-            // else {
-            //   navigate(`/cidades/detalhe/${result}`);
-            // }
-          });
-        }
+          }
+          // else {
+          //   navigate(`/cidades/detalhe/${result}`);
+          // }
+        });
       });
   };
   const handleDelete = (id: number) => {
@@ -150,24 +135,14 @@ export const DetalheDeUsuario: React.FC = () => {
 
   return (
     <LayoutBaseDePagina
-      titulo={
-        id === "nova"
-          ? "Cadastrar Novo Usuário"
-          : `Editar informações de  "${nome}"`
-      }
+      titulo={id === "nova" ? "Cadastrar Novo Usuário" : `Editar "${nome}"`}
       barraDeFerramentas={
         <FerramentasDeDetalhe
-          //textoBotaoNovo="Nova"
-          //mostrarBotaoSalvarEFechar
           mostrarBotaoNovo={false}
           mostrarBotaoApagar={false}
           aoClicarEmSalvar={saveAndClose}
           //aoClicarEmSalvarEFechar={saveAndClose}
           aoClicarEmVoltar={() => navigate("/usuario")}
-          // aoClicarEmApagar={() => {
-          //   handleDelete(Number(id));
-          // }}
-          //aoClicarEmNovo={() => navigate("/usuario/detalhe/nova")}
         />
       }
     >
@@ -197,7 +172,8 @@ export const DetalheDeUsuario: React.FC = () => {
                       onChange={(
                         event: React.ChangeEvent<HTMLInputElement>
                       ) => {
-                        setRole(Boolean(event.target.value));
+                        setRole(event.target.checked);
+                        //console.log(role);
                       }}
                     />
                   }
@@ -205,6 +181,22 @@ export const DetalheDeUsuario: React.FC = () => {
                 />
               </FormGroup>
               <FormHelperText>Administrador</FormHelperText>
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={status}
+                      onChange={(
+                        event: React.ChangeEvent<HTMLInputElement>
+                      ) => {
+                        setStatus(event.target.checked);
+                      }}
+                    />
+                  }
+                  label=""
+                />
+              </FormGroup>
+              <FormHelperText>Status</FormHelperText>
             </Grid>
 
             {/* GRID INPUTS */}
@@ -248,15 +240,6 @@ export const DetalheDeUsuario: React.FC = () => {
             </Grid>
           </Grid>
         </Box>
-        {/* {[1, 2, 3, 4].map((_, index) => (
-          <Scope key="" path={`endereco[${index}]`}>
-            <VTextField name="rua" />
-            <VTextField name="numero" />
-            <VTextField name="estado" />
-            <VTextField name="cidade" />
-            <VTextField name="pais" />
-          </Scope>
-        ))} */}
       </VForm>
     </LayoutBaseDePagina>
   );

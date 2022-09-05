@@ -58,7 +58,7 @@ export const ListagemDeUsuario: React.FC = () => {
         if (result instanceof Error) {
           alert(result.message);
         } else {
-          console.log("usuarios", result);
+          //console.log("usuarios", result);
           //setTotalCount(result.totalCount);
           setUserRows(result.data);
         }
@@ -133,7 +133,40 @@ export const ListagemDeUsuario: React.FC = () => {
                 </TableCell>
                 <TableCell>{row.nome}</TableCell>
                 <TableCell>{row.userName}</TableCell>
-                <TableCell>{row.role}</TableCell>
+                <TableCell>
+                  {row.role ? (
+                    <Box
+                      component="div"
+                      sx={{
+                        display: "inline",
+                        p: 1,
+                        m: 1,
+                        bgcolor: "rgb(139,195,74)",
+                        borderColor: "#ffff",
+                        border: "1px solid",
+                        borderRadius: 2,
+                      }}
+                    >
+                      Admin
+                    </Box>
+                  ) : (
+                    <Box
+                      component="div"
+                      sx={{
+                        display: "inline",
+                        p: 1,
+                        m: 1,
+                        bgcolor: grey[400],
+                        borderColor: "#ffff",
+                        border: "1px solid",
+                        borderRadius: 2,
+                      }}
+                    >
+                      {" "}
+                      Padrão
+                    </Box>
+                  )}
+                </TableCell>
                 <TableCell>
                   {row.status ? (
                     <FcCheckmark size={25} />
