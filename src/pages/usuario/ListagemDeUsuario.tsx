@@ -18,18 +18,19 @@ import {
   TableRow,
 } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import { DataGrid, GridColDef, ptBR } from "@mui/x-data-grid";
+import { DataGrid, GridCellParams, GridColDef, ptBR } from "@mui/x-data-grid";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { FerramentasDaListagem } from "../../shared/components";
 import { Enviroment } from "../../shared/enviroment";
 import { useDebounce } from "../../shared/hooks";
 import { LayoutBaseDePagina } from "../../shared/layouts";
+import { FcCancel } from "react-icons/fc";
+import { FcCheckmark } from "react-icons/fc";
 import {
   IListagemUsuario,
   UsuarioService,
 } from "../../shared/services/api/UsuarioService";
-import { UserActions } from "./components/UserActions";
 
 export const ListagemDeUsuario: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -40,10 +41,6 @@ export const ListagemDeUsuario: React.FC = () => {
   const [userRows, setUserRows] = useState<IListagemUsuario[]>([]);
   const [isLoading, setIsLoading] = useState(true); //Feedback visual de carregamento
   const [totalCount, setTotalCount] = useState(0);
-  const [checked, setChecked] = useState(true);
-
-  //BOTÃO DE SALVAR
-  const [rowId, setRowId] = useState(null);
 
   const busca = useMemo(() => {
     return searchParams.get("busca") || "";
@@ -93,77 +90,6 @@ export const ListagemDeUsuario: React.FC = () => {
     }
   };
 
-  const handleChangeUserActivation = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setChecked(event.target.checked);
-  };
-
-  //TODO inserir useMemo tipado com o rowId de dependência para renderizar o button
-  const columns: GridColDef[] = [
-    {
-      field: "avatar",
-      headerName: "Avatar",
-      width: 70,
-      renderCell: (params) => <Avatar src={params.row.avatarURL} />,
-      sortable: false,
-      filterable: false,
-    },
-    {
-      field: "nome",
-      headerName: "Nome",
-      width: 130,
-      editable: true,
-      type: "string",
-    },
-    {
-      field: "userName",
-      headerName: "Usuário",
-      width: 190,
-      editable: true,
-      type: "string",
-    },
-    {
-      field: "role",
-      headerName: "Permissões",
-      width: 150,
-      type: "singleSelect",
-      editable: true,
-      valueOptions: ["colaborador", "admin"],
-    },
-    {
-      field: "status",
-      headerName: "Status",
-      type: "number",
-      width: 110,
-      editable: true,
-      renderCell: (params) => (
-        <Switch
-          color="success"
-          checked={params.row.role}
-          onChange={handleChangeUserActivation}
-          inputProps={{ "aria-label": "controlled" }}
-        />
-      ),
-    },
-    {
-      field: "actions",
-      headerName: "Ações",
-      type: "actions",
-      renderCell: (params) => <UserActions {...{ params, rowId, setRowId }} />,
-    },
-  ];
-
-  userRows.map((row) => [
-    {
-      id: row.id,
-      nome: row.nome,
-      userName: row.userName,
-      role: row.role,
-      status: row.status,
-    },
-  ]);
-
   return (
     <LayoutBaseDePagina
       titulo="Listagem de Usuários"
@@ -176,43 +102,93 @@ export const ListagemDeUsuario: React.FC = () => {
           mostrarInputBusca
           textoDaBusca={busca}
           textoBotaoNovo="Nova"
-          aoClicarEmNovo={() => navigate("/cidades/detalhe/nova")}
+          aoClicarEmNovo={() => navigate("/usuario/detalhe/nova")}
           aoMudarTextoDeBusca={(texto) =>
             setSearchParams({ busca: texto, pagina: "1" }, { replace: true })
           }
         />
       }
     >
-      <Box
-        margin={1}
-        display="flex"
-        flexDirection="column"
+      <TableContainer
         component={Paper}
         variant="outlined"
-        sx={{ height: 400 }}
+        sx={{ m: 1, width: "auto" }}
       >
-        <DataGrid
-          localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
-          rows={userRows}
-          columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-          disableSelectionOnClick
-          experimentalFeatures={{ newEditingApi: true }}
-          //onSelectionModelChange
-          getRowSpacing={(params) => ({
-            top: params.isFirstVisible ? 0 : 1,
-            bottom: params.isLastVisible ? 0 : 1,
-          })}
-          // sx={{
-          //   [`& .${gridClasses.row}`]: {
-          //     bgcolor: (theme) =>
-          //       theme.palette.mode == "light" ? grey[200] : grey[900],
-          //   },
-          // }}
-          onCellEditCommit={(params) => setRowId(params.id)}
-        />
-      </Box>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell width={40}>Avatar</TableCell>
+              <TableCell>Nome</TableCell>
+              <TableCell>Usuário</TableCell>
+              <TableCell>Permissão</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell width={100}>Ações</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {userRows.map((row) => (
+              <TableRow key={row.id}>
+                <Avatar src={row.avatarURL} />
+                <TableCell>{row.nome}</TableCell>
+                <TableCell>{row.userName}</TableCell>
+                <TableCell>{row.role}</TableCell>
+                <TableCell>
+                  {row.status ? (
+                    <FcCheckmark size={25} />
+                  ) : (
+                    <FcCancel size={25} />
+                  )}
+                </TableCell>
+                <TableCell>
+                  <IconButton size="small" onClick={() => handleDelete(row.id)}>
+                    <Icon>delete</Icon>
+                  </IconButton>
+                  <IconButton
+                    size="small"
+                    onClick={() => navigate(`/usuario/detalhe/${row.id}`)}
+                  >
+                    <Icon>edit</Icon>
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+
+          {/* Só renderiza o Componente LISTAGEM_VAZIA se
+                    for retornado 0 resultados e se a tela de loading não
+                    estiver presente */}
+
+          {totalCount === 0 && !isLoading && (
+            <caption>{Enviroment.LISTAGEM_VAZIA}</caption>
+          )}
+
+          <TableFooter>
+            {isLoading && ( //Exibe a linha de loading somente quando está carregando
+              <TableRow>
+                <TableCell colSpan={3}>
+                  <LinearProgress variant="indeterminate" />
+                </TableCell>
+              </TableRow>
+            )}
+            {totalCount > 0 && totalCount > Enviroment.LIMITE_DE_LINHAS && (
+              <TableRow>
+                <TableCell colSpan={3}>
+                  <Pagination
+                    onChange={(_, newPage) =>
+                      setSearchParams(
+                        { busca, pagina: newPage.toString() },
+                        { replace: true }
+                      )
+                    }
+                    page={pagina}
+                    count={Math.ceil(totalCount / Enviroment.LIMITE_DE_LINHAS)}
+                  />
+                </TableCell>
+              </TableRow>
+            )}
+          </TableFooter>
+        </Table>
+      </TableContainer>
     </LayoutBaseDePagina>
   );
 };

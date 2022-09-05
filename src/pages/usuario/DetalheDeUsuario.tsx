@@ -1,3 +1,250 @@
+import { useEffect, useState } from "react";
+import {
+  Avatar,
+  Box,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  Grid,
+  InputLabel,
+  LinearProgress,
+  MenuItem,
+  Paper,
+  Select,
+  Switch,
+  Typography,
+} from "@mui/material";
+import { useNavigate, useParams } from "react-router-dom";
+import * as yup from "yup";
+import { VTextField, VForm, useVForm, IVFormErrors } from "../../shared/forms";
+import { FerramentasDeDetalhe } from "../../shared/components";
+import { LayoutBaseDePagina } from "../../shared/layouts";
+import { UsuarioService } from "../../shared/services/api/UsuarioService";
+
+interface IFormData {
+  userName: string;
+  nome: string;
+  role: boolean;
+  status: boolean;
+  avatarURL: string;
+}
+const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
+  userName: yup.string().required().min(3),
+  nome: yup.string().required().min(3),
+  role: yup.boolean().required(),
+  status: yup.boolean().required(),
+  avatarURL: yup.string().required().min(3),
+});
+
 export const DetalheDeUsuario: React.FC = () => {
-  return <h1>Detalhe de usuario</h1>;
+  const { formRef, save, saveAndClose, isSaveAndClose } = useVForm();
+  const { id = "nova" } = useParams<"id">();
+  const navigate = useNavigate();
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [nome, setNome] = useState("");
+  const [userName, setUserName] = useState("");
+  const [role, setRole] = useState<boolean>();
+  const [status, setStatus] = useState<boolean>();
+  const [avatarURL, setAvatarURL] = useState("");
+
+  useEffect(() => {
+    if (id !== "nova") {
+      setIsLoading(true);
+
+      UsuarioService.getById(Number(id)).then((result) => {
+        setIsLoading(false);
+        if (result instanceof Error) {
+          alert(result.message);
+          navigate("/usuario");
+        } else {
+          setNome(result.nome);
+          setUserName(result.userName);
+          setRole(result.role);
+          setStatus(result.status);
+          setAvatarURL(result.avatarURL);
+
+          console.log(result);
+          formRef.current?.setData(result);
+        }
+      });
+    } else {
+      formRef.current?.setData({
+        nome: "",
+        userName: "",
+        role: false,
+        status: false,
+        avatarURL: "",
+      });
+    }
+  }, [id]);
+
+  const handleSave = (dados: IFormData) => {
+    formValidationSchema
+      .validate(dados, { abortEarly: false })
+      .then((dadosValidados) => {
+        setIsLoading(true);
+        UsuarioService.create(dadosValidados).then((result) => {
+          setIsLoading(false);
+          if (result instanceof Error) {
+            alert(result.message);
+          } else {
+            if (isSaveAndClose()) {
+              navigate("/usuario");
+            } else {
+              navigate(`/usuario/detalhe/${result}`);
+            }
+          }
+        });
+      })
+      .catch((errors: yup.ValidationError) => {
+        const validationErrors: IVFormErrors = {};
+        errors.inner.forEach((error) => {
+          if (!error.path) return;
+          validationErrors[error.path] = error.message;
+          /**Objeto que pode ser em branco, pega o path(nome do campo) e
+           * atribui a message para ele e sobrescreve o erro acima
+           * (!error.path), que acusa um campo falsy. Então, o erro de campo
+           * obrigatório é sobrescrito pelo erro de min(3).
+           */
+        });
+        // console.log(validationErrors);
+        formRef.current?.setErrors(validationErrors); //Mostra erro nas inputs
+      });
+  };
+  const handleDelete = (id: number) => {
+    /**
+     * deleteById retorna uma promessa de resultado ou erro.
+     * Quando (.then) essa promessa ocorrer, vai ter um result
+     * Se esse result é uma instância de erro, então, alert
+     * mostrando o error na message. Se não, vai dar um setState(serRows)
+     * pegando o registro com o id específico que foi apagado, retorna um novo
+     * state com todas as linhas do state anterior(...), filtrando exceto
+     * a linha com o id que está sendo apagado (oldRow.id !== id).
+     */
+    if (confirm("Deseja apagar?")) {
+      UsuarioService.deleteById(id).then((result) => {
+        if (result instanceof Error) {
+          alert(result.message);
+        } else {
+          alert("Registro apagado com sucesso!");
+          navigate("/usuario");
+        }
+      });
+    }
+  };
+
+  return (
+    <LayoutBaseDePagina
+      titulo={id === "nova" ? "Cadastrar Novo Usuário" : nome}
+      barraDeFerramentas={
+        <FerramentasDeDetalhe
+          //textoBotaoNovo="Nova"
+          //mostrarBotaoSalvarEFechar
+          mostrarBotaoNovo={false}
+          mostrarBotaoApagar={id !== "nova"}
+          aoClicarEmSalvar={saveAndClose}
+          //aoClicarEmSalvarEFechar={saveAndClose}
+          aoClicarEmVoltar={() => navigate("/usuario")}
+          aoClicarEmApagar={() => {
+            handleDelete(Number(id));
+          }}
+          //aoClicarEmNovo={() => navigate("/usuario/detalhe/nova")}
+        />
+      }
+    >
+      <VForm ref={formRef} onSubmit={handleSave}>
+        <Box
+          margin={1}
+          display="flex"
+          flexDirection="column"
+          component={Paper}
+          variant="outlined"
+        >
+          <Grid container direction="column" padding={2} spacing={2}>
+            {isLoading && (
+              <Grid item>
+                <LinearProgress variant="indeterminate" />
+              </Grid>
+            )}
+
+            <Grid item>
+              <Typography variant="h6">Editar Informações</Typography>
+            </Grid>
+
+            <Grid container item direction="column" spacing={2}>
+              <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
+                <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
+                  <Avatar sx={{ width: 100, height: 100 }} src={avatarURL} />
+                </Grid>
+
+                <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={role}
+                          onChange={(
+                            event: React.ChangeEvent<HTMLInputElement>
+                          ) => {
+                            setRole(Boolean(event.target.value));
+                          }}
+                        />
+                      }
+                      label="Admin"
+                    />
+                  </FormGroup>
+                </Grid>
+
+                <Grid item xs={12} sm={12} md={6} lg={4} xl={2}></Grid>
+
+                <Grid item direction="row" xs={12} sm={12} md={6} lg={4} xl={2}>
+                  <VTextField
+                    fullWidth
+                    name="nome"
+                    disabled={isLoading} //Desabilita o textfield quando estiver carregando
+                    label="Nome"
+                    onChange={(e) => setNome(e.target.value)} //Altera o nome da cidade no <h1> quando for alterado no textfield
+                  />
+                </Grid>
+
+                <Grid item xs={12} sm={12} md={6} lg={4} xl={2}></Grid>
+
+                <Grid item direction="row" xs={12} sm={12} md={6} lg={4} xl={2}>
+                  <VTextField
+                    fullWidth
+                    name="userName"
+                    disabled={isLoading} //Desabilita o textfield quando estiver carregando
+                    label="Usuário"
+                    onChange={(e) => setNome(e.target.value)} //Altera o nome da cidade no <h1> quando for alterado no textfield
+                  />
+                </Grid>
+
+                <Grid item xs={12} sm={12} md={6} lg={4} xl={2}></Grid>
+
+                <Grid item direction="row" xs={12} sm={12} md={6} lg={4} xl={2}>
+                  <VTextField
+                    fullWidth
+                    name="avatarURL"
+                    disabled={isLoading} //Desabilita o textfield quando estiver carregando
+                    label="URL de Avatar"
+                    onChange={(e) => setNome(e.target.value)} //Altera o nome da cidade no <h1> quando for alterado no textfield
+                  />
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Box>
+        {/* {[1, 2, 3, 4].map((_, index) => (
+          <Scope key="" path={`endereco[${index}]`}>
+            <VTextField name="rua" />
+            <VTextField name="numero" />
+            <VTextField name="estado" />
+            <VTextField name="cidade" />
+            <VTextField name="pais" />
+          </Scope>
+        ))} */}
+      </VForm>
+    </LayoutBaseDePagina>
+  );
 };
