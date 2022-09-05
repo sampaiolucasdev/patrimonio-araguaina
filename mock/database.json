@@ -68,22 +68,39 @@
       "qtd": 1,
       "numSerie": "080846",
       "estConservacao": "Novo",
-      "descricao": ["ESTABILIZADOR SMS 1400VA", "MONITOR BLUECASE 20"],
+      "descricao": [
+        "ESTABILIZADOR SMS 1400VA",
+        "MONITOR BLUECASE 20"
+      ],
       "valor": 700
     },
     {
       "valueEstConservacao": 4,
       "pegarOrigemId": 3,
       "pegarDestinoId": 3,
-      "arrayIds": [4, 5],
+      "arrayIds": [
+        4,
+        5
+      ],
       "id": 11
     },
     {
       "valueEstConservacao": 4,
       "pegarOrigemId": 3,
       "pegarDestinoId": 4,
-      "arrayIds": [4],
+      "arrayIds": [
+        4
+      ],
       "id": 12
+    },
+    {
+      "valueEstConservacao": 4,
+      "pegarOrigemId": 3,
+      "pegarDestinoId": 3,
+      "arrayIds": [
+        4
+      ],
+      "id": 13
     }
   ],
   "bens": [

@@ -138,7 +138,7 @@ export const NovaMovimentacao: React.FC = () => {
             alert(result.message);
           } else {
             if (isSaveAndClose()) {
-              toast.success(` ${nome} adicionado com sucesso!`);
+              toast.success("Movimentação realizada com sucesso!");
               navigate("/movimentacao");
             } else {
               navigate(`/movimentacao/detalhe/${result}`);

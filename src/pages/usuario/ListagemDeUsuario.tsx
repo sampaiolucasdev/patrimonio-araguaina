@@ -128,7 +128,9 @@ export const ListagemDeUsuario: React.FC = () => {
           <TableBody>
             {userRows.map((row) => (
               <TableRow key={row.id}>
-                <Avatar src={row.avatarURL} />
+                <TableCell>
+                  <Avatar src={row.avatarURL} />
+                </TableCell>
                 <TableCell>{row.nome}</TableCell>
                 <TableCell>{row.userName}</TableCell>
                 <TableCell>{row.role}</TableCell>
