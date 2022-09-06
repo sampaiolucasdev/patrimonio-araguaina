@@ -49,14 +49,14 @@ export const DetalheDeUsuario: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [nome, setNome] = useState("");
   const [userName, setUserName] = useState("");
-  const [role, setRole] = useState<boolean>();
-  const [status, setStatus] = useState<boolean>();
+  const [role, setRole] = useState<boolean>(false);
+  const [status, setStatus] = useState<boolean>(false);
   const [avatarURL, setAvatarURL] = useState("");
 
   // const allData = formRef.current?.getData();
   // console.log("allData", allData);
-  console.log("role", role);
-  // console.log("status", status);
+  //console.log("role", role);
+  //console.log("status", typeof status);
 
   useEffect(() => {
     if (id !== "nova") {
@@ -162,14 +162,16 @@ export const DetalheDeUsuario: React.FC = () => {
               <Avatar sx={{ width: 100, height: 100 }} src={avatarURL} />
               <FormGroup>
                 <FormControlLabel
-                  control={<VSwitch name="switchRoleAdmin" checked={!!role} />}
+                  control={
+                    <VSwitch name="switchRoleAdmin" checkedValue={role} />
+                  }
                   label="Admin"
                 />
               </FormGroup>
               <FormGroup>
                 <FormControlLabel
                   control={
-                    <VSwitch name="switchStatusActive" checked={status} />
+                    <VSwitch name="switchStatusActive" checkedValue={status} />
                   }
                   label="Ativo"
                 />
