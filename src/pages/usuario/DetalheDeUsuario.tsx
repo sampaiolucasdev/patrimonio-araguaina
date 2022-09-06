@@ -21,6 +21,8 @@ import { VTextField, VForm, useVForm, IVFormErrors } from "../../shared/forms";
 import { FerramentasDeDetalhe } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import { UsuarioService } from "../../shared/services/api/UsuarioService";
+import { VSwitch } from "../../shared/forms/VSwitch";
+import { FormatSizeRounded } from "@mui/icons-material";
 
 interface IFormData {
   id: number;
@@ -47,12 +49,14 @@ export const DetalheDeUsuario: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [nome, setNome] = useState("");
   const [userName, setUserName] = useState("");
-  const [role, setRole] = useState<boolean>(false);
-  const [status, setStatus] = useState<boolean>(false);
+  const [role, setRole] = useState<boolean>();
+  const [status, setStatus] = useState<boolean>();
   const [avatarURL, setAvatarURL] = useState("");
 
   // const allData = formRef.current?.getData();
   // console.log("allData", allData);
+  console.log("role", role);
+  // console.log("status", status);
 
   useEffect(() => {
     if (id !== "nova") {
@@ -73,14 +77,6 @@ export const DetalheDeUsuario: React.FC = () => {
           console.log(result);
           formRef.current?.setData(result);
         }
-      });
-    } else {
-      formRef.current?.setData({
-        nome: "",
-        userName: "",
-        role: false,
-        status: false,
-        avatarURL: "",
       });
     }
   }, [id]);
@@ -166,37 +162,18 @@ export const DetalheDeUsuario: React.FC = () => {
               <Avatar sx={{ width: 100, height: 100 }} src={avatarURL} />
               <FormGroup>
                 <FormControlLabel
-                  control={
-                    <Switch
-                      checked={role}
-                      onChange={(
-                        event: React.ChangeEvent<HTMLInputElement>
-                      ) => {
-                        setRole(event.target.checked);
-                        //console.log(role);
-                      }}
-                    />
-                  }
-                  label=""
+                  control={<VSwitch name="switchRoleAdmin" checked={!!role} />}
+                  label="Admin"
                 />
               </FormGroup>
-              <FormHelperText>Administrador</FormHelperText>
               <FormGroup>
                 <FormControlLabel
                   control={
-                    <Switch
-                      checked={status}
-                      onChange={(
-                        event: React.ChangeEvent<HTMLInputElement>
-                      ) => {
-                        setStatus(event.target.checked);
-                      }}
-                    />
+                    <VSwitch name="switchStatusActive" checked={status} />
                   }
-                  label=""
+                  label="Ativo"
                 />
               </FormGroup>
-              <FormHelperText>Status</FormHelperText>
             </Grid>
 
             {/* GRID INPUTS */}
