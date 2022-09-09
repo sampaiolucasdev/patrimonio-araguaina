@@ -83,6 +83,28 @@ const getAllBySetor = async (
   }
 };
 
+const getAllDescarte = async (
+  estConservacao = ""
+): Promise<TTotalCountDescarte | Error> => {
+  try {
+    const urlRelativa = `/bens?_page=1&_limit=${Enviroment.LIMITE_DE_LINHAS}&estConservacao=${estConservacao}`;
+
+    const { data, headers } = await Api.get(urlRelativa);
+
+    if (data) {
+      return {
+        totalCountDescarte: Number(headers["x-total-count"]),
+      };
+    }
+    return new Error("Erro ao listar os registros");
+  } catch (error) {
+    console.error(error);
+    return new Error(
+      (error as { message: string }).message || "Erro ao listar os registros"
+    );
+  }
+};
+
 const getAllDescarteBySetor = async (
   setor = 0,
   estConservacao = ""
@@ -174,4 +196,5 @@ export const BemService = {
   deleteById,
   getAllBySetor,
   getAllDescarteBySetor,
+  getAllDescarte,
 };
