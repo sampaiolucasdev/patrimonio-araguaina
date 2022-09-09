@@ -27,6 +27,9 @@ type TBensComTotalCount = {
   data: IListagemBens[];
   totalCount: number;
 };
+type TTotalCountDescarte = {
+  totalCountDescarte: number;
+};
 const getAll = async (
   page = 1,
   filter = ""
@@ -69,6 +72,29 @@ const getAllBySetor = async (
         totalCount: Number(
           headers["x-total-count"] || Enviroment.LIMITE_DE_LINHAS
         ),
+      };
+    }
+    return new Error("Erro ao listar os registros");
+  } catch (error) {
+    console.error(error);
+    return new Error(
+      (error as { message: string }).message || "Erro ao listar os registros"
+    );
+  }
+};
+
+const getAllDescarteBySetor = async (
+  setor = 0,
+  estConservacao = ""
+): Promise<TTotalCountDescarte | Error> => {
+  try {
+    const urlRelativa = `/bens?_page=1&_limit=${Enviroment.LIMITE_DE_LINHAS}&estConservacao=${estConservacao}&origem_id=${setor}`;
+
+    const { data, headers } = await Api.get(urlRelativa);
+
+    if (data) {
+      return {
+        totalCountDescarte: Number(headers["x-total-count"]),
       };
     }
     return new Error("Erro ao listar os registros");
@@ -147,4 +173,5 @@ export const BemService = {
   updateById,
   deleteById,
   getAllBySetor,
+  getAllDescarteBySetor,
 };

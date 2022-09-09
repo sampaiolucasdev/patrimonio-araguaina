@@ -41,6 +41,33 @@ const getAll = async (
   }
 };
 
+const getAllDescarte = async (
+  page = 1,
+  filter = ""
+): Promise<TInventarioComTotalCount | Error> => {
+  try {
+    //inventario?limit=5&offset=0&role=admin
+    const urlRelativa = `/inventario?offset=1&limit=${Enviroment.LIMITE_DE_LINHAS}&estConservacao=4`;
+
+    const { data, headers } = await Api.get(urlRelativa);
+
+    if (data) {
+      return {
+        data,
+        totalCount: Number(
+          headers["x-total-count"] || Enviroment.LIMITE_DE_LINHAS
+        ),
+      };
+    }
+    return new Error("Erro ao listar os registros");
+  } catch (error) {
+    console.error(error);
+    return new Error(
+      (error as { message: string }).message || "Erro ao listar os registros"
+    );
+  }
+};
+
 const getAllSelect = async (): Promise<IListagemInventario | Error> => {
   try {
     const urlRelativa = "/inventario";
@@ -125,4 +152,5 @@ export const InventarioService = {
   updateById,
   deleteById,
   getAllSelect,
+  getAllDescarte,
 };

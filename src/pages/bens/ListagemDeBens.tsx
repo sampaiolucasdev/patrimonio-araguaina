@@ -30,6 +30,7 @@ export const ListagemDeBens: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [nome, setNome] = useState("");
   const [totalCount, setTotalCount] = useState(0);
+  const [totalCountDescarte, setTotalCountDescarte] = useState(0);
   const [searchByOrigem, setSearchByOrigem] = useState<IListagemBens[]>([]);
   const [pegarOrigemId, setPegarOrigemId] = useState<number | undefined>();
   const [estConservacao, setEstConservacao] = useState("");
@@ -49,11 +50,9 @@ export const ListagemDeBens: React.FC = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    setIsLoadingPessoas(true);
     debounce(() => {
       BemService.getAllBySetor(pagina, busca, pegarOrigemId).then((result) => {
         setIsLoading(false);
-        setIsLoadingPessoas(false);
         if (result instanceof Error) {
           alert(result.message);
         } else {
@@ -64,8 +63,34 @@ export const ListagemDeBens: React.FC = () => {
           // console.log("origem", searchOrigem);
         }
       });
+
+      BemService.getAllDescarteBySetor(pegarOrigemId, "Descarte").then(
+        (result) => {
+          if (result instanceof Error) {
+            alert(result.message);
+          } else {
+            console.log("descarte", result);
+            setTotalCountDescarte(result.totalCountDescarte);
+          }
+        }
+      );
     });
   }, [busca, pagina, pegarOrigemId]);
+
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   debounce(() => {
+  //     BemService.getAllDescarteBySetor(pegarOrigemId).then((result) => {
+  //       setIsLoading(false);
+  //       if (result instanceof Error) {
+  //         alert(result.message);
+  //       } else {
+  //         //console.log(result);
+  //         setTotalCountDescarte(result.totalCountDescarte);
+  //       }
+  //     });
+  //   });
+  // }, [busca, pagina, pegarOrigemId]);
 
   const columns = [
     { field: "numSerie", headerName: "Número de Série", width: 130 },
@@ -102,13 +127,18 @@ export const ListagemDeBens: React.FC = () => {
 
   return (
     <LayoutBaseDePagina
-      titulo={id === "nova" ? "Registrar Movimentação" : nome}
+      titulo={"Listagem de Inventário"}
       barraDeFerramentas={
         <FerramentasDeDetalhe
+          mostrarInputBusca
           mostrarBotaoSalvar={false}
           mostrarBotaoNovo={false}
+          textoDaBusca={busca}
           mostrarBotaoApagar={id !== "nova"}
           aoClicarEmVoltar={() => navigate("/*")}
+          aoMudarTextoDeBusca={(texto) =>
+            setSearchParams({ busca: texto, pagina: "1" }, { replace: true })
+          }
         />
       }
     >
@@ -143,9 +173,6 @@ export const ListagemDeBens: React.FC = () => {
                   isExternalLoading={isLoading}
                 />
               </Grid>
-            </Grid>
-
-            <Grid container item spacing={2}>
               <Grid item xs={6} sm={12} md={6} lg={4} xl={2}>
                 <Card variant="outlined">
                   <CardContent>
@@ -158,11 +185,36 @@ export const ListagemDeBens: React.FC = () => {
                       justifyContent="center"
                       alignItems="center"
                     >
-                      {!isLoadingPessoas && (
+                      {!isLoading && (
                         <Typography variant="h2">{totalCount}</Typography>
                       )}
 
-                      {isLoadingPessoas && (
+                      {isLoading && (
+                        <Typography variant="h6">Carregando...</Typography>
+                      )}
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item xs={6} sm={12} md={6} lg={4} xl={2}>
+                <Card variant="outlined">
+                  <CardContent>
+                    <Typography variant="h6" align="center">
+                      Total de Baixas do Setor
+                    </Typography>
+                    <Box
+                      display="flex"
+                      padding={1}
+                      justifyContent="center"
+                      alignItems="center"
+                    >
+                      {!isLoading && (
+                        <Typography variant="h2">
+                          {totalCountDescarte}
+                        </Typography>
+                      )}
+
+                      {isLoading && (
                         <Typography variant="h6">Carregando...</Typography>
                       )}
                     </Box>

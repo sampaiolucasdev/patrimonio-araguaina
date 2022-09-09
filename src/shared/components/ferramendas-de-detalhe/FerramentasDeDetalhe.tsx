@@ -6,11 +6,13 @@ import {
   Icon,
   Paper,
   Skeleton,
+  TextField,
   Theme,
   Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import { Enviroment } from "../../enviroment";
 
 interface IFerramentasDeDetalheProps {
   textoBotaoNovo?: string;
@@ -18,6 +20,8 @@ interface IFerramentasDeDetalheProps {
   mostrarBotaoVoltar?: boolean;
   mostrarBotaoApagar?: boolean;
   mostrarBotaoSalvar?: boolean;
+  mostrarInputBusca?: boolean;
+  textoDaBusca?: string;
   //mostrarBotaoSalvarEFechar?: boolean;
 
   mostrarBotaoNovoCarregando?: boolean;
@@ -30,6 +34,7 @@ interface IFerramentasDeDetalheProps {
   aoClicarEmVoltar?: () => void;
   aoClicarEmApagar?: () => void;
   aoClicarEmSalvar?: () => void;
+  aoMudarTextoDeBusca?: (novoTexto: string) => void;
   //aoClicarEmSalvarEFechar?: () => void;
 }
 export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
@@ -38,6 +43,8 @@ export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
   mostrarBotaoVoltar = true,
   mostrarBotaoApagar = true,
   mostrarBotaoSalvar = true,
+  textoDaBusca = "",
+  mostrarInputBusca = false,
   //mostrarBotaoSalvarEFechar = false,
 
   mostrarBotaoNovoCarregando = false,
@@ -47,6 +54,7 @@ export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
   //mostrarBotaoSalvarEFecharCarregando = false,
 
   aoClicarEmNovo,
+  aoMudarTextoDeBusca,
   aoClicarEmVoltar,
   aoClicarEmApagar,
   aoClicarEmSalvar,
@@ -66,6 +74,14 @@ export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
       alignItems="center"
       component={Paper}
     >
+      {mostrarInputBusca && (
+        <TextField
+          placeholder={Enviroment.INPUT_DE_BUSCA}
+          size="small"
+          value={textoDaBusca}
+          onChange={(e) => aoMudarTextoDeBusca?.(e.target.value)} //?. só executa se não for undefined
+        />
+      )}
       {mostrarBotaoSalvar && !mostrarBotaoSalvarCarregando && (
         <Button
           variant="contained"
@@ -159,7 +175,7 @@ export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
 
       {mostrarBotaoVoltar &&
         (mostrarBotaoNovo || mostrarBotaoApagar || mostrarBotaoSalvar) && (
-        // mostrarBotaoSalvarEFechar
+          // mostrarBotaoSalvarEFechar
           <Divider variant="middle" orientation="vertical" />
         )}
 
