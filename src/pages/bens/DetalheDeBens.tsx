@@ -17,7 +17,7 @@ interface IFormData {
   modelo: string;
   imagem: string;
   origem: string;
-  estConservacao: number;
+  estConservacao: string;
   valor: number;
   numSerie: string;
 }
@@ -27,7 +27,7 @@ const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
   modelo: yup.string().required(),
   imagem: yup.string().required(),
   origem: yup.string().required(),
-  estConservacao: yup.number().required().min(1),
+  estConservacao: yup.string().required().min(1),
   valor: yup.number().required().min(1),
   numSerie: yup.string().required().min(4),
 });

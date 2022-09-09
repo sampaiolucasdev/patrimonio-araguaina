@@ -219,15 +219,6 @@ export const NovoBem: React.FC = () => {
               </Grid>
 
               <Grid container item direction="row" spacing={2}></Grid>
-              {/* <Grid direction="row" item xs={12} sm={12} md={6} lg={4} xl={2}>
-                <VTextField
-                  fullWidth
-                  name="qtd"
-                  disabled={isLoading} //Desabilita o textfield quando estiver carregando
-                  label="Quantidade"
-                  onChange={(e) => setNome(e.target.value)} //Altera o nome da cidade no <h1> quando for alterado no textfield
-                />
-              </Grid> */}
 
               <Grid direction="row" item xs={12} sm={12} md={6} lg={4} xl={2}>
                 <VTextField

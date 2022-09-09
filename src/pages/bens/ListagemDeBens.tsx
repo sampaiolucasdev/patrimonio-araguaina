@@ -1,38 +1,41 @@
-import {
-  Icon,
-  IconButton,
-  LinearProgress,
-  Pagination,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableFooter,
-  TableHead,
-  TableRow,
-} from "@mui/material";
+/* eslint-disable indent */
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { FerramentasDaListagem } from "../../shared/components";
-import { Enviroment } from "../../shared/enviroment";
-import { useDebounce } from "../../shared/hooks";
+import {
+  Box,
+  Card,
+  CardContent,
+  Grid,
+  LinearProgress,
+  Paper,
+  Typography,
+} from "@mui/material";
+import { DataGrid, ptBR } from "@mui/x-data-grid";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { VForm, useVForm } from "../../shared/forms";
+import { FerramentasDeDetalhe } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import {
   BemService,
   IListagemBens,
 } from "../../shared/services/api/BemService";
+import { useDebounce } from "../../shared/hooks";
+import { AutoCompleteOrigem } from "../movimentacoes/components/AutoCompleteOrigem";
 
 export const ListagemDeBens: React.FC = () => {
+  const { formRef, saveAndClose, isSaveAndClose } = useVForm();
+  const { id = "nova" } = useParams<"id">();
   const [searchParams, setSearchParams] = useSearchParams();
   const { debounce } = useDebounce();
-  /**Passar próx como ', false' cancela o firstDelay */
   const navigate = useNavigate();
-
-  const [rows, setRows] = useState<IListagemBens[]>([]);
-  const [isLoading, setIsLoading] = useState(true); //Feedback visual de carregamento
+  const [isLoading, setIsLoading] = useState(false);
+  const [nome, setNome] = useState("");
   const [totalCount, setTotalCount] = useState(0);
-  const [searchOrigem, setSearchOrigem] = useState("");
+  const [searchByOrigem, setSearchByOrigem] = useState<IListagemBens[]>([]);
+  const [pegarOrigemId, setPegarOrigemId] = useState<number | undefined>();
+  const [estConservacao, setEstConservacao] = useState("");
+
+  //console.log("arrayIds", arrayIds);
+  const [isLoadingPessoas, setIsLoadingPessoas] = useState(true);
 
   const busca = useMemo(() => {
     return searchParams.get("busca") || "";
@@ -41,136 +44,165 @@ export const ListagemDeBens: React.FC = () => {
   const pagina = useMemo(() => {
     return Number(searchParams.get("pagina") || "1");
   }, [searchParams]);
+
+  //console.log("aquii", pegarOrigemId);
+
   useEffect(() => {
     setIsLoading(true);
+    setIsLoadingPessoas(true);
     debounce(() => {
-      BemService.getAllBySetor(pagina, busca, Number(searchOrigem)).then(
-        (result) => {
-          setIsLoading(false);
-          if (result instanceof Error) {
-            alert(result.message);
-          } else {
-            console.log(result);
-
-            setTotalCount(result.totalCount);
-            setRows(result.data);
-            setSearchOrigem(result.data[0].origem);
-            console.log("origem", searchOrigem);
-          }
+      BemService.getAllBySetor(pagina, busca, pegarOrigemId).then((result) => {
+        setIsLoading(false);
+        setIsLoadingPessoas(false);
+        if (result instanceof Error) {
+          alert(result.message);
+        } else {
+          console.log(result);
+          setTotalCount(result.totalCount);
+          setSearchByOrigem(result.data);
+          // setSearchOrigem(result.data[0].origem);
+          // console.log("origem", searchOrigem);
         }
-      );
+      });
     });
-  }, [busca, pagina]);
+  }, [busca, pagina, pegarOrigemId]);
 
-  // const handleDelete = (id: number) => {
-  //   /**
-  //    * deleteById retorna uma promessa de resultado ou erro.
-  //    * Quando (.then) essa promessa ocorrer, vai ter um result
-  //    * Se esse result é uma instância de erro, então, alert
-  //    * mostrando o error na message. Se não, vai dar um setState(serRows)
-  //    * pegando o registro com o id específico que foi apagado, retorna um novo
-  //    * state com todas as linhas do state anterior(...), filtrando exceto
-  //    * a linha com o id que está sendo apagado (oldRow.id !== id).
-  //    */
-  //   if (confirm("Deseja apagar?")) {
-  //     BemService.deleteById(id).then((result) => {
-  //       if (result instanceof Error) {
-  //         alert(result.message);
-  //       } else {
-  //         setRows((oldRows) => {
-  //           return [...oldRows.filter((oldRow) => oldRow.id !== id)];
-  //         });
-  //         alert("Registro apagado com sucesso!");
-  //       }
-  //     });
-  //   }
-  // };
+  const columns = [
+    { field: "numSerie", headerName: "Número de Série", width: 130 },
+    {
+      field: "estConservacao",
+      headerName: "Estado de Conservação",
+      width: 190,
+      editable: false,
+    },
+    {
+      field: "descricao",
+      headerName: "Descrição",
+      width: 150,
+      editable: false,
+    },
+    {
+      field: "valor",
+      headerName: "Valor",
+      type: "number",
+      width: 110,
+      editable: false,
+    },
+  ];
+
+  searchByOrigem.map((row) => [
+    {
+      id: row.id,
+      numSerie: row.numSerie,
+      estConservacao: row.estConservacao,
+      descricao: row.descricao,
+      valor: row.valor,
+    },
+  ]);
 
   return (
     <LayoutBaseDePagina
-      titulo="Listagem de Bens"
+      titulo={id === "nova" ? "Registrar Movimentação" : nome}
       barraDeFerramentas={
-        /**
-         * Faz com que o que seja digitado no imput de busca, seja adicionado
-         * também a URL como parâmetro de navegação, usando o useMemo e useSearchParams
-         */
-        <FerramentasDaListagem
-          mostrarInputBusca
-          textoDaBusca={busca}
-          textoBotaoNovo="Nova"
-          aoClicarEmNovo={() => navigate("/bens/detalhe/nova")}
-          aoMudarTextoDeBusca={(texto) =>
-            setSearchParams({ busca: texto, pagina: "1" }, { replace: true })
-          }
+        <FerramentasDeDetalhe
+          mostrarBotaoSalvar={false}
+          mostrarBotaoNovo={false}
+          mostrarBotaoApagar={id !== "nova"}
+          aoClicarEmVoltar={() => navigate("/*")}
         />
       }
     >
-      <TableContainer
-        component={Paper}
-        variant="outlined"
-        sx={{ m: 1, width: "auto" }}
+      <VForm
+        ref={formRef}
+        onSubmit={() => {
+          undefined;
+        }}
       >
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell width={100}>Origem</TableCell>
-              <TableCell>Número de Série</TableCell>
-              <TableCell>Descrição</TableCell>
-              <TableCell>Marca</TableCell>
-              <TableCell>Modelo</TableCell>
-              <TableCell>Estado de Conservação</TableCell>
-              <TableCell>Valor</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.id}>
-                <TableCell>{row.origem}</TableCell>
-                <TableCell>{row.numSerie}</TableCell>
-                <TableCell>{row.descricao}</TableCell>
-                <TableCell>{row.marca}</TableCell>
-                <TableCell>{row.modelo}</TableCell>
-                <TableCell>{row.estConservacao}</TableCell>
-                <TableCell>{row.valor}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-
-          {/* Só renderiza o Componente LISTAGEM_VAZIA se
-                    for retornado 0 resultados e se a tela de loading não
-                    estiver presente */}
-
-          {totalCount === 0 && !isLoading && (
-            <caption>{Enviroment.LISTAGEM_VAZIA}</caption>
-          )}
-
-          <TableFooter>
-            {isLoading && ( //Exibe a linha de loading somente quando está carregando
-              <TableRow>
-                <TableCell colSpan={3}>
-                  <LinearProgress variant="indeterminate" />
-                </TableCell>
-              </TableRow>
+        <Box
+          margin={1}
+          display="flex"
+          flexDirection="column"
+          component={Paper}
+          variant="outlined"
+        >
+          <Grid container direction="column" padding={2} spacing={2}>
+            {isLoading && (
+              <Grid item>
+                <LinearProgress variant="indeterminate" />
+              </Grid>
             )}
-            {totalCount > 0 && totalCount > Enviroment.LIMITE_DE_LINHAS && (
-              <TableRow>
-                <TableCell colSpan={3}>
-                  <Pagination
-                    onChange={(_, newPage) =>
-                      setSearchParams(
-                        { busca, pagina: newPage.toString() },
-                        { replace: true }
-                      )
-                    }
-                    page={pagina}
-                    count={Math.ceil(totalCount / Enviroment.LIMITE_DE_LINHAS)}
-                  />
-                </TableCell>
-              </TableRow>
-            )}
-          </TableFooter>
-        </Table>
-      </TableContainer>
+
+            <Grid item>
+              <Typography variant="h6">Detalhes do Inventário</Typography>
+            </Grid>
+
+            <Grid container item spacing={2}>
+              <Grid item xs={6} sm={12} md={6} lg={4} xl={2}>
+                <AutoCompleteOrigem
+                  onChange={(id) => setPegarOrigemId(id)}
+                  isExternalLoading={isLoading}
+                />
+              </Grid>
+            </Grid>
+
+            <Grid container item spacing={2}>
+              <Grid item xs={6} sm={12} md={6} lg={4} xl={2}>
+                <Card variant="outlined">
+                  <CardContent>
+                    <Typography variant="h6" align="center">
+                      Total de Bens do Setor
+                    </Typography>
+                    <Box
+                      display="flex"
+                      padding={1}
+                      justifyContent="center"
+                      alignItems="center"
+                    >
+                      {!isLoadingPessoas && (
+                        <Typography variant="h2">{totalCount}</Typography>
+                      )}
+
+                      {isLoadingPessoas && (
+                        <Typography variant="h6">Carregando...</Typography>
+                      )}
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Box>
+        <Box
+          margin={1}
+          display="flex"
+          flexDirection="column"
+          component={Paper}
+          variant="outlined"
+          sx={{ height: 400 }}
+        >
+          <DataGrid
+            localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
+            rows={searchByOrigem}
+            columns={columns}
+            pageSize={5}
+            rowsPerPageOptions={[5]}
+            disableSelectionOnClick
+            experimentalFeatures={{ newEditingApi: true }}
+          />
+        </Box>
+        {/* {[1, 2, 3, 4].map((_, index) => (
+          <Scope key="" path={`endereco[${index}]`}>
+            <VTextField name="rua" />
+            <VTextField name="numero" />
+            <VTextField name="estado" />
+            <VTextField name="cidade" />
+            <VTextField name="pais" />
+          </Scope>
+        ))} */}
+      </VForm>
     </LayoutBaseDePagina>
   );
 };
+function renderSwitch(valueEstConservacao: number) {
+  throw new Error("Function not implemented.");
+}

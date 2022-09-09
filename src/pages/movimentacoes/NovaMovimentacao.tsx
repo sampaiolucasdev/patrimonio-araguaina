@@ -29,7 +29,7 @@ import { useDebounce } from "../../shared/hooks";
 
 interface IFormData {
   //id?: number;
-  valueEstConservacao: number;
+  estConservacao: string;
   arrayIds: any;
   pegarOrigemId: number | undefined;
   pegarDestinoId: number | undefined;
@@ -39,7 +39,7 @@ const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
   //id: yup.number(),
   origem: yup.number(),
   destino: yup.number(),
-  valueEstConservacao: yup.number().required(),
+  estConservacao: yup.string().required(),
   arrayIds: yup.array().of(yup.number().required()),
   pegarOrigemId: yup.number().required(),
   pegarDestinoId: yup.number().required(),
@@ -55,7 +55,7 @@ export const NovaMovimentacao: React.FC = () => {
   const [nome, setNome] = useState("");
   const [totalCount, setTotalCount] = useState(0);
   const [searchByOrigem, setSearchByOrigem] = useState<IListagemBens[]>([]);
-  const [valueEstConservacao, setValueEstConservacao] = useState(0);
+  const [estConservacao, setEstConservacao] = useState("");
   const [pegarOrigemId, setPegarOrigemId] = useState<number | undefined>();
   const [pegarDestinoId, setPegarDestinoId] = useState<number>();
   const [arrayIds, setArrayIds] = useState<number[]>([]);
@@ -91,7 +91,7 @@ export const NovaMovimentacao: React.FC = () => {
     });
   }, [busca, pagina, pegarOrigemId]);
 
-  const columns: GridColDef[] = [
+  const columns = [
     { field: "numSerie", headerName: "Número de Série", width: 130 },
     {
       field: "estConservacao",
@@ -178,7 +178,7 @@ export const NovaMovimentacao: React.FC = () => {
         ref={formRef}
         onSubmit={() => {
           handleSave({
-            valueEstConservacao,
+            estConservacao: estConservacao,
             pegarOrigemId,
             pegarDestinoId,
             arrayIds,
@@ -234,16 +234,14 @@ export const NovaMovimentacao: React.FC = () => {
                     name="valueEstConservacao"
                     labelId="estConservacao"
                     id="estConservacao"
-                    value={valueEstConservacao}
+                    value={estConservacao}
                     label="Estado de Conservação"
-                    onChange={(e) =>
-                      setValueEstConservacao(Number(e.target.value))
-                    }
+                    onChange={(e) => setEstConservacao(e.target.value)}
                   >
-                    <MenuItem value={1}>Novo</MenuItem>
-                    <MenuItem value={2}>Regular</MenuItem>
-                    <MenuItem value={3}>Bom</MenuItem>
-                    <MenuItem value={4}>Descarte</MenuItem>
+                    <MenuItem value={"Novo"}>Novo</MenuItem>
+                    <MenuItem value={"Regular"}>Regular</MenuItem>
+                    <MenuItem value={"Bom"}>Bom</MenuItem>
+                    <MenuItem value={"Descarte"}>Descarte</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>

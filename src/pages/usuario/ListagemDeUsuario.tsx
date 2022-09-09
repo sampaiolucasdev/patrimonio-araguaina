@@ -193,9 +193,9 @@ export const ListagemDeUsuario: React.FC = () => {
                     for retornado 0 resultados e se a tela de loading não
                     estiver presente */}
 
-          {totalCount === 0 && !isLoading && (
+          {/* {totalCount === 0 && !isLoading && (
             <caption>{Enviroment.LISTAGEM_VAZIA}</caption>
-          )}
+          )} */}
 
           <TableFooter>
             {isLoading && ( //Exibe a linha de loading somente quando está carregando
@@ -227,3 +227,5 @@ export const ListagemDeUsuario: React.FC = () => {
     </LayoutBaseDePagina>
   );
 };
+
+

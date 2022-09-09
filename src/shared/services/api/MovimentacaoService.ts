@@ -15,7 +15,7 @@ export interface IListagemMovimentacao {
 }
 export interface IDetalheMovimentacao {
   //id: number;
-  valueEstConservacao: number;
+  estConservacao: string;
   arrayIds: any;
   pegarOrigemId: number | undefined;
   pegarDestinoId: number | undefined;
@@ -74,7 +74,7 @@ const create = async (dados: IDetalheMovimentacao): Promise<number | Error> => {
     );
 
     if (data) {
-      return data.valueEstConservacao;
+      return Number(data);
     }
     return new Error("Erro ao criar o registro");
   } catch (error) {

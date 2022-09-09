@@ -14,8 +14,8 @@ export * from "./setor/ListagemDeSetor";
 export * from "./usuario/DetalheDeUsuario";
 export * from "./usuario/ListagemDeUsuario";
 
-export * from "./predios-administrativos/DetalheDePrediosAdmin";
-export * from "./predios-administrativos/ListagemDePrediosAdmin";
+export * from "./inventario/DetalheDeInventario";
+export * from "./inventario/ListagemDeInventario";
 
 export * from "./ubs/DetalheDeUbs";
 export * from "./ubs/ListagemDeUbs";

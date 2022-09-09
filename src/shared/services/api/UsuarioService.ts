@@ -28,7 +28,7 @@ const getAll = async (
 ): Promise<TUsuarioComTotalCount | Error> => {
   try {
     //setor?limit=5&offset=0&role=admin
-    const urlRelativa = `/usuario?offset=1&limit=${Enviroment.LIMITE_DE_LINHAS}`;
+    const urlRelativa = `/usuario?offset=1&limit=${Enviroment.LIMITE_DE_LINHAS}&nome_like=${filter}`;
 
     const { data, headers } = await Api.get(urlRelativa);
 

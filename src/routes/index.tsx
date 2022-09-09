@@ -16,8 +16,8 @@ import {
   ListagemDeUbs,
   ListagemDeUsuario,
   DetalheDeUsuario,
-  DetalheDePrediosAdmin,
-  ListagemDePrediosAdmin,
+  DetalheDeInventario,
+  ListagemDeInventario,
   ListagemDeDepartamento,
   DetalheDeDepartamento,
 } from "../pages";
@@ -71,10 +71,10 @@ export const AppRoutes = () => {
       <Route path="/usuario" element={<ListagemDeUsuario />} />
       <Route path="/usuario/detalhe/:id" element={<DetalheDeUsuario />} />
 
-      <Route path="/predios-administrativos" element={<ListagemDeBens />} />
+      <Route path="/inventario" element={<ListagemDeBens />} />
       <Route
-        path="/predios-administrativos/detalhe/:id"
-        element={<ListagemDeBens />}
+        path="/inventario/detalhe/:id"
+        element={<ListagemDeInventario />}
       />
 
       <Route path="/ubs" element={<ListagemDeUbs />} />

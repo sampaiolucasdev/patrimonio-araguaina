@@ -8,7 +8,7 @@ export interface IListagemBens {
   modelo: string;
   imagen: string;
   origem: string;
-  estConservacao: number;
+  estConservacao: string;
   valor: number;
   numSerie: string;
 }
@@ -19,7 +19,7 @@ export interface IDetalheBens {
   modelo: string;
   imagem: string;
   origem: string;
-  estConservacao: number;
+  estConservacao: string;
   valor: number;
   numSerie: string;
 }

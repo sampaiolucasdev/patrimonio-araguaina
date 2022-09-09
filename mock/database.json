@@ -68,48 +68,8 @@
       "qtd": 1,
       "numSerie": "080846",
       "estConservacao": "Novo",
-      "descricao": [
-        "ESTABILIZADOR SMS 1400VA",
-        "MONITOR BLUECASE 20"
-      ],
+      "descricao": ["ESTABILIZADOR SMS 1400VA", "MONITOR BLUECASE 20"],
       "valor": 700
-    },
-    {
-      "valueEstConservacao": 4,
-      "pegarOrigemId": 3,
-      "pegarDestinoId": 3,
-      "arrayIds": [
-        4,
-        5
-      ],
-      "id": 11
-    },
-    {
-      "valueEstConservacao": 4,
-      "pegarOrigemId": 3,
-      "pegarDestinoId": 4,
-      "arrayIds": [
-        4
-      ],
-      "id": 12
-    },
-    {
-      "valueEstConservacao": 4,
-      "pegarOrigemId": 3,
-      "pegarDestinoId": 3,
-      "arrayIds": [
-        4
-      ],
-      "id": 13
-    },
-    {
-      "valueEstConservacao": 3,
-      "pegarOrigemId": 2,
-      "pegarDestinoId": 3,
-      "arrayIds": [
-        2
-      ],
-      "id": 14
     }
   ],
   "bens": [
@@ -121,7 +81,7 @@
       "modelo": "MKH86",
       "imagen": "imagem",
       "origem": 2,
-      "estConservacao": 1,
+      "estConservacao": "Novo",
       "valor": 1200,
       "numSerie": "084987"
     },
@@ -129,7 +89,7 @@
       "origem_id": 2,
       "numSerie": "810978",
       "valor": 1111,
-      "estConservacao": 111,
+      "estConservacao": "Bom",
       "origem": "2",
       "imagem": "asdss",
       "modelo": "asd2s",
@@ -141,7 +101,7 @@
       "origem_id": 2,
       "numSerie": "4879845",
       "valor": 250,
-      "estConservacao": 1,
+      "estConservacao": "Regular",
       "origem": "2",
       "imagem": "teste",
       "modelo": "kit teclado",
@@ -153,7 +113,7 @@
       "origem_id": 3,
       "numSerie": "3232323",
       "valor": 1222,
-      "estConservacao": 2,
+      "estConservacao": "Descarte",
       "origem": "3",
       "imagem": "testee",
       "modelo": "teste",
@@ -165,7 +125,7 @@
       "origem_id": 3,
       "numSerie": "0887196",
       "valor": 112,
-      "estConservacao": 2,
+      "estConservacao": "Descarte",
       "origem": "3",
       "imagem": "testee",
       "modelo": "teste",
@@ -177,7 +137,7 @@
       "origem_id": 4,
       "numSerie": "3232323",
       "valor": 1112222,
-      "estConservacao": 2,
+      "estConservacao": "Bom",
       "origem": "3",
       "imagem": "testee",
       "modelo": "teste",

@@ -235,7 +235,7 @@ export const MenuLateral: React.FC = ({ children }) => {
                 <List component="div" disablePadding={true}>
                   <ListItemButton
                     sx={{ pl: 3, heigth: 30 }}
-                    onClick={() => navigate("/predios-administrativos")}
+                    onClick={() => navigate("/inventario")}
                   >
                     <ListItemIcon sx={{ minWidth: 30 }}>
                       <ApartmentIcon />
