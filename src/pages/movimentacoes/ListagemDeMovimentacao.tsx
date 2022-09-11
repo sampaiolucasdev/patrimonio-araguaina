@@ -1,9 +1,9 @@
 import {
-  Icon,
   IconButton,
   LinearProgress,
   Pagination,
   Paper,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -12,10 +12,10 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { yellow } from "@mui/material/colors";
+
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { FerramentasDaListagem } from "../../shared/components";
+import { FerramentasDeDetalhe } from "../../shared/components";
 import { Enviroment } from "../../shared/enviroment";
 import { useDebounce } from "../../shared/hooks";
 import { LayoutBaseDePagina } from "../../shared/layouts";
@@ -24,6 +24,9 @@ import {
   IListagemMovimentacao,
   MovimentacaoService,
 } from "../../shared/services/api/MovimentacaoService";
+import { PictureAsPdfOutlined } from "@mui/icons-material";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 export const ListagemDeMovimentacao: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -83,22 +86,25 @@ export const ListagemDeMovimentacao: React.FC = () => {
     }
   };
 
+  const doc = new jsPDF();
+
+  autoTable(doc, {
+    head: [["Número de Série", "Est de Conservação", "Descrição", "Valor"]],
+    body: [
+      
+    ],
+  });
+
   return (
     <LayoutBaseDePagina
       titulo="Listagem de Movimentações"
       barraDeFerramentas={
-        /**
-         * Faz com que o que seja digitado no imput de busca, seja adicionado
-         * também a URL como parâmetro de navegação, usando o useMemo e useSearchParams
-         */
-        <FerramentasDaListagem
-          mostrarInputBusca
-          textoDaBusca={busca}
-          textoBotaoNovo="Nova"
+        <FerramentasDeDetalhe
+          mostrarInputBusca={false}
+          mostrarBotaoSalvar={false}
+          mostrarBotaoApagar={false}
+          mostrarBotaoVoltar={false}
           aoClicarEmNovo={() => navigate("/movimentacao/nova")}
-          aoMudarTextoDeBusca={(texto) =>
-            setSearchParams({ busca: texto, pagina: "1" }, { replace: true })
-          }
         />
       }
     >
@@ -120,21 +126,26 @@ export const ListagemDeMovimentacao: React.FC = () => {
             {rows.map((row) => (
               <TableRow key={row.id}>
                 <TableCell>
-                  <IconButton
-                    size="small"
-                    onClick={() => navigate(`/movimentacao/detalhe/${row.id}`)}
-                  >
-                    <InfoIcon />
-                  </IconButton>
+                  <Stack direction="row">
+                    <IconButton
+                      size="small"
+                      onClick={() =>
+                        navigate(`/movimentacao/detalhe/${row.id}`)
+                      }
+                    >
+                      <InfoIcon color={"info"} />
+                    </IconButton>
+                    <IconButton size="small">
+                      <PictureAsPdfOutlined
+                        color={"error"}
+                        onClick={() => doc.save("table.pdf")}
+                      />
+                    </IconButton>
+                  </Stack>
                 </TableCell>
                 <TableCell>{row.origem}</TableCell>
                 <TableCell>{row.destino}</TableCell>
                 <TableCell>{row.data}</TableCell>
-                {/* <TableCell>{row.qtd}</TableCell>
-                <TableCell>{row.numSerie}</TableCell>
-                <TableCell>{row.estConservacao}</TableCell>
-                <TableCell>{row.descricao}</TableCell>
-                <TableCell>{row.valor}</TableCell> */}
               </TableRow>
             ))}
           </TableBody>

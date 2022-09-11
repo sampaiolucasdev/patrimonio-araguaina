@@ -12,11 +12,18 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { FerramentasDaListagem } from "../../shared/components";
+import {
+  FerramentasDaListagem,
+  FerramentasDeDetalhe,
+} from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import { MovimentacaoService } from "../../shared/services/api/MovimentacaoService";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { PictureAsPdfOutlined } from "@mui/icons-material";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import timbradoSaude from "./../../assets/timbradoSaude.png";
 
 export const DetalheDeMovimentacao: React.FC = () => {
   //const { id = "nova" } = useParams<"id">();
@@ -58,6 +65,27 @@ export const DetalheDeMovimentacao: React.FC = () => {
   }, [id]);
   //console.log(id);
 
+  const doc = new jsPDF({ format: "a4" });
+  doc.setFontSize(12);
+  //doc.addImage(timbradoSaude, "PNG", 15, 40, 180, 180);
+  doc.text("Origem", 15, 40, { align: "left" });
+  doc.text("Destino", 195, 40, { align: "right" });
+
+  doc.text(origem, 31, 50, { align: "right" });
+  doc.text(destino, 193, 50, { align: "right" });
+  autoTable(doc, {
+    styles: { halign: "center" },
+    columnStyles: {
+      0: { halign: "left" },
+      1: { halign: "left" },
+      2: { halign: "left" },
+      3: { halign: "left" },
+    },
+    head: [["Plaqueta", "Conservação", "Descrição", "Valor"]],
+    body: [[numserie, estconservacao, descricao, valor]],
+  });
+  //doc.save("autoprint.pdf");
+
   return (
     <LayoutBaseDePagina
       titulo="Listagem de Movimentações"
@@ -66,8 +94,13 @@ export const DetalheDeMovimentacao: React.FC = () => {
          * Faz com que o que seja digitado no imput de busca, seja adicionado
          * também a URL como parâmetro de navegação, usando o useMemo e useSearchParams
          */
-        <FerramentasDaListagem
-          textoBotaoNovo="Nova"
+
+        <FerramentasDeDetalhe
+          mostrarInputBusca={false}
+          mostrarBotaoSalvar={false}
+          mostrarBotaoApagar={false}
+          mostrarBotaoVoltar={true}
+          aoClicarEmVoltar={() => navigate("/movimentacao")}
           aoClicarEmNovo={() => navigate("/movimentacao/nova")}
         />
       }
@@ -80,6 +113,7 @@ export const DetalheDeMovimentacao: React.FC = () => {
         <Table>
           <TableHead>
             <TableRow>
+              <TableCell>Ações</TableCell>
               <TableCell>Origem</TableCell>
               <TableCell>Destino</TableCell>
               <TableCell>Data</TableCell>
@@ -92,6 +126,17 @@ export const DetalheDeMovimentacao: React.FC = () => {
           </TableHead>
           <TableBody>
             <TableRow>
+              <TableCell>
+                <IconButton
+                  size="small"
+                  onClick={() => navigate("/movimentacao")}
+                >
+                  <PictureAsPdfOutlined
+                    color={"error"}
+                    onClick={() => doc.output("pdfobjectnewwindow")}
+                  />
+                </IconButton>
+              </TableCell>
               <TableCell>{origem}</TableCell>
               <TableCell>{destino}</TableCell>
               <TableCell>{data}</TableCell>
