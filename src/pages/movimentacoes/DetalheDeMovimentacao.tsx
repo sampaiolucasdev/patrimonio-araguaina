@@ -65,26 +65,64 @@ export const DetalheDeMovimentacao: React.FC = () => {
   }, [id]);
   //console.log(id);
 
-  const doc = new jsPDF({ format: "a4" });
+  const doc = new jsPDF();
   doc.setFontSize(12);
-  //doc.addImage(timbradoSaude, "PNG", 15, 40, 180, 180);
-  doc.text("Origem", 15, 40, { align: "left" });
-  doc.text("Destino", 195, 40, { align: "right" });
+  doc.addImage(timbradoSaude, "PNG", 5, 0, 200, 300);
+  doc.text("GUIA DE MOVIMENTAÇÃO DE BEM PATRIMONIAL", 105, 60, { align: "center" });
+  doc.text("Araguaína, 12 de Setembro de 2022", 105, 255, { align: "left" });
 
-  doc.text(origem, 31, 50, { align: "right" });
-  doc.text(destino, 193, 50, { align: "right" });
   autoTable(doc, {
-    styles: { halign: "center" },
+    theme: "grid",
+    margin: { top: 70 },
+    headStyles: {
+      cellWidth: 91,
+      halign: "center",
+    },
+    columnStyles: {
+      0: { halign: "center" },
+      1: { halign: "center" },
+    },
+    head: [["DEPARTAMENTO CEDENTE", "DEPARTAMENTO RECEPTOR"]],
+    body: [[origem, destino]],
+  });
+  
+  autoTable(doc, {
+    theme: "grid",
+    margin: { top: 30 },
     columnStyles: {
       0: { halign: "left" },
-      1: { halign: "left" },
+      1: { halign: "center" },
       2: { halign: "left" },
-      3: { halign: "left" },
+      3: { halign: "center" },
     },
     head: [["Plaqueta", "Conservação", "Descrição", "Valor"]],
     body: [[numserie, estconservacao, descricao, valor]],
   });
   //doc.save("autoprint.pdf");
+  
+  autoTable(doc, {
+    theme: "grid",
+    margin: { bottom: 100 },
+    headStyles: {
+      cellWidth: 60.6,
+      halign: "center",
+    },
+    columnStyles: {
+      0: { halign: "center", minCellHeight: 20, valign: "bottom" },
+      1: { halign: "center", minCellHeight: 20, valign: "bottom" },
+      2: { halign: "center", minCellHeight: 20, valign: "bottom" },
+    },
+    head: [
+      ["GESTOR(A) RESPONSÁVEL", "GESTOR(A) CEDENTE", "GESTOR(A) RECEPTOR(A)"],
+    ],
+    body: [
+      [
+        "________________________",
+        "________________________",
+        "________________________",
+      ],
+    ],
+  });
 
   return (
     <LayoutBaseDePagina
@@ -168,4 +206,4 @@ export const DetalheDeMovimentacao: React.FC = () => {
       </TableContainer>
     </LayoutBaseDePagina>
   );
-};
+};;

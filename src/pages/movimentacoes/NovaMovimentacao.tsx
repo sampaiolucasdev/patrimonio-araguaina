@@ -10,7 +10,7 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import { DataGrid, GridColDef, ptBR } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridRowId, ptBR } from "@mui/x-data-grid";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import * as yup from "yup";
 import { MovimentacaoService } from "../../shared/services/api/MovimentacaoService";
@@ -58,7 +58,7 @@ export const NovaMovimentacao: React.FC = () => {
   const [estConservacao, setEstConservacao] = useState("");
   const [pegarOrigemId, setPegarOrigemId] = useState<number | undefined>();
   const [pegarDestinoId, setPegarDestinoId] = useState<number>();
-  const [arrayIds, setArrayIds] = useState<number[]>([]);
+  const [arrayIds, setArrayIds] = useState<GridRowId[]>([]);
 
   //console.log("arrayIds", arrayIds);
 
