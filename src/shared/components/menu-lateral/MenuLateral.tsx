@@ -213,9 +213,10 @@ export const MenuLateral: React.FC = ({ children }) => {
                   }}
                 />
               </ListItemButton>
+
               <ListItemButton
-                onClick={handleClickDrawerInventario}
                 sx={{ height: 30 }}
+                onClick={() => navigate("/inventario")}
               >
                 <ListItemIcon sx={{ minWidth: 30 }}>
                   <InventoryIcon />
@@ -229,47 +230,8 @@ export const MenuLateral: React.FC = ({ children }) => {
                     mb: "2px",
                   }}
                 />
-                {openInventario ? <ExpandLess /> : <ExpandMore />}
               </ListItemButton>
-              <Collapse in={openInventario} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding={true}>
-                  <ListItemButton
-                    sx={{ pl: 3, heigth: 30 }}
-                    onClick={() => navigate("/inventario")}
-                  >
-                    <ListItemIcon sx={{ minWidth: 30 }}>
-                      <ApartmentIcon />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary="Prédios Administrativos"
-                      primaryTypographyProps={{
-                        fontSize: 14,
-                        lineHeight: "20px",
-                        mb: "2px",
-                      }}
-                    />
-                  </ListItemButton>
-                </List>
-                <List
-                  component="div"
-                  disablePadding={true}
-                  onClick={() => navigate("/ubs")}
-                >
-                  <ListItemButton sx={{ pl: 3, heigth: 30 }}>
-                    <ListItemIcon sx={{ minWidth: 30 }}>
-                      <HealingIcon />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary="UBS"
-                      primaryTypographyProps={{
-                        fontSize: 14,
-                        lineHeight: "20px",
-                        mb: "2px",
-                      }}
-                    />
-                  </ListItemButton>
-                </List>
-              </Collapse>
+
               <ListItemButton
                 sx={{ height: 30 }}
                 onClick={() => navigate("/relatorios")}

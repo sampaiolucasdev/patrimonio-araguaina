@@ -1,8 +1,6 @@
 import {
-  Icon,
   IconButton,
   LinearProgress,
-  Pagination,
   Paper,
   Table,
   TableBody,
@@ -12,10 +10,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import {
-  FerramentasDaListagem,
-  FerramentasDeDetalhe,
-} from "../../shared/components";
+import { FerramentasDeDetalhe } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import { MovimentacaoService } from "../../shared/services/api/MovimentacaoService";
 import { useNavigate, useParams } from "react-router-dom";
@@ -68,8 +63,10 @@ export const DetalheDeMovimentacao: React.FC = () => {
   const doc = new jsPDF();
   doc.setFontSize(12);
   doc.addImage(timbradoSaude, "PNG", 5, 0, 200, 300);
-  doc.text("GUIA DE MOVIMENTAÇÃO DE BEM PATRIMONIAL", 105, 60, { align: "center" });
-  doc.text("Araguaína, 12 de Setembro de 2022", 105, 255, { align: "left" });
+  doc.text("GUIA DE MOVIMENTAÇÃO DE BEM PATRIMONIAL", 105, 60, {
+    align: "center",
+  });
+  doc.text(`Araguaína, ${data}`, 105, 255, { align: "center" });
 
   autoTable(doc, {
     theme: "grid",
@@ -85,7 +82,7 @@ export const DetalheDeMovimentacao: React.FC = () => {
     head: [["DEPARTAMENTO CEDENTE", "DEPARTAMENTO RECEPTOR"]],
     body: [[origem, destino]],
   });
-  
+
   autoTable(doc, {
     theme: "grid",
     margin: { top: 30 },
@@ -99,7 +96,7 @@ export const DetalheDeMovimentacao: React.FC = () => {
     body: [[numserie, estconservacao, descricao, valor]],
   });
   //doc.save("autoprint.pdf");
-  
+
   autoTable(doc, {
     theme: "grid",
     margin: { bottom: 100 },
@@ -206,4 +203,4 @@ export const DetalheDeMovimentacao: React.FC = () => {
       </TableContainer>
     </LayoutBaseDePagina>
   );
-};;
+};
