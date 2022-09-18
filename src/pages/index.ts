@@ -20,5 +20,5 @@ export * from "./inventario/ListagemDeInventario";
 export * from "./ubs/DetalheDeUbs";
 export * from "./ubs/ListagemDeUbs";
 
-export * from "./relatorios/DetalheDeRelatorios";
-export * from "./relatorios/ListagemDeRelatorios";
+export * from "./relatorios/RelatorioMovimentacao";
+export * from "./relatorios/RelatorioBem";

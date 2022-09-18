@@ -32,6 +32,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import prefeituraLogo from "../../../assets/prefeitura-logo-redonda.png";
 import PieChartIcon from "@mui/icons-material/PieChart";
+import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
 
 export const MenuLateral: React.FC = ({ children }) => {
   const theme = useTheme();
@@ -44,6 +45,7 @@ export const MenuLateral: React.FC = ({ children }) => {
 
   const [openInventario, setOpenInventario] = useState(false);
   const [openCadastro, setOpenCadastro] = useState(false);
+  const [openRelatorio, setOpenRelatorio] = useState(false);
 
   const handleClickDrawerInventario = () => {
     setOpenInventario(!openInventario);
@@ -52,6 +54,10 @@ export const MenuLateral: React.FC = ({ children }) => {
   const handleClickDrawerCadastro = () => {
     setOpenCadastro(!openCadastro);
     openInventario ? setOpenInventario(!openInventario) : null;
+  };
+  const handleClickDrawerRelatorio = () => {
+    setOpenRelatorio(!openRelatorio);
+    openRelatorio ? setOpenRelatorio(!openRelatorio) : null;
   };
 
   return (
@@ -234,10 +240,10 @@ export const MenuLateral: React.FC = ({ children }) => {
 
               <ListItemButton
                 sx={{ height: 30 }}
-                onClick={() => navigate("/relatorios")}
+                onClick={handleClickDrawerRelatorio}
               >
                 <ListItemIcon sx={{ minWidth: 30 }}>
-                  <AssessmentIcon />
+                  <AssessmentOutlinedIcon />
                 </ListItemIcon>
                 <ListItemText
                   primary="Relatórios"
@@ -248,7 +254,42 @@ export const MenuLateral: React.FC = ({ children }) => {
                     mb: "2px",
                   }}
                 />
+                {openRelatorio ? <ExpandLess /> : <ExpandMore />}
               </ListItemButton>
+              <Collapse in={openRelatorio} timeout="auto" unmountOnExit>
+                <ListItemButton
+                  sx={{ pl: 3, heigth: 30 }}
+                  onClick={() => navigate("/relatoriobens")}
+                >
+                  <ListItemIcon sx={{ minWidth: 30 }}>
+                    <HomeIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Bens"
+                    primaryTypographyProps={{
+                      fontSize: 14,
+                      lineHeight: "20px",
+                      mb: "2px",
+                    }}
+                  />
+                </ListItemButton>
+                <ListItemButton
+                  sx={{ pl: 3, heigth: 30 }}
+                  onClick={() => navigate("/relatoriomovimentacao")}
+                >
+                  <ListItemIcon sx={{ minWidth: 30 }}>
+                    <PieChartIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Movimentações"
+                    primaryTypographyProps={{
+                      fontSize: 14,
+                      lineHeight: "20px",
+                      mb: "2px",
+                    }}
+                  />
+                </ListItemButton>
+              </Collapse>
             </List>
             <Box>
               <List

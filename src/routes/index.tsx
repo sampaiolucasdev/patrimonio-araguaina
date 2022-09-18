@@ -6,8 +6,7 @@ import {
   Dashboard,
   ListagemDeBens,
   DetalheDeBens,
-  ListagemDeRelatorios,
-  DetalheDeRelatorios,
+  RelatorioMovimentacao,
   DetalheDeMovimentacao,
   ListagemDeMovimentacao,
   DetalheDeSetor,
@@ -16,10 +15,10 @@ import {
   ListagemDeUbs,
   ListagemDeUsuario,
   DetalheDeUsuario,
-  DetalheDeInventario,
   ListagemDeInventario,
   ListagemDeDepartamento,
   DetalheDeDepartamento,
+  RelatorioBem,
 } from "../pages";
 import { NovaMovimentacao } from "../pages/movimentacoes/NovaMovimentacao";
 
@@ -80,8 +79,11 @@ export const AppRoutes = () => {
       <Route path="/ubs" element={<ListagemDeUbs />} />
       <Route path="/ubs/detalhe/:id" element={<DetalheDeUbs />} />
 
-      <Route path="/relatorios" element={<ListagemDeRelatorios />} />
-      <Route path="/relatorios/detalhe/:id" element={<DetalheDeRelatorios />} />
+      <Route path="/relatoriobens" element={<RelatorioBem />} />
+      <Route
+        path="/relatoriomovimentacao"
+        element={<RelatorioMovimentacao />}
+      />
 
       <Route path="*" element={<Navigate to="/pagina-inicial" />} />
     </Routes>
