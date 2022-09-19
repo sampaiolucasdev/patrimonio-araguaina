@@ -91,6 +91,15 @@
         4
       ],
       "id": 12
+    },
+    {
+      "estConservacao": "Regular",
+      "pegarOrigemId": 2,
+      "pegarDestinoId": 3,
+      "arrayIds": [
+        2
+      ],
+      "id": 13
     }
   ],
   "bens": [
@@ -104,7 +113,8 @@
       "origem": 2,
       "estConservacao": "Novo",
       "valor": 1200,
-      "numSerie": "084987"
+      "numSerie": "084987",
+      "dataCriacao": "19-09-2022"
     },
     {
       "origem_id": 2,
@@ -116,7 +126,8 @@
       "modelo": "asd2s",
       "marca": "asd2s",
       "descricao": "ORIGEM ID 2",
-      "id": 2
+      "id": 2,
+      "dataCriacao": "19-09-2022"
     },
     {
       "origem_id": 2,
@@ -128,7 +139,8 @@
       "modelo": "kit teclado",
       "marca": "hp",
       "descricao": "ORIGEM ID 2",
-      "id": 3
+      "id": 3,
+      "dataCriacao": "23-09-2022"
     },
     {
       "origem_id": 3,
@@ -140,7 +152,8 @@
       "modelo": "teste",
       "marca": "teste",
       "descricao": "ORIGEM ID 3",
-      "id": 4
+      "id": 4,
+      "dataCriacao": "22-09-2022"
     },
     {
       "origem_id": 3,
@@ -152,7 +165,8 @@
       "modelo": "teste",
       "marca": "teste",
       "descricao": "ORIGEM ID 3",
-      "id": 5
+      "id": 5,
+      "dataCriacao": "21-09-2022"
     },
     {
       "origem_id": 4,
@@ -164,7 +178,19 @@
       "modelo": "teste",
       "marca": "teste",
       "descricao": "ORIGEM ID 4",
-      "id": 6
+      "id": 6,
+      "dataCriacao": "20-09-2022"
+    },
+    {
+      "numSerie": "66666",
+      "valor": 5000,
+      "estConservacao": "Novo",
+      "origem": "3",
+      "imagem": "teste",
+      "modelo": "teste",
+      "marca": "teste",
+      "descricao": "teste",
+      "id": 7
     }
   ],
   "usuario": [

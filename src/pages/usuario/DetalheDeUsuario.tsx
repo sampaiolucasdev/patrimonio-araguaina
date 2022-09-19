@@ -163,7 +163,7 @@ export const DetalheDeUsuario: React.FC = () => {
               <FormGroup>
                 <FormControlLabel
                   control={
-                    <VSwitch name="switchRoleAdmin" checkedValue={role} />
+                    <VSwitch name="switchRoleAdmin" defaultChecked={role} />
                   }
                   label="Admin"
                 />
@@ -171,7 +171,10 @@ export const DetalheDeUsuario: React.FC = () => {
               <FormGroup>
                 <FormControlLabel
                   control={
-                    <VSwitch name="switchStatusActive" checkedValue={status} />
+                    <VSwitch
+                      name="switchStatusActive"
+                      defaultChecked={status}
+                    />
                   }
                   label="Ativo"
                 />

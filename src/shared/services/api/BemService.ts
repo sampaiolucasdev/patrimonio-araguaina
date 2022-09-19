@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { Enviroment } from "../../enviroment";
 import { Api } from "./axios-config";
 
@@ -6,22 +7,24 @@ export interface IListagemBens {
   descricao: string;
   marca: string;
   modelo: string;
-  imagen: string;
+  imagem: string | undefined;
   origem: string;
   estConservacao: string;
   valor: number;
   numSerie: string;
+  dataCriacao?: string;
 }
 export interface IDetalheBens {
   id: number;
   descricao: string;
   marca: string;
   modelo: string;
-  imagem: string;
+  imagem: string | undefined;
   origem: string;
   estConservacao: string;
   valor: number;
   numSerie: string;
+  dataCriacao?: string;
 }
 type TBensComTotalCount = {
   data: IListagemBens[];
@@ -65,6 +68,42 @@ const getAllBySetor = async (
     const urlRelativa = `/bens?_page=${page}&_limit=${Enviroment.LIMITE_DE_LINHAS}&numSerie_like=${filter}&origem_id=${setor}`;
 
     const { data, headers } = await Api.get(urlRelativa);
+
+    if (data) {
+      return {
+        data,
+        totalCount: Number(
+          headers["x-total-count"] || Enviroment.LIMITE_DE_LINHAS
+        ),
+      };
+    }
+    return new Error("Erro ao listar os registros");
+  } catch (error) {
+    console.error(error);
+    return new Error(
+      (error as { message: string }).message || "Erro ao listar os registros"
+    );
+  }
+};
+
+const getAllFiltered = async (
+  initialDate: Date | null,
+  finalDate: Date | null,
+  setorId = 0,
+  estConservacao = ""
+): Promise<TBensComTotalCount | Error> => {
+  try {
+    const urlRelativa = `/bens?_setorId=${setorId}&_estConservacao=${estConservacao}&initialDate=${initialDate}&finalDate=${finalDate}&_limit=${Enviroment.LIMITE_DE_LINHAS}`;
+
+    const { data, headers } = await Api.get("/bens", {
+      params: {
+        estConservacao,
+        initialDate,
+        finalDate,
+        origemId: setorId,
+        _limit: Enviroment.LIMITE_DE_LINHAS,
+      },
+    });
 
     if (data) {
       return {
@@ -197,4 +236,5 @@ export const BemService = {
   getAllBySetor,
   getAllDescarteBySetor,
   getAllDescarte,
+  getAllFiltered,
 };

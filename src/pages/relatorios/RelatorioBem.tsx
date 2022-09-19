@@ -1,5 +1,6 @@
 import {
   Box,
+  CardMedia,
   Divider,
   FormControl,
   Grid,
@@ -12,38 +13,22 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { LocalizationProvider } from "@mui/x-date-pickers";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { FerramentasDeDetalhe } from "../../shared/components";
-
 import { useVForm, VForm } from "../../shared/forms";
 import { useDebounce } from "../../shared/hooks";
 import { LayoutBaseDePagina } from "../../shared/layouts";
-import {
-  IListagemCidade,
-  CidadesService,
-} from "../../shared/services/api/cidades/MovimentacaoService";
-import * as yup from "yup";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-import ptBR from "dayjs/locale/pt-br";
-import dayjs, { Dayjs } from "dayjs";
 import { AutoCompleteOrigem } from "../movimentacoes/components/AutoCompleteOrigem";
-import { RelatorioService } from "../../shared/services/api/RelatorioService";
-
-interface IFormData {
-  inicialDate: Dayjs;
-  finalDate: Dayjs;
-  origemId: number;
-  estConservacao: string;
-}
-const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
-  inicialDate: yup.date().required().min(3),
-  finalDate: yup.date().required().min(3),
-  origemId: yup.number().required().min(3),
-  estConservacao: yup.string().required().min(3),
-});
+import {
+  BemService,
+  IListagemBens,
+} from "../../shared/services/api/BemService";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { DataGrid, ptBR } from "@mui/x-data-grid";
+import cabecalho from "../../assets/secSaude_cabecalho.png";
+import rodape from "../../assets/secSaude_rodape.png";
 
 export const RelatorioBem: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -52,11 +37,12 @@ export const RelatorioBem: React.FC = () => {
   const navigate = useNavigate();
 
   const { formRef, saveAndClose, isSaveAndClose } = useVForm();
-  const [rows, setRows] = useState<IListagemCidade[]>([]);
-  const [isLoading, setIsLoading] = useState(true); //Feedback visual de carregamento
+  const [rows, setRows] = useState<IListagemBens[]>([]);
+  const [filteredRows, setFilteredRows] = useState<IListagemBens[]>([]);
+  const [isLoading, setIsLoading] = useState(false); //Feedback visual de carregamento
   const [totalCount, setTotalCount] = useState(0);
-  const [inicialDate, setInicialDate] = useState<Dayjs | null>(dayjs(""));
-  const [finalDate, setFinalDate] = useState<Dayjs | null>(dayjs(""));
+  const [inicialDate, setInicialDate] = useState<Date | null>(null);
+  const [finalDate, setFinalDate] = useState<Date | null>(null);
   const [pegarOrigemId, setPegarOrigemId] = useState<number | undefined>();
   const [estConservacao, setEstConservacao] = useState("");
 
@@ -69,44 +55,95 @@ export const RelatorioBem: React.FC = () => {
   }, [searchParams]);
 
   const handleSubmit = () => {
-    useEffect(() => {
-      setIsLoading(true);
-      debounce(() => {
-        RelatorioService.getAll(
-          inicialDate,
-          finalDate,
-          pegarOrigemId,
-          estConservacao
-        ).then((result) => {
-          setIsLoading(false);
-          if (result instanceof Error) {
-            alert(result.message);
-          } else {
-            console.log(result);
-            setTotalCount(result.totalCount);
-            //setRows(result.data);
-          }
-        });
-      });
-    }, [busca, pagina]);
+    console.log("teste");
   };
 
   useEffect(() => {
     setIsLoading(true);
     debounce(() => {
-      CidadesService.getAll(pagina, busca).then((result) => {
+      BemService.getAllFiltered(
+        inicialDate,
+        finalDate,
+        pegarOrigemId,
+        estConservacao
+      ).then((result) => {
         setIsLoading(false);
         if (result instanceof Error) {
           alert(result.message);
         } else {
-          console.log(result);
-
+          console.log("result filtered", result);
           setTotalCount(result.totalCount);
-          setRows(result.data);
+          setFilteredRows(result.data);
         }
       });
     });
-  }, [busca, pagina]);
+  }, [inicialDate, finalDate, pegarOrigemId, estConservacao]);
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   debounce(() => {
+  //     BemService.getAll(pagina, busca).then((result) => {
+  //       setIsLoading(false);
+  //       if (result instanceof Error) {
+  //         alert(result.message);
+  //       } else {
+  //         console.log(result);
+
+  //         setTotalCount(result.totalCount);
+  //         setRows(result.data);
+  //       }
+  //     });
+  //   });
+  // }, [busca, pagina]);
+
+  const columns = [
+    { field: "numSerie", headerName: "Número de Série", width: 130 },
+    {
+      field: "estConservacao",
+      headerName: "Estado de Conservação",
+      width: 190,
+      editable: false,
+    },
+    {
+      field: "marca",
+      headerName: "Marca",
+      type: "string",
+      width: 110,
+      editable: false,
+    },
+    {
+      field: "modelo",
+      headerName: "Modelo",
+      type: "string",
+      width: 110,
+      editable: false,
+    },
+    {
+      field: "descricao",
+      headerName: "Descrição",
+      width: 150,
+      editable: false,
+    },
+    {
+      field: "valor",
+      headerName: "Valor",
+      type: "number",
+      width: 110,
+      editable: false,
+    },
+  ];
+  {
+    filteredRows.map((row) => [
+      {
+        id: row.id,
+        numSerie: row.numSerie,
+        estConservacao: row.estConservacao,
+        marca: row.marca,
+        modelo: row.modelo,
+        descricao: row.descricao,
+        valor: row.valor,
+      },
+    ]);
+  }
 
   return (
     <LayoutBaseDePagina
@@ -134,7 +171,19 @@ export const RelatorioBem: React.FC = () => {
                 <LinearProgress variant="indeterminate" />
               </Grid>
             )}
+            <Grid container item direction="column" spacing={3}></Grid>
+            <CardMedia
+              component="img"
+              height="194"
+              image={cabecalho}
+              alt="Paella dish"
+            />
 
+            <Grid item>
+              <Typography variant="h4" align="center">
+                Relatório de Bens Patrimoniais
+              </Typography>
+            </Grid>
             <Grid item>
               <Typography variant="h6">Período</Typography>
             </Grid>
@@ -142,46 +191,27 @@ export const RelatorioBem: React.FC = () => {
             <Grid container item direction="row" spacing={2}>
               <Grid container item direction="row" spacing={2}>
                 <Grid item direction="row" xs={9} sm={8} md={5} lg={4} xl={3}>
-                  <LocalizationProvider
-                    adapterLocale={ptBR}
-                    dateAdapter={AdapterDayjs}
-                  >
+                  <LocalizationProvider dateAdapter={AdapterMoment}>
                     <Stack
                       spacing={2}
                       direction="row"
                       divider={<Divider orientation="vertical" flexItem />}
                     >
-                      <DesktopDatePicker
-                        //mask="DD/MM/YYY"
+                      <DatePicker
                         label="Data Inicial"
-                        inputFormat="DD/MM/YYYY"
                         value={inicialDate}
-                        onChange={(newValue: Dayjs | null) =>
-                          setInicialDate(newValue)
-                        }
-                        renderInput={(params) => (
-                          <TextField {...params} fullWidth />
-                        )}
-                        showDaysOutsideCurrentMonth
-                        dayOfWeekFormatter={(day) =>
-                          day.charAt(0).toUpperCase()
-                        }
+                        onChange={(newValue) => {
+                          setInicialDate(newValue);
+                        }}
+                        renderInput={(params) => <TextField {...params} />}
                       />
-                      <DesktopDatePicker
-                        mask="__/__/___"
+                      <DatePicker
                         label="Data Final"
-                        inputFormat="DD/MM/YYYY"
                         value={finalDate}
-                        onChange={(newValue: Dayjs | null) =>
-                          setFinalDate(newValue)
-                        }
-                        renderInput={(params) => (
-                          <TextField {...params} fullWidth />
-                        )}
-                        showDaysOutsideCurrentMonth
-                        dayOfWeekFormatter={(day) =>
-                          day.charAt(0).toUpperCase()
-                        }
+                        onChange={(newValue) => {
+                          setFinalDate(newValue);
+                        }}
+                        renderInput={(params) => <TextField {...params} />}
                       />
                     </Stack>
                   </LocalizationProvider>
@@ -247,6 +277,34 @@ export const RelatorioBem: React.FC = () => {
               ></Grid>
             </Grid>
           </Grid>
+        </Box>
+
+        <Box
+          margin={1}
+          display="flex"
+          flexDirection="column"
+          component={Paper}
+          variant="outlined"
+          sx={{ height: 550 }}
+        >
+          <DataGrid
+            localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
+            checkboxSelection={false}
+            rows={filteredRows}
+            columns={columns}
+            pageSize={5}
+            rowsPerPageOptions={[9999]}
+            disableSelectionOnClick
+            experimentalFeatures={{ newEditingApi: true }}
+          />
+
+          <CardMedia
+            component="img"
+            height="194"
+            image={rodape}
+            alt="Paella dish"
+          />
+          <Grid container item direction="column" spacing={3}></Grid>
         </Box>
       </VForm>
     </LayoutBaseDePagina>

@@ -15,7 +15,7 @@ interface IFormData {
   descricao: string;
   marca: string;
   modelo: string;
-  imagem: string;
+  imagem: string | undefined;
   origem: string;
   estConservacao: string;
   valor: number;
@@ -25,7 +25,7 @@ const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
   descricao: yup.string().required(),
   marca: yup.string().required(),
   modelo: yup.string().required(),
-  imagem: yup.string().required(),
+  imagem: yup.string(),
   origem: yup.string().required(),
   estConservacao: yup.string().required().min(1),
   valor: yup.number().required().min(1),
@@ -72,11 +72,11 @@ export const DetalheDeBens: React.FC = () => {
   }, [id]);
 
   const handleSave = (dados: IFormData) => {
-    //console.log(dados);
+    console.log(dados);
     formValidationSchema
       .validate(dados, { abortEarly: false })
       .then((dadosValidados) => {
-        //console.log("dados validados", dadosValidados);
+        console.log("dados validados", dadosValidados);
         setIsLoading(true);
         BemService.create(dadosValidados).then((result) => {
           setIsLoading(false);
