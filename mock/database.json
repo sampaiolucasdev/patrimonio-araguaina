@@ -39,23 +39,23 @@
   "setor": [
     {
       "nome": "Compras",
-      "id": 2
+      "id": 1
     },
     {
       "nome": "RH",
-      "id": 3
+      "id": 2
     },
     {
       "nome": "Tecnologia",
-      "id": 4
+      "id": 3
     },
     {
       "nome": "rwerwerwer",
-      "id": 5
+      "id": 4
     },
     {
       "nome": "testebhayron",
-      "id": 7
+      "id": 5
     }
   ],
   "movimentacao": [
@@ -68,60 +68,49 @@
       "qtd": 1,
       "numSerie": "080846",
       "estConservacao": "Novo",
-      "descricao": [
-        "ESTABILIZADOR SMS 1400VA",
-        "MONITOR BLUECASE 20"
-      ],
+      "descricao": ["ESTABILIZADOR SMS 1400VA", "MONITOR BLUECASE 20"],
       "valor": 700
     },
     {
       "estConservacao": "Regular",
       "pegarOrigemId": 3,
       "pegarDestinoId": 4,
-      "arrayIds": [
-        4
-      ],
+      "arrayIds": [4],
       "id": 11
     },
     {
       "estConservacao": "Regular",
       "pegarOrigemId": 3,
       "pegarDestinoId": 4,
-      "arrayIds": [
-        4
-      ],
+      "arrayIds": [4],
       "id": 12
     },
     {
       "estConservacao": "Regular",
       "pegarOrigemId": 2,
       "pegarDestinoId": 3,
-      "arrayIds": [
-        2
-      ],
+      "arrayIds": [2],
       "id": 13
     }
   ],
   "bens": [
     {
-      "origem_id": 1,
+      "setor_id": 1,
       "id": 1,
       "descricao": "ORIGEM ID 1",
       "marca": "POSITIVO",
       "modelo": "MKH86",
       "imagen": "imagem",
-      "origem": 2,
       "estConservacao": "Novo",
       "valor": 1200,
       "numSerie": "084987",
       "dataCriacao": "19-09-2022"
     },
     {
-      "origem_id": 2,
+      "setor_id": 2,
       "numSerie": "810978",
       "valor": 1111,
       "estConservacao": "Bom",
-      "origem": "2",
       "imagem": "asdss",
       "modelo": "asd2s",
       "marca": "asd2s",
@@ -130,11 +119,10 @@
       "dataCriacao": "19-09-2022"
     },
     {
-      "origem_id": 2,
+      "setor_id": 2,
       "numSerie": "4879845",
       "valor": 250,
       "estConservacao": "Regular",
-      "origem": "2",
       "imagem": "teste",
       "modelo": "kit teclado",
       "marca": "hp",
@@ -143,11 +131,10 @@
       "dataCriacao": "23-09-2022"
     },
     {
-      "origem_id": 3,
+      "setor_id": 3,
       "numSerie": "3232323",
       "valor": 1222,
       "estConservacao": "Descarte",
-      "origem": "3",
       "imagem": "testee",
       "modelo": "teste",
       "marca": "teste",
@@ -156,11 +143,10 @@
       "dataCriacao": "22-09-2022"
     },
     {
-      "origem_id": 3,
+      "setor_id": 3,
       "numSerie": "0887196",
       "valor": 112,
       "estConservacao": "Descarte",
-      "origem": "3",
       "imagem": "testee",
       "modelo": "teste",
       "marca": "teste",
@@ -169,11 +155,10 @@
       "dataCriacao": "21-09-2022"
     },
     {
-      "origem_id": 4,
+      "setor_id": 4,
       "numSerie": "3232323",
       "valor": 1112222,
       "estConservacao": "Bom",
-      "origem": "3",
       "imagem": "testee",
       "modelo": "teste",
       "marca": "teste",
@@ -182,15 +167,16 @@
       "dataCriacao": "20-09-2022"
     },
     {
+      "setor_id": 5,
       "numSerie": "66666",
       "valor": 5000,
       "estConservacao": "Novo",
-      "origem": "3",
       "imagem": "teste",
       "modelo": "teste",
       "marca": "teste",
-      "descricao": "teste",
-      "id": 7
+      "descricao": "ORIGEM ID 5",
+      "id": 7,
+      "dataCriacao": "20-09-2022"
     }
   ],
   "usuario": [

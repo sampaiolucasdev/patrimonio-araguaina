@@ -8,7 +8,7 @@ export interface IListagemBens {
   marca: string;
   modelo: string;
   imagem: string | undefined;
-  origem: string;
+  setor_id: number;
   estConservacao: string;
   valor: number;
   numSerie: string;
@@ -20,7 +20,7 @@ export interface IDetalheBens {
   marca: string;
   modelo: string;
   imagem: string | undefined;
-  origem: string;
+  setor_id: number;
   estConservacao: string;
   valor: number;
   numSerie: string;
@@ -89,18 +89,18 @@ const getAllBySetor = async (
 const getAllFiltered = async (
   initialDate: Date | null,
   finalDate: Date | null,
-  setorId = 0,
+  pegarOrigemId = 0,
   estConservacao = ""
 ): Promise<TBensComTotalCount | Error> => {
   try {
-    const urlRelativa = `/bens?_setorId=${setorId}&_estConservacao=${estConservacao}&initialDate=${initialDate}&finalDate=${finalDate}&_limit=${Enviroment.LIMITE_DE_LINHAS}`;
+    const urlRelativa = `/bens?_setorId=${pegarOrigemId}&_estConservacao=${estConservacao}&initialDate=${initialDate}&finalDate=${finalDate}&_limit=${Enviroment.LIMITE_DE_LINHAS}`;
 
     const { data, headers } = await Api.get("/bens", {
       params: {
         estConservacao,
         initialDate,
         finalDate,
-        origemId: setorId,
+        setor_id: pegarOrigemId,
         _limit: Enviroment.LIMITE_DE_LINHAS,
       },
     });
@@ -149,7 +149,7 @@ const getAllDescarteBySetor = async (
   estConservacao = ""
 ): Promise<TTotalCountDescarte | Error> => {
   try {
-    const urlRelativa = `/bens?_page=1&_limit=${Enviroment.LIMITE_DE_LINHAS}&estConservacao=${estConservacao}&origem_id=${setor}`;
+    const urlRelativa = `/bens?_page=1&_limit=${Enviroment.LIMITE_DE_LINHAS}&estConservacao=${estConservacao}&setor_id=${setor}`;
 
     const { data, headers } = await Api.get(urlRelativa);
 

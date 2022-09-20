@@ -30,7 +30,7 @@ export const ListagemDeInventario: React.FC = () => {
   const [rows, setRows] = useState<IListagemBens[]>([]);
   const [isLoading, setIsLoading] = useState(true); //Feedback visual de carregamento
   const [totalCount, setTotalCount] = useState(0);
-  const [searchOrigem, setSearchOrigem] = useState("");
+  const [searchOrigem, setSearchOrigem] = useState(0);
 
   const busca = useMemo(() => {
     return searchParams.get("busca") || "";
@@ -53,7 +53,7 @@ export const ListagemDeInventario: React.FC = () => {
 
             setTotalCount(result.totalCount);
             setRows(result.data);
-            setSearchOrigem(result.data[0].origem);
+            setSearchOrigem(result.data[0].setor_id);
             console.log("origem", searchOrigem);
           }
         }
@@ -105,7 +105,7 @@ export const ListagemDeInventario: React.FC = () => {
           <TableBody>
             {rows.map((row) => (
               <TableRow key={row.id}>
-                <TableCell>{row.origem}</TableCell>
+                <TableCell>{row.setor_id}</TableCell>
                 <TableCell>{row.numSerie}</TableCell>
                 <TableCell>{row.descricao}</TableCell>
                 <TableCell>{row.marca}</TableCell>

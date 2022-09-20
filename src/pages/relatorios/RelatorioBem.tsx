@@ -41,7 +41,7 @@ export const RelatorioBem: React.FC = () => {
   const [filteredRows, setFilteredRows] = useState<IListagemBens[]>([]);
   const [isLoading, setIsLoading] = useState(false); //Feedback visual de carregamento
   const [totalCount, setTotalCount] = useState(0);
-  const [inicialDate, setInicialDate] = useState<Date | null>(null);
+  const [initialDate, setInitialDate] = useState<Date | null>(null);
   const [finalDate, setFinalDate] = useState<Date | null>(null);
   const [pegarOrigemId, setPegarOrigemId] = useState<number | undefined>();
   const [estConservacao, setEstConservacao] = useState("");
@@ -62,7 +62,7 @@ export const RelatorioBem: React.FC = () => {
     setIsLoading(true);
     debounce(() => {
       BemService.getAllFiltered(
-        inicialDate,
+        initialDate,
         finalDate,
         pegarOrigemId,
         estConservacao
@@ -77,7 +77,7 @@ export const RelatorioBem: React.FC = () => {
         }
       });
     });
-  }, [inicialDate, finalDate, pegarOrigemId, estConservacao]);
+  }, [initialDate, finalDate, pegarOrigemId, estConservacao]);
   // useEffect(() => {
   //   setIsLoading(true);
   //   debounce(() => {
@@ -199,9 +199,9 @@ export const RelatorioBem: React.FC = () => {
                     >
                       <DatePicker
                         label="Data Inicial"
-                        value={inicialDate}
+                        value={initialDate}
                         onChange={(newValue) => {
-                          setInicialDate(newValue);
+                          setInitialDate(newValue);
                         }}
                         renderInput={(params) => <TextField {...params} />}
                       />
