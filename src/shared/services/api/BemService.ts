@@ -60,14 +60,16 @@ const getAll = async (
 };
 
 const getAllBySetor = async (
-  page = 1,
-  filter = "",
-  setor = 0
+  setor_id = 0
 ): Promise<TBensComTotalCount | Error> => {
   try {
-    const urlRelativa = `/bens?_page=${page}&_limit=${Enviroment.LIMITE_DE_LINHAS}&numSerie_like=${filter}&origem_id=${setor}`;
+    //const urlRelativa = `/bens?_page=${page}&_limit=${Enviroment.LIMITE_DE_LINHAS}&numSerie_like=${filter}&origem_id=${setor}`;
 
-    const { data, headers } = await Api.get(urlRelativa);
+    const { data, headers } = await Api.get("/bens", {
+      params: {
+        setor_id,
+      },
+    });
 
     if (data) {
       return {

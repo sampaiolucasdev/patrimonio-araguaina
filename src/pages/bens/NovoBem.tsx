@@ -20,8 +20,8 @@ import { toast } from "react-toastify";
 
 interface IFormData {
   id?: number;
-  origem: string;
-  destino: string;
+  setor_id_origem: number;
+  setor_id_destino: number;
   data: string;
   qtd: number;
   numSerie: string;
@@ -31,8 +31,8 @@ interface IFormData {
 }
 const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
   id: yup.number(),
-  origem: yup.string().required(),
-  destino: yup.string().required(),
+  setor_id_origem: yup.number().required(),
+  setor_id_destino: yup.number().required(),
   data: yup.string().required(),
   qtd: yup.number().required().min(1),
   numSerie: yup.string().required().min(4),

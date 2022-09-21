@@ -4,8 +4,8 @@ import { Api } from "./axios-config";
 
 export interface IListagemMovimentacao {
   id: number;
-  origem: string;
-  destino: string;
+  setor_id_origem: number;
+  setor_id_destino: number;
   data: string;
   qtd: number;
   numSerie: string;
@@ -17,8 +17,8 @@ export interface IDetalheMovimentacao {
   //id: number;
   estConservacao: string;
   arrayIds: any;
-  pegarOrigemId: number | undefined;
-  pegarDestinoId: number | undefined;
+  setor_id_origem: number | undefined;
+  setor_id_destino: number | undefined;
 }
 type TMovimentacaoComTotalCount = {
   data: IListagemMovimentacao[];
@@ -29,10 +29,44 @@ const getAll = async (
   filter = ""
 ): Promise<TMovimentacaoComTotalCount | Error> => {
   try {
-    const urlRelativa = `/movimentacao?_page=${page}&_limit=${Enviroment.LIMITE_DE_LINHAS}&origem_like=${filter}`;
+    const urlRelativa = `/movimentacao?_page=${page}&_limit=${Enviroment.LIMITE_DE_LINHAS}`;
 
     const { data, headers } = await Api.get(urlRelativa);
     console.log(data);
+    if (data) {
+      return {
+        data,
+        totalCount: Number(
+          headers["x-total-count"] || Enviroment.LIMITE_DE_LINHAS
+        ),
+      };
+    }
+    return new Error("Erro ao listar os registros");
+  } catch (error) {
+    console.error(error);
+    return new Error(
+      (error as { message: string }).message || "Erro ao listar os registros"
+    );
+  }
+};
+
+const getAllFiltered = async (
+  initialDate: Date | null,
+  finalDate: Date | null,
+  setor_id_origem = 0
+): Promise<TMovimentacaoComTotalCount | Error> => {
+  try {
+    //const urlRelativa = `/bens?_setorId=${pegarOrigemId}&_estConservacao=${estConservacao}&initialDate=${initialDate}&finalDate=${finalDate}&_limit=${Enviroment.LIMITE_DE_LINHAS}`;
+
+    const { data, headers } = await Api.get("/movimentacao", {
+      params: {
+        initialDate,
+        finalDate,
+        setor_id_origem,
+        _limit: Enviroment.LIMITE_DE_LINHAS,
+      },
+    });
+
     if (data) {
       return {
         data,
@@ -137,4 +171,5 @@ export const MovimentacaoService = {
   updateById,
   deleteById,
   create2,
+  getAllFiltered,
 };

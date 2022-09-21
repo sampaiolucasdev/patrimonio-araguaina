@@ -60,37 +60,55 @@
   ],
   "movimentacao": [
     {
-      "origem_id": 2,
-      "id": 10,
-      "origem": "SUPVISA",
-      "destino": "TI",
+      "setor_id_origem": 1,
+      "id": 1,
+      "setor_id_destino": 2,
       "data": "2022-08-07",
       "qtd": 1,
       "numSerie": "080846",
       "estConservacao": "Novo",
-      "descricao": ["ESTABILIZADOR SMS 1400VA", "MONITOR BLUECASE 20"],
+      "descricao": ["COMPRAS", "MONITOR BLUECASE 20"],
       "valor": 700
     },
     {
-      "estConservacao": "Regular",
-      "pegarOrigemId": 3,
-      "pegarDestinoId": 4,
-      "arrayIds": [4],
-      "id": 11
+      "setor_id_origem": 2,
+      "id": 2,
+      "setor_id_destino": 3,
+      "data": "2022-08-07",
+      "qtd": 1,
+      "numSerie": "080846",
+      "estConservacao": "Novo",
+      "descricao": ["RH", "MONITOR BLUECASE 20"],
+      "valor": 700
     },
     {
-      "estConservacao": "Regular",
-      "pegarOrigemId": 3,
-      "pegarDestinoId": 4,
-      "arrayIds": [4],
-      "id": 12
+      "setor_id_origem": 3,
+      "id": 3,
+      "setor_id_destino": 4,
+      "data": "2022-08-07",
+      "qtd": 1,
+      "numSerie": "080846",
+      "estConservacao": "Novo",
+      "descricao": ["TI", "MONITOR BLUECASE 20"],
+      "valor": 700
     },
     {
-      "estConservacao": "Regular",
-      "pegarOrigemId": 2,
-      "pegarDestinoId": 3,
-      "arrayIds": [2],
-      "id": 13
+      "setor_id_origem": 4,
+      "id": 4,
+      "setor_id_destino": 5,
+      "data": "2022-08-07",
+      "qtd": 1,
+      "numSerie": "080846",
+      "estConservacao": "Novo",
+      "descricao": ["RWRW", "MONITOR BLUECASE 20"],
+      "valor": 700
+    },
+    {
+      "estConservacao": "Descarte",
+      "setor_id_origem": 1,
+      "setor_id_destino": 2,
+      "arrayIds": [1],
+      "id": 5
     }
   ],
   "bens": [

@@ -25,8 +25,8 @@ export const DetalheDeMovimentacao: React.FC = () => {
   const navigate = useNavigate();
   const data2 = new Date().toLocaleTimeString();
   const [isLoading, setIsLoading] = useState(true);
-  const [origem, setOrigem] = useState("");
-  const [destino, setDestino] = useState("");
+  const [origem, setOrigem] = useState(0);
+  const [destino, setDestino] = useState(0);
   const [data, setData] = useState(data2);
   const [qnt, setQtd] = useState(0);
   const [numserie, setNumserie] = useState("");
@@ -45,8 +45,8 @@ export const DetalheDeMovimentacao: React.FC = () => {
           alert(result.message);
           navigate("/movimentacao");
         } else {
-          setOrigem(result.origem);
-          setDestino(result.destino);
+          setOrigem(result.setor_id_origem);
+          setDestino(result.setor_id_destino);
           setData(result.data);
           setQtd(result.qtd);
           setNumserie(result.numSerie);

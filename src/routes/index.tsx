@@ -6,7 +6,6 @@ import {
   Dashboard,
   ListagemDeBens,
   DetalheDeBens,
-  RelatorioMovimentacao,
   DetalheDeMovimentacao,
   ListagemDeMovimentacao,
   DetalheDeSetor,
@@ -18,7 +17,7 @@ import {
   ListagemDeInventario,
   ListagemDeDepartamento,
   DetalheDeDepartamento,
-  RelatorioBem,
+  RelatorioMovimentacao,
 } from "../pages";
 import { NovaMovimentacao } from "../pages/movimentacoes/NovaMovimentacao";
 
@@ -79,7 +78,7 @@ export const AppRoutes = () => {
       <Route path="/ubs" element={<ListagemDeUbs />} />
       <Route path="/ubs/detalhe/:id" element={<DetalheDeUbs />} />
 
-      <Route path="/relatoriobens" element={<RelatorioBem />} />
+      <Route path="/relatoriobens" element={<RelatorioMovimentacao />} />
       <Route
         path="/relatoriomovimentacao"
         element={<RelatorioMovimentacao />}

@@ -143,8 +143,8 @@ export const ListagemDeMovimentacao: React.FC = () => {
                     </IconButton>
                   </Stack>
                 </TableCell>
-                <TableCell>{row.origem}</TableCell>
-                <TableCell>{row.destino}</TableCell>
+                <TableCell>{row.setor_id_origem}</TableCell>
+                <TableCell>{row.setor_id_destino}</TableCell>
                 <TableCell>{row.data}</TableCell>
               </TableRow>
             ))}

@@ -31,8 +31,8 @@ interface IFormData {
   //id?: number;
   estConservacao: string;
   arrayIds: any;
-  pegarOrigemId: number | undefined;
-  pegarDestinoId: number | undefined;
+  setor_id_origem: number | undefined;
+  setor_id_destino: number | undefined;
 }
 
 const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
@@ -41,8 +41,8 @@ const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
   destino: yup.number(),
   estConservacao: yup.string().required(),
   arrayIds: yup.array().of(yup.number().required()),
-  pegarOrigemId: yup.number().required(),
-  pegarDestinoId: yup.number().required(),
+  setor_id_origem: yup.number().required(),
+  setor_id_destino: yup.number().required(),
 });
 
 export const NovaMovimentacao: React.FC = () => {
@@ -56,9 +56,9 @@ export const NovaMovimentacao: React.FC = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [searchByOrigem, setSearchByOrigem] = useState<IListagemBens[]>([]);
   const [estConservacao, setEstConservacao] = useState("");
-  const [pegarOrigemId, setPegarOrigemId] = useState<number | undefined>();
-  const [pegarDestinoId, setPegarDestinoId] = useState<number>();
-  const [arrayIds, setArrayIds] = useState<GridRowId[]>([]);
+  const [setor_id, setSetor_id] = useState<number | undefined>();
+  const [setor_id_destino, setSetor_id_destino] = useState<number>();
+  const [selectedIds, setSelectedIds] = useState<GridRowId[]>([]);
 
   //console.log("arrayIds", arrayIds);
 
@@ -76,7 +76,7 @@ export const NovaMovimentacao: React.FC = () => {
   useEffect(() => {
     setIsLoading(true);
     debounce(() => {
-      BemService.getAllBySetor(pagina, busca, pegarOrigemId).then((result) => {
+      BemService.getAllBySetor(setor_id).then((result) => {
         setIsLoading(false);
         if (result instanceof Error) {
           alert(result.message);
@@ -89,7 +89,7 @@ export const NovaMovimentacao: React.FC = () => {
         }
       });
     });
-  }, [busca, pagina, pegarOrigemId]);
+  }, [busca, pagina, setor_id]);
 
   const columns = [
     { field: "numSerie", headerName: "Número de Série", width: 130 },
@@ -179,9 +179,9 @@ export const NovaMovimentacao: React.FC = () => {
         onSubmit={() => {
           handleSave({
             estConservacao: estConservacao,
-            pegarOrigemId,
-            pegarDestinoId,
-            arrayIds,
+            setor_id_origem: setor_id,
+            setor_id_destino: setor_id_destino,
+            arrayIds: selectedIds,
           });
         }}
       >
@@ -207,13 +207,13 @@ export const NovaMovimentacao: React.FC = () => {
               <Grid container item direction="row" spacing={2}>
                 <Grid item direction="row" xs={6} sm={12} md={6} lg={4} xl={2}>
                   <AutoCompleteOrigem
-                    onChange={(id) => setPegarOrigemId(id)}
+                    onChange={(id) => setSetor_id(id)}
                     isExternalLoading={isLoading}
                   />
                 </Grid>
                 <Grid item direction="row" xs={6} sm={12} md={6} lg={4} xl={2}>
                   <AutoCompleteDestino
-                    onChange={(id) => setPegarDestinoId(id)}
+                    onChange={(id) => setSetor_id_destino(id)}
                     isExternalLoading={isLoading}
                   />
                 </Grid>
@@ -228,7 +228,7 @@ export const NovaMovimentacao: React.FC = () => {
               <Grid direction="row" item xs={12} sm={12} md={6} lg={4} xl={2}>
                 <FormControl fullWidth>
                   <InputLabel id="estConservacao">
-                    Estado de Conservação
+                    Novo Estado de Conservação
                   </InputLabel>
                   <Select
                     name="valueEstConservacao"
@@ -266,7 +266,7 @@ export const NovaMovimentacao: React.FC = () => {
             disableSelectionOnClick
             experimentalFeatures={{ newEditingApi: true }}
             onSelectionModelChange={(ids) => {
-              setArrayIds(ids);
+              setSelectedIds(ids);
             }}
           />
         </Box>

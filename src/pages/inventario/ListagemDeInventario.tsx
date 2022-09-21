@@ -30,7 +30,7 @@ export const ListagemDeInventario: React.FC = () => {
   const [rows, setRows] = useState<IListagemBens[]>([]);
   const [isLoading, setIsLoading] = useState(true); //Feedback visual de carregamento
   const [totalCount, setTotalCount] = useState(0);
-  const [searchOrigem, setSearchOrigem] = useState(0);
+  const [setor_id_origem, setSetor_id_origem] = useState(0);
 
   const busca = useMemo(() => {
     return searchParams.get("busca") || "";
@@ -43,21 +43,19 @@ export const ListagemDeInventario: React.FC = () => {
   useEffect(() => {
     setIsLoading(true);
     debounce(() => {
-      BemService.getAllBySetor(pagina, busca, Number(searchOrigem)).then(
-        (result) => {
-          setIsLoading(false);
-          if (result instanceof Error) {
-            alert(result.message);
-          } else {
-            console.log(result);
+      BemService.getAllBySetor(Number(setor_id_origem)).then((result) => {
+        setIsLoading(false);
+        if (result instanceof Error) {
+          alert(result.message);
+        } else {
+          console.log(result);
 
-            setTotalCount(result.totalCount);
-            setRows(result.data);
-            setSearchOrigem(result.data[0].setor_id);
-            console.log("origem", searchOrigem);
-          }
+          setTotalCount(result.totalCount);
+          setRows(result.data);
+          setSetor_id_origem(result.data[0].setor_id);
+          console.log("origem", setor_id_origem);
         }
-      );
+      });
     });
   }, [busca, pagina]);
 

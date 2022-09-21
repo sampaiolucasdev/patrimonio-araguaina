@@ -1,40 +1,38 @@
 import {
   Box,
+  CardMedia,
+  Divider,
   FormControl,
   Grid,
-  Icon,
-  IconButton,
   InputLabel,
   LinearProgress,
   MenuItem,
-  Pagination,
   Paper,
   Select,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableFooter,
-  TableHead,
-  TableRow,
+  Stack,
+  TextField,
   Typography,
 } from "@mui/material";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import {
-  FerramentasDaListagem,
-  FerramentasDeDetalhe,
-} from "../../shared/components";
-import { Enviroment } from "../../shared/enviroment";
-import { VForm } from "../../shared/forms";
+import { FerramentasDeDetalhe } from "../../shared/components";
+import { useVForm, VForm } from "../../shared/forms";
 import { useDebounce } from "../../shared/hooks";
 import { LayoutBaseDePagina } from "../../shared/layouts";
-import {
-  IListagemCidade,
-  CidadesService,
-} from "../../shared/services/api/cidades/MovimentacaoService";
-import { AutoCompleteDestino } from "../movimentacoes/components/AutoCompleteDestino";
 import { AutoCompleteOrigem } from "../movimentacoes/components/AutoCompleteOrigem";
+import {
+  BemService,
+  IListagemBens,
+} from "../../shared/services/api/BemService";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { DataGrid, ptBR } from "@mui/x-data-grid";
+import cabecalho from "../../assets/secSaude_cabecalho.png";
+import rodape from "../../assets/secSaude_rodape.png";
+import {
+  IListagemMovimentacao,
+  MovimentacaoService,
+} from "../../shared/services/api/MovimentacaoService";
 
 export const RelatorioMovimentacao: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -42,9 +40,13 @@ export const RelatorioMovimentacao: React.FC = () => {
   /**Passar próx como ', false' cancela o firstDelay */
   const navigate = useNavigate();
 
-  const [rows, setRows] = useState<IListagemCidade[]>([]);
-  const [isLoading, setIsLoading] = useState(true); //Feedback visual de carregamento
+  const { formRef, saveAndClose, isSaveAndClose } = useVForm();
+  const [filteredRows, setFilteredRows] = useState<IListagemMovimentacao[]>([]);
+  const [isLoading, setIsLoading] = useState(false); //Feedback visual de carregamento
   const [totalCount, setTotalCount] = useState(0);
+  const [initialDate, setInitialDate] = useState<Date | null>(null);
+  const [finalDate, setFinalDate] = useState<Date | null>(null);
+  const [setor_id_origem, setSetor_id_origem] = useState<number | undefined>();
 
   const busca = useMemo(() => {
     return searchParams.get("busca") || "";
@@ -54,46 +56,209 @@ export const RelatorioMovimentacao: React.FC = () => {
     return Number(searchParams.get("pagina") || "1");
   }, [searchParams]);
 
+  const handleSubmit = () => {
+    console.log("teste");
+  };
+
   useEffect(() => {
     setIsLoading(true);
     debounce(() => {
-      CidadesService.getAll(pagina, busca).then((result) => {
+      MovimentacaoService.getAllFiltered(
+        initialDate,
+        finalDate,
+        setor_id_origem
+      ).then((result) => {
         setIsLoading(false);
         if (result instanceof Error) {
           alert(result.message);
         } else {
-          console.log(result);
-
+          console.log("result filtered", result);
           setTotalCount(result.totalCount);
-          setRows(result.data);
+          setFilteredRows(result.data);
         }
       });
     });
-  }, [busca, pagina]);
+  }, [initialDate, finalDate, setor_id_origem]);
 
-  const handleDelete = (id: number) => {
-    /**
-     * deleteById retorna uma promessa de resultado ou erro.
-     * Quando (.then) essa promessa ocorrer, vai ter um result
-     * Se esse result é uma instância de erro, então, alert
-     * mostrando o error na message. Se não, vai dar um setState(serRows)
-     * pegando o registro com o id específico que foi apagado, retorna um novo
-     * state com todas as linhas do state anterior(...), filtrando exceto
-     * a linha com o id que está sendo apagado (oldRow.id !== id).
-     */
-    if (confirm("Deseja apagar?")) {
-      CidadesService.deleteById(id).then((result) => {
-        if (result instanceof Error) {
-          alert(result.message);
-        } else {
-          setRows((oldRows) => {
-            return [...oldRows.filter((oldRow) => oldRow.id !== id)];
-          });
-          alert("Registro apagado com sucesso!");
-        }
-      });
-    }
-  };
+  const columns = [
+    { field: "numSerie", headerName: "Número de Série", width: 130 },
+    {
+      field: "setor_id_origem",
+      headerName: "Origem",
+      width: 150,
+      editable: false,
+    },
+    {
+      field: "setor_id_destino",
+      headerName: "Destino",
+      width: 150,
+      type: "string",
+      editable: false,
+    },
+    {
+      field: "descricao",
+      headerName: "Descrição",
+      width: 150,
+      editable: false,
+    },
+    {
+      field: "data",
+      headerName: "Data",
+      type: "string",
+      width: 110,
+      editable: false,
+    },
+  ];
+  {
+    filteredRows.map((row) => [
+      {
+        numSerie: row.numSerie,
+        setor_id_origem: row.setor_id_origem,
+        setor_id_destino: row.setor_id_destino,
+        descricao: row.descricao,
+        data: row.data,
+      },
+    ]);
+  }
 
-  return <h1>relatorio movimentação</h1>;
+  return (
+    <LayoutBaseDePagina
+      titulo={"Relatório de Bens"}
+      barraDeFerramentas={
+        <FerramentasDeDetalhe
+          mostrarBotaoNovo={false}
+          mostrarBotaoApagar={false}
+          // aoClicarEmSalvar={saveAndClose}
+          // aoClicarEmVoltar={() => navigate("/movimentacao")}
+        />
+      }
+    >
+      <VForm ref={formRef} onSubmit={handleSubmit}>
+        <Box
+          margin={1}
+          display="flex"
+          flexDirection="column"
+          component={Paper}
+          variant="outlined"
+        >
+          <Grid container direction="column" padding={2} spacing={2}>
+            {isLoading && (
+              <Grid item>
+                <LinearProgress variant="indeterminate" />
+              </Grid>
+            )}
+            <Grid container item direction="column" spacing={3}></Grid>
+            <CardMedia
+              component="img"
+              height="194"
+              image={cabecalho}
+              alt="Paella dish"
+            />
+
+            <Grid item>
+              <Typography variant="h4" align="center">
+                Relatório de Movimentações
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography variant="h6">Período</Typography>
+            </Grid>
+
+            <Grid container item direction="row" spacing={2}>
+              <Grid container item direction="row" spacing={2}>
+                <Grid item direction="row" xs={9} sm={8} md={5} lg={4} xl={3}>
+                  <LocalizationProvider dateAdapter={AdapterMoment}>
+                    <Stack
+                      spacing={2}
+                      direction="row"
+                      divider={<Divider orientation="vertical" flexItem />}
+                    >
+                      <DatePicker
+                        label="Data Inicial"
+                        value={initialDate}
+                        onChange={(newValue) => {
+                          setInitialDate(newValue);
+                        }}
+                        renderInput={(params) => <TextField {...params} />}
+                      />
+                      <DatePicker
+                        label="Data Final"
+                        value={finalDate}
+                        onChange={(newValue) => {
+                          setFinalDate(newValue);
+                        }}
+                        renderInput={(params) => <TextField {...params} />}
+                      />
+                    </Stack>
+                  </LocalizationProvider>
+                </Grid>
+                <Grid
+                  item
+                  direction="row"
+                  xs={6}
+                  sm={12}
+                  md={6}
+                  lg={4}
+                  xl={2}
+                ></Grid>
+              </Grid>
+
+              <Grid item direction="row">
+                <Typography variant="h6">Local</Typography>
+              </Grid>
+
+              <Grid container item direction="row" spacing={2}></Grid>
+              <Grid item direction="row" xs={6} sm={12} md={6} lg={4} xl={2}>
+                <AutoCompleteOrigem
+                  onChange={(id) => setSetor_id_origem(id)}
+                  isExternalLoading={isLoading}
+                />
+              </Grid>
+              <Grid container item direction="row" spacing={2}></Grid>
+
+              <Grid container item direction="row" spacing={2}></Grid>
+
+              <Grid
+                direction="row"
+                item
+                xs={12}
+                sm={12}
+                md={6}
+                lg={4}
+                xl={2}
+              ></Grid>
+            </Grid>
+          </Grid>
+        </Box>
+
+        <Box
+          margin={1}
+          display="flex"
+          flexDirection="column"
+          component={Paper}
+          variant="outlined"
+          sx={{ height: 550 }}
+        >
+          <DataGrid
+            localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
+            checkboxSelection={false}
+            rows={filteredRows}
+            columns={columns}
+            pageSize={5}
+            rowsPerPageOptions={[9999]}
+            disableSelectionOnClick
+            experimentalFeatures={{ newEditingApi: true }}
+          />
+
+          <CardMedia
+            component="img"
+            height="194"
+            image={rodape}
+            alt="Paella dish"
+          />
+          <Grid container item direction="column" spacing={3}></Grid>
+        </Box>
+      </VForm>
+    </LayoutBaseDePagina>
+  );
 };

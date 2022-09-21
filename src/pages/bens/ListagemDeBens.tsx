@@ -32,7 +32,7 @@ export const ListagemDeBens: React.FC = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [totalCountDescarte, setTotalCountDescarte] = useState(0);
   const [searchByOrigem, setSearchByOrigem] = useState<IListagemBens[]>([]);
-  const [pegarOrigemId, setPegarOrigemId] = useState<number | undefined>();
+  const [setor_id_origem, setSetor_id_origem] = useState<number | undefined>();
   const [estConservacao, setEstConservacao] = useState("");
 
   //console.log("arrayIds", arrayIds);
@@ -51,7 +51,7 @@ export const ListagemDeBens: React.FC = () => {
   useEffect(() => {
     setIsLoading(true);
     debounce(() => {
-      BemService.getAllBySetor(pagina, busca, pegarOrigemId).then((result) => {
+      BemService.getAllBySetor(setor_id_origem).then((result) => {
         setIsLoading(false);
         if (result instanceof Error) {
           alert(result.message);
@@ -64,7 +64,7 @@ export const ListagemDeBens: React.FC = () => {
         }
       });
 
-      BemService.getAllDescarteBySetor(pegarOrigemId, "Descarte").then(
+      BemService.getAllDescarteBySetor(setor_id_origem, "Descarte").then(
         (result) => {
           if (result instanceof Error) {
             alert(result.message);
@@ -75,7 +75,7 @@ export const ListagemDeBens: React.FC = () => {
         }
       );
     });
-  }, [busca, pagina, pegarOrigemId]);
+  }, [busca, pagina, setor_id_origem]);
 
   // useEffect(() => {
   //   setIsLoading(true);
@@ -169,7 +169,7 @@ export const ListagemDeBens: React.FC = () => {
             <Grid container item spacing={2}>
               <Grid item xs={6} sm={12} md={6} lg={4} xl={2}>
                 <AutoCompleteOrigem
-                  onChange={(id) => setPegarOrigemId(id)}
+                  onChange={(id) => setSetor_id_origem(id)}
                   isExternalLoading={isLoading}
                 />
               </Grid>
