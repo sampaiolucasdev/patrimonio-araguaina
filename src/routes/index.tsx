@@ -18,6 +18,7 @@ import {
   ListagemDeDepartamento,
   DetalheDeDepartamento,
   RelatorioMovimentacao,
+  RelatorioBem,
 } from "../pages";
 import { NovaMovimentacao } from "../pages/movimentacoes/NovaMovimentacao";
 
@@ -78,7 +79,7 @@ export const AppRoutes = () => {
       <Route path="/ubs" element={<ListagemDeUbs />} />
       <Route path="/ubs/detalhe/:id" element={<DetalheDeUbs />} />
 
-      <Route path="/relatoriobens" element={<RelatorioMovimentacao />} />
+      <Route path="/relatoriobens" element={<RelatorioBem />} />
       <Route
         path="/relatoriomovimentacao"
         element={<RelatorioMovimentacao />}

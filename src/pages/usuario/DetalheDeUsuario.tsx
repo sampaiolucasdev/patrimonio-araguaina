@@ -107,27 +107,6 @@ export const DetalheDeUsuario: React.FC = () => {
         });
       });
   };
-  const handleDelete = (id: number) => {
-    /**
-     * deleteById retorna uma promessa de resultado ou erro.
-     * Quando (.then) essa promessa ocorrer, vai ter um result
-     * Se esse result é uma instância de erro, então, alert
-     * mostrando o error na message. Se não, vai dar um setState(serRows)
-     * pegando o registro com o id específico que foi apagado, retorna um novo
-     * state com todas as linhas do state anterior(...), filtrando exceto
-     * a linha com o id que está sendo apagado (oldRow.id !== id).
-     */
-    if (confirm("Deseja apagar?")) {
-      UsuarioService.deleteById(id).then((result) => {
-        if (result instanceof Error) {
-          alert(result.message);
-        } else {
-          alert("Registro apagado com sucesso!");
-          navigate("/usuario");
-        }
-      });
-    }
-  };
 
   return (
     <LayoutBaseDePagina
@@ -162,19 +141,14 @@ export const DetalheDeUsuario: React.FC = () => {
               <Avatar sx={{ width: 100, height: 100 }} src={avatarURL} />
               <FormGroup>
                 <FormControlLabel
-                  control={
-                    <VSwitch name="switchRoleAdmin" defaultChecked={role} />
-                  }
+                  control={<VSwitch name="switchRoleAdmin" isChecked={role} />}
                   label="Admin"
                 />
               </FormGroup>
               <FormGroup>
                 <FormControlLabel
                   control={
-                    <VSwitch
-                      name="switchStatusActive"
-                      defaultChecked={status}
-                    />
+                    <VSwitch name="switchStatusActive" isChecked={status} />
                   }
                   label="Ativo"
                 />

@@ -22,12 +22,14 @@ interface IFerramentasDeDetalheProps {
   mostrarBotaoSalvar?: boolean;
   mostrarInputBusca?: boolean;
   textoDaBusca?: string;
+  mostrarBotaoPDF?: boolean;
   //mostrarBotaoSalvarEFechar?: boolean;
 
   mostrarBotaoNovoCarregando?: boolean;
   mostrarBotaoVoltarCarregando?: boolean;
   mostrarBotaoApagarCarregando?: boolean;
   mostrarBotaoSalvarCarregando?: boolean;
+  mostrarBotaoPDFCarregando?: boolean;
   //mostrarBotaoSalvarEFecharCarregando?: boolean;
 
   aoClicarEmNovo?: () => void;
@@ -36,6 +38,7 @@ interface IFerramentasDeDetalheProps {
   aoClicarEmSalvar?: () => void;
   aoMudarTextoDeBusca?: (novoTexto: string) => void;
   //aoClicarEmSalvarEFechar?: () => void;
+  aoClicarEmPDF?: () => void;
 }
 export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
   textoBotaoNovo = "Novo",
@@ -45,12 +48,14 @@ export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
   mostrarBotaoSalvar = true,
   textoDaBusca = "",
   mostrarInputBusca = false,
+  mostrarBotaoPDF = false,
   //mostrarBotaoSalvarEFechar = false,
 
   mostrarBotaoNovoCarregando = false,
   mostrarBotaoVoltarCarregando = false,
   mostrarBotaoApagarCarregando = false,
   mostrarBotaoSalvarCarregando = false,
+  mostrarBotaoPDFCarregando = false,
   //mostrarBotaoSalvarEFecharCarregando = false,
 
   aoClicarEmNovo,
@@ -58,6 +63,7 @@ export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
   aoClicarEmVoltar,
   aoClicarEmApagar,
   aoClicarEmSalvar,
+  aoClicarEmPDF,
   //aoClicarEmSalvarEFechar,
 }) => {
   const smDown = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
@@ -198,6 +204,32 @@ export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
         </Button>
       )}
       {mostrarBotaoVoltarCarregando && <Skeleton width={110} height={60} />}
+
+      {mostrarBotaoPDFCarregando && <Skeleton width={110} height={60} />}
+      {mostrarBotaoPDF && !mostrarBotaoPDFCarregando && (
+        <Button
+          sx={{ margin: 1 }}
+          variant="outlined"
+          color="error"
+          disableElevation
+          onClick={aoClicarEmPDF}
+          startIcon={
+            <Icon>
+              {/* <PictureAsPdfOutlined color={"error"} /> */}
+              download
+            </Icon>
+          }
+        >
+          <Typography
+            variant="button"
+            whiteSpace="nowrap"
+            textOverflow="ellipsis"
+            overflow="hidden"
+          >
+            Gerar PDF
+          </Typography>
+        </Button>
+      )}
     </Box>
   );
 };
