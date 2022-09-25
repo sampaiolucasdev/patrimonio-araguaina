@@ -141,15 +141,13 @@ export const DetalheDeUsuario: React.FC = () => {
               <Avatar sx={{ width: 100, height: 100 }} src={avatarURL} />
               <FormGroup>
                 <FormControlLabel
-                  control={<VSwitch name="switchRoleAdmin" isChecked={role} />}
+                  control={<VSwitch name="role" defaultChecked={role} />}
                   label="Admin"
                 />
               </FormGroup>
               <FormGroup>
                 <FormControlLabel
-                  control={
-                    <VSwitch name="switchStatusActive" isChecked={status} />
-                  }
+                  control={<VSwitch name="status" defaultChecked={status} />}
                   label="Ativo"
                 />
               </FormGroup>
