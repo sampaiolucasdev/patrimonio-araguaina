@@ -27,17 +27,17 @@ import { FormatSizeRounded } from "@mui/icons-material";
 interface IFormData {
   id: number;
   userName: string;
-  nome: string;
-  role: boolean;
-  status: boolean;
+  nome?: string;
+  role?: boolean;
+  status?: boolean;
   avatarURL: string;
 }
 const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
   id: yup.number().required(),
   userName: yup.string().required().min(3),
-  nome: yup.string().required().min(3),
-  role: yup.boolean().required(),
-  status: yup.boolean().required(),
+  nome: yup.string().min(3),
+  role: yup.boolean().default(false),
+  status: yup.boolean().default(false),
   avatarURL: yup.string().required().min(3),
 });
 
@@ -68,10 +68,10 @@ export const DetalheDeUsuario: React.FC = () => {
           alert(result.message);
           navigate("/usuario");
         } else {
-          setNome(result.nome);
+          setNome(result.nome!);
           setUserName(result.userName);
-          setRole(result.role);
-          setStatus(result.status);
+          //setRole(result.role);
+          //setStatus(result.status);
           setAvatarURL(result.avatarURL);
 
           console.log(result);
@@ -141,13 +141,13 @@ export const DetalheDeUsuario: React.FC = () => {
               <Avatar sx={{ width: 100, height: 100 }} src={avatarURL} />
               <FormGroup>
                 <FormControlLabel
-                  control={<VSwitch name="role" defaultChecked={role} />}
+                  control={<VSwitch name="role" />}
                   label="Admin"
                 />
               </FormGroup>
               <FormGroup>
                 <FormControlLabel
-                  control={<VSwitch name="status" defaultChecked={status} />}
+                  control={<VSwitch name="status" />}
                   label="Ativo"
                 />
               </FormGroup>
