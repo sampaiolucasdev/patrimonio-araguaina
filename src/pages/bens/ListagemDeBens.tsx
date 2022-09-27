@@ -51,18 +51,20 @@ export const ListagemDeBens: React.FC = () => {
   useEffect(() => {
     setIsLoading(true);
     debounce(() => {
-      BemService.getAllBySetor(setor_id_origem).then((result) => {
-        setIsLoading(false);
-        if (result instanceof Error) {
-          alert(result.message);
-        } else {
-          console.log(result);
-          setTotalCount(result.totalCount);
-          setSearchByOrigem(result.data);
-          // setSearchOrigem(result.data[0].origem);
-          // console.log("origem", searchOrigem);
+      BemService.getAllBySetor(pagina, busca, setor_id_origem).then(
+        (result) => {
+          setIsLoading(false);
+          if (result instanceof Error) {
+            alert(result.message);
+          } else {
+            console.log(result);
+            setTotalCount(result.totalCount);
+            setSearchByOrigem(result.data);
+            // setSearchOrigem(result.data[0].origem);
+            // console.log("origem", searchOrigem);
+          }
         }
-      });
+      );
 
       BemService.getAllDescarteBySetor(setor_id_origem, "Descarte").then(
         (result) => {
