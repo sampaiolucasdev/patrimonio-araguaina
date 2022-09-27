@@ -23,7 +23,6 @@
     "@unform/web": "^2.1.6",
     "axios": "^0.26.1",
     "dayjs": "^1.11.5",
-    "firebase": "^9.10.0",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.25",
     "moment": "^2.29.4",
