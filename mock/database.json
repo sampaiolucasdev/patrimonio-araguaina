@@ -67,7 +67,10 @@
       "qtd": 1,
       "numSerie": "080846",
       "estConservacao": "Novo",
-      "descricao": ["COMPRAS", "MONITOR BLUECASE 20"],
+      "descricao": [
+        "COMPRAS",
+        "MONITOR BLUECASE 20"
+      ],
       "valor": 700
     },
     {
@@ -78,7 +81,10 @@
       "qtd": 1,
       "numSerie": "080846",
       "estConservacao": "Novo",
-      "descricao": ["RH", "MONITOR BLUECASE 20"],
+      "descricao": [
+        "RH",
+        "MONITOR BLUECASE 20"
+      ],
       "valor": 700
     },
     {
@@ -89,7 +95,10 @@
       "qtd": 1,
       "numSerie": "080846",
       "estConservacao": "Novo",
-      "descricao": ["TI", "MONITOR BLUECASE 20"],
+      "descricao": [
+        "TI",
+        "MONITOR BLUECASE 20"
+      ],
       "valor": 700
     },
     {
@@ -100,14 +109,19 @@
       "qtd": 1,
       "numSerie": "080846",
       "estConservacao": "Novo",
-      "descricao": ["RWRW", "MONITOR BLUECASE 20"],
+      "descricao": [
+        "RWRW",
+        "MONITOR BLUECASE 20"
+      ],
       "valor": 700
     },
     {
       "estConservacao": "Descarte",
       "setor_id_origem": 1,
       "setor_id_destino": 2,
-      "arrayIds": [1],
+      "arrayIds": [
+        1
+      ],
       "id": 5
     }
   ],
@@ -199,18 +213,18 @@
   ],
   "usuario": [
     {
-      "nome": "Lucasww",
-      "userName": "lucas@gmail.com",
       "role": true,
-      "status": true,
+      "status": false,
+      "nome": "Lucas",
+      "userName": "lucas@gmail.com",
       "avatarURL": "https://static3.tcdn.com.br/img/img_prod/460977/teste_100485_1_cbc226c7d23a19c784fb4752ffe61337.png",
       "id": 1
     },
     {
-      "nome": "Eduardo1",
-      "userName": "eduardo@gmail.com",
       "role": false,
       "status": true,
+      "nome": "Eduardo",
+      "userName": "eduardo@gmail.com",
       "avatarURL": "https://static3.tcdn.com.br/img/img_prod/460977/teste_100485_1_cbc226c7d23a19c784fb4752ffe61337.png",
       "id": 4
     },

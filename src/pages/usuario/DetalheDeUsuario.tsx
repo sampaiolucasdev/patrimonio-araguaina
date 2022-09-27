@@ -83,29 +83,27 @@ export const DetalheDeUsuario: React.FC = () => {
 
   const handleSave = (dados: IFormData) => {
     console.log("dados", dados);
+    //console.log("validados", dadosValidados);
+    setIsLoading(true);
 
-    formValidationSchema
-      .validate(dados, { abortEarly: false })
-      .then((dadosValidados) => {
-        console.log("validados", dadosValidados);
-        setIsLoading(true);
-
-        console.log("id", id);
-        UsuarioService.updateById(Number(id), dadosValidados).then((result) => {
-          console.log("result", result);
-          setIsLoading(false);
-          if (result instanceof Error) {
-            alert(result.message);
-          } else {
-            if (isSaveAndClose()) {
-              navigate("/usuario");
-            }
-          }
-          // else {
-          //   navigate(`/cidades/detalhe/${result}`);
-          // }
-        });
-      });
+    console.log("id", id);
+    UsuarioService.updateById(Number(id), dados).then((result) => {
+      console.log("result", result);
+      setIsLoading(false);
+      if (result instanceof Error) {
+        alert(result.message);
+      } else {
+        if (isSaveAndClose()) {
+          navigate("/usuario");
+        }
+      }
+      // else {
+      //   navigate(`/cidades/detalhe/${result}`);
+      // }
+    });
+    // formValidationSchema
+    //   .validate(dados, { abortEarly: false })
+    //   .then((dadosValidados) => {});
   };
 
   return (
