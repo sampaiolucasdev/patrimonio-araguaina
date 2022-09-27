@@ -70,8 +70,8 @@ export const DetalheDeUsuario: React.FC = () => {
         } else {
           setNome(result.nome);
           setUserName(result.userName);
-          setRole(result.role);
-          setStatus(result.status);
+          //setRole(result.role);
+          //setStatus(result.status);
           setAvatarURL(result.avatarURL);
 
           console.log(result);
@@ -141,15 +141,13 @@ export const DetalheDeUsuario: React.FC = () => {
               <Avatar sx={{ width: 100, height: 100 }} src={avatarURL} />
               <FormGroup>
                 <FormControlLabel
-                  control={<VSwitch name="switchRoleAdmin" isChecked={role} />}
+                  control={<VSwitch name="role" />}
                   label="Admin"
                 />
               </FormGroup>
               <FormGroup>
                 <FormControlLabel
-                  control={
-                    <VSwitch name="switchStatusActive" isChecked={status} />
-                  }
+                  control={<VSwitch name="status" />}
                   label="Ativo"
                 />
               </FormGroup>

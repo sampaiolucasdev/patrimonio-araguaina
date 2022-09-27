@@ -136,7 +136,7 @@ export const MenuLateral: React.FC = ({ children }) => {
                 {openCadastro ? <ExpandLess /> : <ExpandMore />}
               </ListItemButton>
               <Collapse in={openCadastro} timeout="auto" unmountOnExit>
-                <ListItemButton
+                {/* <ListItemButton
                   sx={{ pl: 3, heigth: 30 }}
                   onClick={() => navigate("/departamento")}
                 >
@@ -151,7 +151,7 @@ export const MenuLateral: React.FC = ({ children }) => {
                       mb: "2px",
                     }}
                   />
-                </ListItemButton>
+                </ListItemButton> */}
                 <ListItemButton
                   sx={{ pl: 3, heigth: 30 }}
                   onClick={() => navigate("/setor")}
@@ -291,7 +291,7 @@ export const MenuLateral: React.FC = ({ children }) => {
                 </ListItemButton>
               </Collapse>
             </List>
-            <Box>
+            {/* <Box>
               <List
                 component="nav"
                 aria-labelledby="nested-list-subheader"
@@ -306,7 +306,7 @@ export const MenuLateral: React.FC = ({ children }) => {
                   </ListSubheader>
                 }
               ></List>
-            </Box>
+            </Box> */}
           </Box>
           <Box>
             <List component="nav">

@@ -203,7 +203,7 @@ export const DetalheDeSetor: React.FC = () => {
           //textoBotaoNovo="Adicionar"
           //mostrarBotaoSalvarEFechar
           //mostrarBotaoNovo={id !== "nova"}
-          mostrarBotaoApagar={id !== "nova"}
+          mostrarBotaoApagar={false}
           aoClicarEmSalvar={saveAndClose}
           //aoClicarEmSalvarEFechar={saveAndClose}
           aoClicarEmVoltar={() => navigate("/setor")}
@@ -228,7 +228,7 @@ export const DetalheDeSetor: React.FC = () => {
                 <LinearProgress variant="indeterminate" />
               </Grid>
             )}
-            <Grid item>
+            {/* <Grid item>
               <Typography variant="h6">Selecione o Departamento</Typography>
             </Grid>
 
@@ -244,7 +244,7 @@ export const DetalheDeSetor: React.FC = () => {
                   />
                 </FormControl>
               </Grid>
-            </Grid>
+            </Grid> */}
 
             <Grid item>
               <Typography variant="h6">Nome do Setor</Typography>

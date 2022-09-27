@@ -137,24 +137,24 @@ export const ListagemDeSetor: React.FC = () => {
             {rows.map((row) => (
               <TableRow key={row.id}>
                 <TableCell>
-                  <IconButton
+                  {/* <IconButton
                     size="small"
                     onClick={() => handleDelete(row.id, row.nome)}
                   >
                     <Icon>delete</Icon>
-                  </IconButton>
+                  </IconButton> */}
                   <IconButton
                     size="small"
                     onClick={() => navigate(`/setor/detalhe/${row.id}`)}
                   >
                     <Icon>edit</Icon>
                   </IconButton>
-                  <IconButton
+                  {/* <IconButton
                     size="small"
                     onClick={() => navigate(`/setor/detalhe/${row.id}`)}
                   >
                     <InfoIcon />
-                  </IconButton>
+                  </IconButton> */}
                 </TableCell>
                 <TableCell>{row.nome}</TableCell>
               </TableRow>
