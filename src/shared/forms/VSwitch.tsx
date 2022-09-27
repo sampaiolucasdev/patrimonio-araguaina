@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Checkbox, Switch, SwitchProps } from "@mui/material";
+import { Switch, SwitchProps } from "@mui/material";
 import { useField } from "@unform/core";
 
 type TVSwitchProps = SwitchProps & {
@@ -24,11 +24,8 @@ export const VSwitch: React.FC<TVSwitchProps> = ({ name, ...rest }) => {
       {...rest}
       defaultChecked={defaultValue}
       checked={value || false}
-      // onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-      //   setValue(event.target.checked)
-      // }
       onChange={(e, checked) => {
-        setValue(e.target.checked);
+        setValue(e.target.value);
         rest.onChange?.(e, checked);
         error && clearError();
       }}

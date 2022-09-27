@@ -4,17 +4,17 @@ import { Api } from "./axios-config";
 export interface IListagemUsuario {
   id: number;
   userName: string;
-  nome?: string;
-  role?: boolean;
-  status?: boolean;
+  nome: string;
+  role: boolean;
+  status: boolean;
   avatarURL: string;
 }
 export interface IDetalheUsuario {
   id: number;
   userName: string;
-  nome?: string;
-  role?: boolean;
-  status?: boolean;
+  nome: string;
+  role: boolean;
+  status: boolean;
   avatarURL: string;
 }
 type TUsuarioComTotalCount = {
