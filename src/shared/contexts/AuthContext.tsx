@@ -20,20 +20,20 @@ interface IAuthProviderProps {
 }
 
 export const AuthProvider: React.FC<IAuthProviderProps> = ({ children }) => {
-  const [accessToken, setAccessToken] = useState({});
+  const [accessToken, setAccessToken] = useState<string>();
 
   useEffect(() => {
     const accessToken = localStorage.getItem(LOCAL_STORAGE_KEY__ACCESSTOKEN);
     if (accessToken) {
       setAccessToken(JSON.parse(accessToken));
     } else {
-      setAccessToken("");
+      setAccessToken(undefined);
     }
   }, []);
 
   const handleLogin = useCallback(async (email: string, password: string) => {
     const result = await AuthService.auth(email, password);
-    const token: any = result;
+    //const token: any = result;
     //const token2: any = token["access_token"];
     //console.log(token2);
 
@@ -42,9 +42,9 @@ export const AuthProvider: React.FC<IAuthProviderProps> = ({ children }) => {
     } else {
       localStorage.setItem(
         LOCAL_STORAGE_KEY__ACCESSTOKEN,
-        JSON.stringify(token["access_token"])
+        JSON.stringify(result.accessToken)
       ); //Armazena token no local storage
-      setAccessToken(token["access_token"]);
+      setAccessToken(result.accessToken);
     }
   }, []);
   /**Funções que serão passadas em um contexto, por meio de parâmetros

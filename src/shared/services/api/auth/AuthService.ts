@@ -9,7 +9,7 @@ const auth = async (
   password: string
 ): Promise<IAuth | Error> => {
   try {
-    const { data } = await Api.post("/auth", { email, password }); //post. email e senha no body no lugar do objeto data
+    const { data } = await Api.get("/auth", { data: { email, password } }); //post. email e senha no body no lugar do objeto data
     if (data) {
       return data;
     }
