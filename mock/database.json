@@ -239,9 +239,5 @@
       "status": false,
       "userName": "sampaio@gmail.com"
     }
-  ],
-  "auth": {
-    "email": "lucas@gmail.com",
-    "password": "123123123"
-  }
+  ]
 }

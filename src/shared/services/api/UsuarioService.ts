@@ -16,10 +16,34 @@ export interface IDetalheUsuario {
   role: boolean;
   status: boolean;
   avatarURL: string;
+  password: string;
 }
 type TUsuarioComTotalCount = {
   data: IListagemUsuario[];
   totalCount: number;
+};
+
+interface IAuth {
+  accessToken: string;
+}
+
+const auth = async (
+  email: string,
+  password: string
+): Promise<IAuth | Error> => {
+  try {
+    const { data } = await Api.get("/usuario", { data: { email, password } }); //post. email e senha no body no lugar do objeto data
+    if (data) {
+      return data;
+    }
+
+    return new Error("Erro ao autenticar");
+  } catch (error) {
+    console.error(error);
+    return new Error(
+      (error as { message: string }).message || "Erro ao autenticar"
+    );
+  }
 };
 
 const getAll = async (
@@ -70,6 +94,21 @@ const getAllSelect = async (): Promise<IListagemUsuario | Error> => {
 const getById = async (id: number): Promise<IDetalheUsuario | Error> => {
   try {
     const { data } = await Api.get(`/usuario/${id}`);
+
+    if (data) {
+      return data;
+    }
+    return new Error("Erro ao consultar os usuários");
+  } catch (error) {
+    console.error(error);
+    return new Error(
+      (error as { message: string }).message || "Erro ao consultar os usuários"
+    );
+  }
+};
+const getByEmail = async (email: string): Promise<IDetalheUsuario | Error> => {
+  try {
+    const { data } = await Api.get(`/usuario/${email}`);
 
     if (data) {
       return data;
@@ -133,4 +172,6 @@ export const UsuarioService = {
   updateById,
   deleteById,
   getAllSelect,
+  auth,
+  getByEmail,
 };
