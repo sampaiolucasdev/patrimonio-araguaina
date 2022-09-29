@@ -31,6 +31,7 @@ interface IFormData {
   role: boolean;
   status: boolean;
   avatarURL: string;
+  password: string;
 }
 const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
   id: yup.number().required(),
@@ -39,6 +40,7 @@ const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
   role: yup.boolean().required(),
   status: yup.boolean().required(),
   avatarURL: yup.string().required().min(3),
+  password: yup.string().required().min(3),
 });
 
 export const DetalheDeUsuario: React.FC = () => {
@@ -52,6 +54,7 @@ export const DetalheDeUsuario: React.FC = () => {
   const [role, setRole] = useState<boolean>(false);
   const [status, setStatus] = useState<boolean>(false);
   const [avatarURL, setAvatarURL] = useState("");
+  const [password, setPassword] = useState("");
 
   // const allData = formRef.current?.getData();
   // console.log("allData", allData);
@@ -73,6 +76,7 @@ export const DetalheDeUsuario: React.FC = () => {
           //setRole(result.role);
           //setStatus(result.status);
           setAvatarURL(result.avatarURL);
+          setPassword(result.password);
 
           console.log(result);
           formRef.current?.setData(result);
@@ -187,6 +191,15 @@ export const DetalheDeUsuario: React.FC = () => {
                   disabled={isLoading} //Desabilita o textfield quando estiver carregando
                   label="URL de Avatar"
                   onChange={(e) => setNome(e.target.value)} //Altera o nome da cidade no <h1> quando for alterado no textfield
+                />
+              </Grid>
+              <Grid item sx={{ padding: 1 }}>
+                <VTextField
+                  fullWidth
+                  name="password"
+                  disabled={isLoading} //Desabilita o textfield quando estiver carregando
+                  label="Senha"
+                  onChange={(e) => setPassword(e.target.value)} //Altera o nome da cidade no <h1> quando for alterado no textfield
                 />
               </Grid>
             </Grid>

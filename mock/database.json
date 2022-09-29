@@ -218,6 +218,7 @@
       "nome": "Lucas",
       "userName": "lucas@gmail.com",
       "avatarURL": "https://static3.tcdn.com.br/img/img_prod/460977/teste_100485_1_cbc226c7d23a19c784fb4752ffe61337.png",
+      "password": "123456",
       "id": 1
     },
     {
@@ -226,10 +227,12 @@
       "nome": "Eduardo",
       "userName": "eduardo@gmail.com",
       "avatarURL": "https://static3.tcdn.com.br/img/img_prod/460977/teste_100485_1_cbc226c7d23a19c784fb4752ffe61337.png",
+      "password": "123456",
       "id": 4
     },
     {
       "avatarURL": "https://static3.tcdn.com.br/img/img_prod/460977/teste_100485_1_cbc226c7d23a19c784fb4752ffe61337.png",
+      "password": "123456",
       "id": 3,
       "nome": "Sampaio",
       "role": false,
