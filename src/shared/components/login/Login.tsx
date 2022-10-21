@@ -4,7 +4,10 @@ import {
   Card,
   CardActions,
   CardContent,
+  CardMedia,
   CircularProgress,
+  Icon,
+  InputAdornment,
   TextField,
   Typography,
 } from "@mui/material";
@@ -15,6 +18,10 @@ const loginSchema = yup.object().shape({
   email: yup.string().email().required(),
   password: yup.string().required().min(5),
 });
+import prefeituralogo from "../../../assets/logopref.png";
+import backgroundimg from "../../../assets/Logo1.png";
+import { AccountCircle } from "@mui/icons-material";
+import VpnKeyIcon from "@mui/icons-material/VpnKey";
 
 interface ILoginProps {
   children: React.ReactNode;
@@ -60,10 +67,20 @@ export const Login: React.FC<ILoginProps> = ({ children }) => {
       display="flex"
       alignItems="center"
       justifyContent="center"
+      sx={{
+        backgroundImage: `url(${backgroundimg})`,
+      }}
     >
-      <Card>
+      <Card sx={{ backgroundcolor: "#E5E5E5" }}>
         <CardContent>
           <Box display="flex" flexDirection="column" gap={2} width={250}>
+            <CardMedia
+              component="img"
+              //height="10"
+              image={prefeituralogo}
+              alt="Prefeitura Logo"
+            />
+
             <Typography variant="h6" align="center">
               Nosso Patrimônio Login
             </Typography>
@@ -77,6 +94,13 @@ export const Login: React.FC<ILoginProps> = ({ children }) => {
               helperText={emailError}
               onChange={(e) => setEmail(e.target.value)}
               onKeyDown={() => setEmailError("")}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <AccountCircle />
+                  </InputAdornment>
+                ),
+              }}
             />
             <TextField
               label="Senha"
@@ -88,6 +112,13 @@ export const Login: React.FC<ILoginProps> = ({ children }) => {
               helperText={passwordError}
               onChange={(e) => setPassword(e.target.value)}
               onKeyDown={() => setPasswordError("")}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <VpnKeyIcon />
+                  </InputAdornment>
+                ),
+              }}
             />
           </Box>
           <CardActions>

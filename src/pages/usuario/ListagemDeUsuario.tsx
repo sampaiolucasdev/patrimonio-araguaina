@@ -27,10 +27,12 @@ import { useDebounce } from "../../shared/hooks";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import { FcCancel } from "react-icons/fc";
 import { FcCheckmark } from "react-icons/fc";
+import { toast } from "react-toastify";
 import {
   IListagemUsuario,
   UsuarioService,
 } from "../../shared/services/api/UsuarioService";
+import Swal from "sweetalert2";
 
 export const ListagemDeUsuario: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -76,18 +78,44 @@ export const ListagemDeUsuario: React.FC = () => {
      * state com todas as linhas do state anterior(...), filtrando exceto
      * a linha com o id que está sendo apagado (oldRow.id !== id).
      */
-    if (confirm("Deseja apagar?")) {
-      UsuarioService.deleteById(id).then((result) => {
-        if (result instanceof Error) {
-          alert(result.message);
-        } else {
-          setUserRows((oldRows) => {
-            return [...oldRows.filter((oldRow) => oldRow.id !== id)];
-          });
-          alert("Registro apagado com sucesso!");
-        }
-      });
-    }
+    Swal.fire({
+      title: "Deseja excluir o usuário?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      showDenyButton: false,
+      confirmButtonText: "Sim",
+      cancelButtonText: "Cancelar",
+      denyButtonText: "Não",
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        UsuarioService.deleteById(id).then((result) => {
+          if (result instanceof Error) {
+            alert(result.message);
+          } else {
+            setUserRows((oldRows) => {
+              return [...oldRows.filter((oldRow) => oldRow.id !== id)];
+            });
+            toast.success("Usuário excluído com sucesso!");
+          }
+        });
+      }
+    });
+
+    // if (confirm("Deseja apagar?")) {
+    //   UsuarioService.deleteById(id).then((result) => {
+    //     if (result instanceof Error) {
+    //       alert(result.message);
+    //     } else {
+    //       setUserRows((oldRows) => {
+    //         return [...oldRows.filter((oldRow) => oldRow.id !== id)];
+    //       });
+    //       alert("Registro apagado com sucesso!");
+    //     }
+    //   });
+    // }
   };
 
   return (

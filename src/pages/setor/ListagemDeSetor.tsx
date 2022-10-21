@@ -25,6 +25,7 @@ import {
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import InfoIcon from "@mui/icons-material/Info";
+import { Delete } from "@mui/icons-material";
 
 export const ListagemDeSetor: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -61,7 +62,7 @@ export const ListagemDeSetor: React.FC = () => {
     });
   }, [busca, pagina]);
 
-  const handleDelete = (id: number, nome: string) => {
+  const handleDelete = (id: number) => {
     /**
      * deleteById retorna uma promessa de resultado ou erro.
      * Quando (.then) essa promessa ocorrer, vai ter um result
@@ -72,7 +73,7 @@ export const ListagemDeSetor: React.FC = () => {
      * a linha com o id que está sendo apagado (oldRow.id !== id).
      */
     Swal.fire({
-      title: `Deseja excluir ${nome} ?`,
+      title: "Deseja excluir?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -91,7 +92,7 @@ export const ListagemDeSetor: React.FC = () => {
             setRows((oldRows) => {
               return [...oldRows.filter((oldRow) => oldRow.id !== id)];
             });
-            toast.success(` ${nome} excluído com sucesso!`);
+            toast.success("Setor excluído com sucesso!");
           }
         });
       }
@@ -149,12 +150,9 @@ export const ListagemDeSetor: React.FC = () => {
                   >
                     <Icon>edit</Icon>
                   </IconButton>
-                  {/* <IconButton
-                    size="small"
-                    onClick={() => navigate(`/setor/detalhe/${row.id}`)}
-                  >
-                    <InfoIcon />
-                  </IconButton> */}
+                  <IconButton size="small" onClick={() => handleDelete(row.id)}>
+                    <Delete />
+                  </IconButton>
                 </TableCell>
                 <TableCell>{row.nome}</TableCell>
               </TableRow>

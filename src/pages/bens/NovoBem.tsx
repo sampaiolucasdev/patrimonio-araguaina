@@ -11,7 +11,7 @@ import {
 import { DataGrid, GridColDef, ptBR } from "@mui/x-data-grid";
 import { useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
-import { MovimentacaoService } from "../../shared/services/api/MovimentacaoService";
+import { BemService } from "../../shared/services/api/BemService";
 import { VTextField, VForm, useVForm, IVFormErrors } from "../../shared/forms";
 import { FerramentasDeDetalhe } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
@@ -19,7 +19,7 @@ import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 
 interface IFormData {
-  id?: number;
+  id: number;
   setor_id_origem: number;
   setor_id_destino: number;
   data: string;
@@ -97,7 +97,7 @@ export const NovoBem: React.FC = () => {
       .validate(dados, { abortEarly: false })
       .then((dadosValidados) => {
         setIsLoading(true);
-        MovimentacaoService.create2(dadosValidados).then((result) => {
+        BemService.create(dados).then((result) => {
           setIsLoading(false);
           if (result instanceof Error) {
             alert(result.message);
@@ -149,7 +149,7 @@ export const NovoBem: React.FC = () => {
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        MovimentacaoService.deleteById(id).then((result) => {
+        BemService.deleteById(id).then((result) => {
           if (result instanceof Error) {
             alert(result.message);
           } else {

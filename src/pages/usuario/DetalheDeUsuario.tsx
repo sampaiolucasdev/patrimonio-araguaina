@@ -23,6 +23,7 @@ import { LayoutBaseDePagina } from "../../shared/layouts";
 import { UsuarioService } from "../../shared/services/api/UsuarioService";
 import { VSwitch } from "../../shared/forms/VSwitch";
 import { FormatSizeRounded } from "@mui/icons-material";
+import { toast } from "react-toastify";
 
 interface IFormData {
   id: number;
@@ -89,22 +90,38 @@ export const DetalheDeUsuario: React.FC = () => {
     console.log("dados", dados);
     //console.log("validados", dadosValidados);
     setIsLoading(true);
-
-    console.log("id", id);
-    UsuarioService.updateById(Number(id), dados).then((result) => {
-      console.log("result", result);
-      setIsLoading(false);
-      if (result instanceof Error) {
-        alert(result.message);
-      } else {
-        if (isSaveAndClose()) {
-          navigate("/usuario");
+    if (id === "nova") {
+      UsuarioService.create(dados).then((result) => {
+        setIsLoading(false);
+        if (result instanceof Error) {
+          alert(result.message);
+        } else {
+          if (isSaveAndClose()) {
+            toast.success("Usuário criado com sucesso!");
+            navigate("/usuario");
+          } else {
+            navigate(`/usuario/detalhe/${result}`);
+          }
         }
-      }
-      // else {
-      //   navigate(`/cidades/detalhe/${result}`);
-      // }
-    });
+      });
+    } else {
+      //console.log("id", id);
+      UsuarioService.updateById(Number(id), dados).then((result) => {
+        console.log("result", result);
+        setIsLoading(false);
+        if (result instanceof Error) {
+          alert(result.message);
+        } else {
+          if (isSaveAndClose()) {
+            toast.success(` ${nome} editado com sucesso!`);
+            navigate("/usuario");
+          }
+        }
+        // else {
+        //   navigate(`/cidades/detalhe/${result}`);
+        // }
+      });
+    }
     // formValidationSchema
     //   .validate(dados, { abortEarly: false })
     //   .then((dadosValidados) => {});

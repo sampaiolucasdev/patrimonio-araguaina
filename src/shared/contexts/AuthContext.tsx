@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 import { AuthService } from "../services/api/auth/AuthService";
-import { UsuarioService } from "../services/api/UsuarioService";
+
 
 interface IAuthContextData {
   logout: () => void;
@@ -35,35 +35,15 @@ export const AuthProvider: React.FC<IAuthProviderProps> = ({ children }) => {
   }, []);
 
   const handleLogin = useCallback(async (email: string, password: string) => {
-    const result = await UsuarioService.auth(email, password);
-    const role = await UsuarioService.getByEmail(email);
-    //const token: any = result;
-    //const token2: any = token["access_token"];
-    //console.log(token2);
-    // useEffect(() => {
-    //   UsuarioService.getByEmail(email).then((result) => {
-    //     if (result instanceof Error) {
-    //       alert(result.message);
-    //     } else {
-    //       console.log("isAdmin", result.role);
-    //       setIsAdmin(result.role);
-    //     }
-    //   });
-    // }, []);
-
+    const result = await AuthService.auth(email, password);
     if (result instanceof Error) {
       return result.message;
     } else {
       localStorage.setItem(
         LOCAL_STORAGE_KEY__ACCESSTOKEN,
         JSON.stringify(result.accessToken)
-      ); //Armazena token no local storage
+      );
       setAccessToken(result.accessToken);
-    }
-    if (role instanceof Error) {
-      return role.message;
-    } else {
-      localStorage.setItem(LOCAL_STORAGE_ROLE, JSON.stringify(role));
     }
   }, []);
   /**Funções que serão passadas em um contexto, por meio de parâmetros

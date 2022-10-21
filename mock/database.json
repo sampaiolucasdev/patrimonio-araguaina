@@ -54,8 +54,8 @@
       "id": 4
     },
     {
-      "nome": "testebhayron",
-      "id": 5
+      "id": 5,
+      "nome": "testebhayron"
     }
   ],
   "movimentacao": [
@@ -222,22 +222,16 @@
       "id": 1
     },
     {
-      "role": false,
+      "role": true,
       "status": true,
       "nome": "Eduardo",
       "userName": "eduardo@gmail.com",
       "avatarURL": "https://static3.tcdn.com.br/img/img_prod/460977/teste_100485_1_cbc226c7d23a19c784fb4752ffe61337.png",
       "password": "123456",
       "id": 4
-    },
-    {
-      "avatarURL": "https://static3.tcdn.com.br/img/img_prod/460977/teste_100485_1_cbc226c7d23a19c784fb4752ffe61337.png",
-      "password": "123456",
-      "id": 3,
-      "nome": "Sampaio",
-      "role": false,
-      "status": false,
-      "userName": "sampaio@gmail.com"
     }
-  ]
+  ],
+  "auth": {
+    "accessToken": "aaaaaa.bbbbbb.cccccc"
+  }
 }
