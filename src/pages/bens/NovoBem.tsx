@@ -20,26 +20,27 @@ import { toast } from "react-toastify";
 
 interface IFormData {
   id: number;
-  setor_id_origem: number;
-  setor_id_destino: number;
-  data: string;
-  qtd: number;
-  numSerie: string;
+  descricao: string;
+  marca: string;
+  modelo: string;
+  imagem: string | undefined;
+  setor_id: number;
   estConservacao: string;
-  descricao: string[];
   valor: number;
+  numSerie: string;
+  dataCriacao?: string;
 }
-const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
-  id: yup.number(),
-  setor_id_origem: yup.number().required(),
-  setor_id_destino: yup.number().required(),
-  data: yup.string().required(),
-  qtd: yup.number().required().min(1),
-  numSerie: yup.string().required().min(4),
-  estConservacao: yup.string().required().min(1),
-  descricao: yup.array(),
-  valor: yup.number().required().min(1),
-});
+// const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
+//   id: yup.number(),
+//   setor_id_origem: yup.number().required(),
+//   setor_id_destino: yup.number().required(),
+//   data: yup.string().required(),
+//   qtd: yup.number().required().min(1),
+//   numSerie: yup.string().required().min(4),
+//   estConservacao: yup.string().required().min(1),
+//   descricao: yup.array(),
+//   valor: yup.number().required().min(1),
+// });
 
 export const NovoBem: React.FC = () => {
   const { formRef, saveAndClose, isSaveAndClose } = useVForm();
@@ -93,38 +94,20 @@ export const NovoBem: React.FC = () => {
   ];
 
   const handleSave = (dados: IFormData) => {
-    formValidationSchema
-      .validate(dados, { abortEarly: false })
-      .then((dadosValidados) => {
-        setIsLoading(true);
-        BemService.create(dados).then((result) => {
-          setIsLoading(false);
-          if (result instanceof Error) {
-            alert(result.message);
-          } else {
-            if (isSaveAndClose()) {
-              toast.success(` ${nome} adicionado com sucesso!`);
-              navigate("/movimentacao");
-            } else {
-              navigate(`/movimentacao/detalhe/${result}`);
-            }
-          }
-        });
-      })
-      .catch((errors: yup.ValidationError) => {
-        const validationErrors: IVFormErrors = {};
-        errors.inner.forEach((error) => {
-          if (!error.path) return;
-          validationErrors[error.path] = error.message;
-          /**Objeto que pode ser em branco, pega o path(nome do campo) e
-           * atribui a message para ele e sobrescreve o erro acima
-           * (!error.path), que acusa um campo falsy. Então, o erro de campo
-           * obrigatório é sobrescrito pelo erro de min(3).
-           */
-        });
-        // console.log(validationErrors);
-        formRef.current?.setErrors(validationErrors); //Mostra erro nas inputs
-      });
+    setIsLoading(true);
+    BemService.create(dados).then((result) => {
+      setIsLoading(false);
+      if (result instanceof Error) {
+        alert(result.message);
+      } else {
+        if (isSaveAndClose()) {
+          toast.success(` ${nome} adicionado com sucesso!`);
+          navigate("/movimentacao");
+        } else {
+          navigate(`/movimentacao/detalhe/${result}`);
+        }
+      }
+    });
   };
   const handleDelete = (id: number) => {
     /**

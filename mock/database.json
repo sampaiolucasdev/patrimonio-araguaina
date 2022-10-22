@@ -209,6 +209,17 @@
       "descricao": "ORIGEM ID 5",
       "id": 7,
       "dataCriacao": "20-09-2022"
+    },
+    {
+      "numSerie": "22",
+      "marca": "aa",
+      "modelo": "aa",
+      "valor": "22",
+      "descricao": "aa",
+      "estConservacao": "Novo",
+      "imagem": "aa",
+      "setor_id": 1,
+      "id": 8
     }
   ],
   "usuario": [

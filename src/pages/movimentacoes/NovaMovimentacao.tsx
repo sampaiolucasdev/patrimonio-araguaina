@@ -76,7 +76,7 @@ export const NovaMovimentacao: React.FC = () => {
   useEffect(() => {
     setIsLoading(true);
     debounce(() => {
-      BemService.getAllBySetor(setor_id).then((result) => {
+      BemService.getAllBySetor(pagina, busca, setor_id).then((result) => {
         setIsLoading(false);
         if (result instanceof Error) {
           alert(result.message);

@@ -12,6 +12,7 @@ import { BemService } from "../../shared/services/api/BemService";
 import { AutoCompleteOrigem } from "../movimentacoes/components/AutoCompleteOrigem";
 
 interface IFormData {
+  id: number;
   descricao: string;
   marca: string;
   modelo: string;
@@ -21,16 +22,17 @@ interface IFormData {
   valor: number;
   numSerie: string;
 }
-const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
-  descricao: yup.string().required(),
-  marca: yup.string().required(),
-  modelo: yup.string().required(),
-  imagem: yup.string(),
-  setor_id: yup.number().required(),
-  estConservacao: yup.string().required().min(1),
-  valor: yup.number().required().min(1),
-  numSerie: yup.string().required().min(4),
-});
+// const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
+//   id: yup.number(),
+//   descricao: yup.string().required(),
+//   marca: yup.string().required(),
+//   modelo: yup.string().required(),
+//   imagem: yup.string(),
+//   setor_id: yup.number().required(),
+//   estConservacao: yup.string().required().min(1),
+//   valor: yup.number().required().min(1),
+//   numSerie: yup.string().required().min(4),
+// });
 
 export const DetalheDeBens: React.FC = () => {
   const { formRef, saveAndClose, isSaveAndClose } = useVForm();
@@ -73,40 +75,22 @@ export const DetalheDeBens: React.FC = () => {
 
   const handleSave = (dados: IFormData) => {
     console.log(dados);
-    formValidationSchema
-      .validate(dados, { abortEarly: false })
-      .then((dadosValidados) => {
-        console.log("dados validados", dadosValidados);
-        setIsLoading(true);
-        BemService.create(dadosValidados).then((result) => {
-          setIsLoading(false);
-          //console.log(result);
-          if (result instanceof Error) {
-            alert(result.message);
-          } else {
-            if (isSaveAndClose()) {
-              toast.success(` ${descricao} adicionado com sucesso!`);
-              navigate("/bens");
-            } else {
-              navigate(`/bens/detalhe/${result}`);
-            }
-          }
-        });
-      })
-      .catch((errors: yup.ValidationError) => {
-        const validationErrors: IVFormErrors = {};
-        errors.inner.forEach((error) => {
-          if (!error.path) return;
-          validationErrors[error.path] = error.message;
-          /**Objeto que pode ser em branco, pega o path(nome do campo) e
-           * atribui a message para ele e sobrescreve o erro acima
-           * (!error.path), que acusa um campo falsy. Então, o erro de campo
-           * obrigatório é sobrescrito pelo erro de min(3).
-           */
-        });
-        // console.log(validationErrors);
-        formRef.current?.setErrors(validationErrors); //Mostra erro nas inputs
-      });
+    //console.log("dados validados", dadosValidados);
+    setIsLoading(true);
+    BemService.create(dados).then((result) => {
+      setIsLoading(false);
+      //console.log(result);
+      if (result instanceof Error) {
+        alert(result.message);
+      } else {
+        if (isSaveAndClose()) {
+          toast.success(` ${descricao} adicionado com sucesso!`);
+          navigate("/bens");
+        } else {
+          navigate(`/bens/detalhe/${result}`);
+        }
+      }
+    });
   };
   const handleDelete = (id: number) => {
     /**
@@ -182,7 +166,9 @@ export const DetalheDeBens: React.FC = () => {
                 <Grid item direction="row" xs={6} sm={12} md={6} lg={4} xl={2}>
                   <AutoCompleteOrigem
                     onChange={() =>
-                      setPegarOrigemId(formRef.current?.getFieldValue("origem"))
+                      setPegarOrigemId(
+                        formRef.current?.getFieldValue("setor_id")
+                      )
                     }
                     isExternalLoading={isLoading}
                   />

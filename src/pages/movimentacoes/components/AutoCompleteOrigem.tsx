@@ -19,7 +19,7 @@ export const AutoCompleteOrigem: React.FC<IAutoCompleteMovimentacaoProps> = ({
   onChange,
 }) => {
   const { fieldName, registerField, defaultValue, error, clearError } =
-    useField("origem");
+    useField("setor_id");
   const { debounce } = useDebounce();
 
   const [selectedId, setSelectedId] = useState<number | undefined>(
