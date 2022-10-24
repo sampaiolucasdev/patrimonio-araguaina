@@ -101,7 +101,30 @@ export const MenuLateral: React.FC = ({ children }) => {
               }
             >
               <ListItemButton
-                sx={{ height: 30 }}
+                sx={{
+                  height: 30,
+                  "&$selected": {
+                    backgroundColor: "#f9a825",
+                    color: "#f9a825",
+                    "& .MuiListItemIcon-root": {
+                      color: "#f9a825",
+                    },
+                  },
+                  "&$selected:hover": {
+                    backgroundColor: "#f9a825",
+                    color: "#f9a825",
+                    "& .MuiListItemIcon-root": {
+                      color: "white",
+                    },
+                  },
+                  "&:hover": {
+                    backgroundColor: "#f9a825",
+                    color: "white",
+                    "& .MuiListItemIcon-root": {
+                      color: "white",
+                    },
+                  },
+                }}
                 onClick={() => navigate("/pagina-inicial")}
               >
                 <ListItemIcon sx={{ minWidth: 30 }}>
@@ -118,7 +141,30 @@ export const MenuLateral: React.FC = ({ children }) => {
                 />
               </ListItemButton>
               <ListItemButton
-                sx={{ height: 30 }}
+                sx={{
+                  height: 30,
+                  "&$selected": {
+                    backgroundColor: "#f9a825",
+                    color: "#f9a825",
+                    "& .MuiListItemIcon-root": {
+                      color: "#f9a825",
+                    },
+                  },
+                  "&$selected:hover": {
+                    backgroundColor: "#f9a825",
+                    color: "#f9a825",
+                    "& .MuiListItemIcon-root": {
+                      color: "white",
+                    },
+                  },
+                  "&:hover": {
+                    backgroundColor: "#f9a825",
+                    color: "white",
+                    "& .MuiListItemIcon-root": {
+                      color: "white",
+                    },
+                  },
+                }}
                 onClick={handleClickDrawerCadastro}
               >
                 <ListItemIcon sx={{ minWidth: 30 }}>
@@ -153,7 +199,31 @@ export const MenuLateral: React.FC = ({ children }) => {
                   />
                 </ListItemButton> */}
                 <ListItemButton
-                  sx={{ pl: 3, heigth: 30 }}
+                  sx={{
+                    pl: 3,
+                    heigth: 30,
+                    "&$selected": {
+                      backgroundColor: "#f9a825",
+                      color: "#f9a825",
+                      "& .MuiListItemIcon-root": {
+                        color: "#f9a825",
+                      },
+                    },
+                    "&$selected:hover": {
+                      backgroundColor: "#f9a825",
+                      color: "#f9a825",
+                      "& .MuiListItemIcon-root": {
+                        color: "white",
+                      },
+                    },
+                    "&:hover": {
+                      backgroundColor: "#f9a825",
+                      color: "white",
+                      "& .MuiListItemIcon-root": {
+                        color: "white",
+                      },
+                    },
+                  }}
                   onClick={() => navigate("/setor")}
                 >
                   <ListItemIcon sx={{ minWidth: 30 }}>
@@ -169,7 +239,31 @@ export const MenuLateral: React.FC = ({ children }) => {
                   />
                 </ListItemButton>
                 <ListItemButton
-                  sx={{ pl: 3, heigth: 30 }}
+                  sx={{
+                    pl: 3,
+                    heigth: 30,
+                    "&$selected": {
+                      backgroundColor: "#f9a825",
+                      color: "#f9a825",
+                      "& .MuiListItemIcon-root": {
+                        color: "#f9a825",
+                      },
+                    },
+                    "&$selected:hover": {
+                      backgroundColor: "#f9a825",
+                      color: "#f9a825",
+                      "& .MuiListItemIcon-root": {
+                        color: "white",
+                      },
+                    },
+                    "&:hover": {
+                      backgroundColor: "#f9a825",
+                      color: "white",
+                      "& .MuiListItemIcon-root": {
+                        color: "white",
+                      },
+                    },
+                  }}
                   onClick={() => navigate("/usuario")}
                 >
                   <ListItemIcon sx={{ minWidth: 30 }}>
@@ -185,7 +279,31 @@ export const MenuLateral: React.FC = ({ children }) => {
                   />
                 </ListItemButton>
                 <ListItemButton
-                  sx={{ pl: 3, heigth: 30 }}
+                  sx={{
+                    pl: 3,
+                    heigth: 30,
+                    "&$selected": {
+                      backgroundColor: "#f9a825",
+                      color: "#f9a825",
+                      "& .MuiListItemIcon-root": {
+                        color: "#f9a825",
+                      },
+                    },
+                    "&$selected:hover": {
+                      backgroundColor: "#f9a825",
+                      color: "#f9a825",
+                      "& .MuiListItemIcon-root": {
+                        color: "white",
+                      },
+                    },
+                    "&:hover": {
+                      backgroundColor: "#f9a825",
+                      color: "white",
+                      "& .MuiListItemIcon-root": {
+                        color: "white",
+                      },
+                    },
+                  }}
                   onClick={() => navigate("/bens/detalhe/nova")}
                 >
                   <ListItemIcon sx={{ minWidth: 30 }}>
@@ -203,7 +321,30 @@ export const MenuLateral: React.FC = ({ children }) => {
               </Collapse>
 
               <ListItemButton
-                sx={{ height: 30 }}
+                sx={{
+                  height: 30,
+                  "&$selected": {
+                    backgroundColor: "#f9a825",
+                    color: "#f9a825",
+                    "& .MuiListItemIcon-root": {
+                      color: "#f9a825",
+                    },
+                  },
+                  "&$selected:hover": {
+                    backgroundColor: "#f9a825",
+                    color: "#f9a825",
+                    "& .MuiListItemIcon-root": {
+                      color: "white",
+                    },
+                  },
+                  "&:hover": {
+                    backgroundColor: "#f9a825",
+                    color: "white",
+                    "& .MuiListItemIcon-root": {
+                      color: "white",
+                    },
+                  },
+                }}
                 onClick={() => navigate("/movimentacao")}
               >
                 <ListItemIcon sx={{ minWidth: 30 }}>
@@ -221,7 +362,30 @@ export const MenuLateral: React.FC = ({ children }) => {
               </ListItemButton>
 
               <ListItemButton
-                sx={{ height: 30 }}
+                sx={{
+                  height: 30,
+                  "&$selected": {
+                    backgroundColor: "#f9a825",
+                    color: "#f9a825",
+                    "& .MuiListItemIcon-root": {
+                      color: "#f9a825",
+                    },
+                  },
+                  "&$selected:hover": {
+                    backgroundColor: "#f9a825",
+                    color: "#f9a825",
+                    "& .MuiListItemIcon-root": {
+                      color: "white",
+                    },
+                  },
+                  "&:hover": {
+                    backgroundColor: "#f9a825",
+                    color: "white",
+                    "& .MuiListItemIcon-root": {
+                      color: "white",
+                    },
+                  },
+                }}
                 onClick={() => navigate("/inventario")}
               >
                 <ListItemIcon sx={{ minWidth: 30 }}>
@@ -239,7 +403,30 @@ export const MenuLateral: React.FC = ({ children }) => {
               </ListItemButton>
 
               <ListItemButton
-                sx={{ height: 30 }}
+                sx={{
+                  height: 30,
+                  "&$selected": {
+                    backgroundColor: "#f9a825",
+                    color: "#f9a825",
+                    "& .MuiListItemIcon-root": {
+                      color: "#f9a825",
+                    },
+                  },
+                  "&$selected:hover": {
+                    backgroundColor: "#f9a825",
+                    color: "#f9a825",
+                    "& .MuiListItemIcon-root": {
+                      color: "white",
+                    },
+                  },
+                  "&:hover": {
+                    backgroundColor: "#f9a825",
+                    color: "white",
+                    "& .MuiListItemIcon-root": {
+                      color: "white",
+                    },
+                  },
+                }}
                 onClick={handleClickDrawerRelatorio}
               >
                 <ListItemIcon sx={{ minWidth: 30 }}>
@@ -258,7 +445,31 @@ export const MenuLateral: React.FC = ({ children }) => {
               </ListItemButton>
               <Collapse in={openRelatorio} timeout="auto" unmountOnExit>
                 <ListItemButton
-                  sx={{ pl: 3, heigth: 30 }}
+                  sx={{
+                    pl: 3,
+                    heigth: 30,
+                    "&$selected": {
+                      backgroundColor: "#f9a825",
+                      color: "#f9a825",
+                      "& .MuiListItemIcon-root": {
+                        color: "#f9a825",
+                      },
+                    },
+                    "&$selected:hover": {
+                      backgroundColor: "#f9a825",
+                      color: "#f9a825",
+                      "& .MuiListItemIcon-root": {
+                        color: "white",
+                      },
+                    },
+                    "&:hover": {
+                      backgroundColor: "#f9a825",
+                      color: "white",
+                      "& .MuiListItemIcon-root": {
+                        color: "white",
+                      },
+                    },
+                  }}
                   onClick={() => navigate("/relatoriobens")}
                 >
                   <ListItemIcon sx={{ minWidth: 30 }}>
@@ -274,7 +485,31 @@ export const MenuLateral: React.FC = ({ children }) => {
                   />
                 </ListItemButton>
                 <ListItemButton
-                  sx={{ pl: 3, heigth: 30 }}
+                  sx={{
+                    pl: 3,
+                    heigth: 30,
+                    "&$selected": {
+                      backgroundColor: "#f9a825",
+                      color: "#f9a825",
+                      "& .MuiListItemIcon-root": {
+                        color: "#f9a825",
+                      },
+                    },
+                    "&$selected:hover": {
+                      backgroundColor: "#f9a825",
+                      color: "#f9a825",
+                      "& .MuiListItemIcon-root": {
+                        color: "white",
+                      },
+                    },
+                    "&:hover": {
+                      backgroundColor: "#f9a825",
+                      color: "white",
+                      "& .MuiListItemIcon-root": {
+                        color: "white",
+                      },
+                    },
+                  }}
                   onClick={() => navigate("/relatoriomovimentacao")}
                 >
                   <ListItemIcon sx={{ minWidth: 30 }}>
@@ -310,7 +545,33 @@ export const MenuLateral: React.FC = ({ children }) => {
           </Box>
           <Box>
             <List component="nav">
-              <ListItemButton onClick={toggleTheme} sx={{ height: 30 }}>
+              <ListItemButton
+                onClick={toggleTheme}
+                sx={{
+                  height: 30,
+                  "&$selected": {
+                    backgroundColor: "#f9a825",
+                    color: "#f9a825",
+                    "& .MuiListItemIcon-root": {
+                      color: "#f9a825",
+                    },
+                  },
+                  "&$selected:hover": {
+                    backgroundColor: "#f9a825",
+                    color: "#f9a825",
+                    "& .MuiListItemIcon-root": {
+                      color: "white",
+                    },
+                  },
+                  "&:hover": {
+                    backgroundColor: "#f9a825",
+                    color: "white",
+                    "& .MuiListItemIcon-root": {
+                      color: "white",
+                    },
+                  },
+                }}
+              >
                 <ListItemIcon>
                   <Icon>dark_mode</Icon>
                 </ListItemIcon>
@@ -324,7 +585,33 @@ export const MenuLateral: React.FC = ({ children }) => {
                   }}
                 />
               </ListItemButton>
-              <ListItemButton onClick={logout} sx={{ height: 30 }}>
+              <ListItemButton
+                onClick={logout}
+                sx={{
+                  height: 30,
+                  "&$selected": {
+                    backgroundColor: "#f9a825",
+                    color: "#f9a825",
+                    "& .MuiListItemIcon-root": {
+                      color: "#f9a825",
+                    },
+                  },
+                  "&$selected:hover": {
+                    backgroundColor: "#f9a825",
+                    color: "#f9a825",
+                    "& .MuiListItemIcon-root": {
+                      color: "white",
+                    },
+                  },
+                  "&:hover": {
+                    backgroundColor: "#f9a825",
+                    color: "white",
+                    "& .MuiListItemIcon-root": {
+                      color: "white",
+                    },
+                  },
+                }}
+              >
                 <ListItemIcon>
                   <Icon>logout</Icon>
                 </ListItemIcon>

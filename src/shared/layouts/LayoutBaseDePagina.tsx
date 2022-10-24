@@ -43,6 +43,7 @@ export const LayoutBaseDePagina: React.FC<ILayoutBaseDePaginaProps> = ({
           overflow="hidden"
           textOverflow="ellipses"
           variant={smDown ? "h5" : mdDown ? "h4" : "h3"}
+          sx={{ flexGrow: 1, textAlign: "center", color: "#f9a825" }}
         >
           {titulo}
         </Typography>
