@@ -1,4 +1,5 @@
 import {
+  Icon,
   IconButton,
   LinearProgress,
   Pagination,
@@ -27,6 +28,8 @@ import {
 import { PictureAsPdfOutlined } from "@mui/icons-material";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 export const ListagemDeMovimentacao: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -72,27 +75,37 @@ export const ListagemDeMovimentacao: React.FC = () => {
      * state com todas as linhas do state anterior(...), filtrando exceto
      * a linha com o id que está sendo apagado (oldRow.id !== id).
      */
-    if (confirm("Deseja apagar?")) {
-      MovimentacaoService.deleteById(id).then((result) => {
-        if (result instanceof Error) {
-          alert(result.message);
-        } else {
-          setRows((oldRows) => {
-            return [...oldRows.filter((oldRow) => oldRow.id !== id)];
-          });
-          alert("Registro apagado com sucesso!");
-        }
-      });
-    }
+    Swal.fire({
+      title: "Deseja excluir a movimentação?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      showDenyButton: false,
+      confirmButtonText: "Sim",
+      cancelButtonText: "Cancelar",
+      denyButtonText: "Não",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        MovimentacaoService.deleteById(id).then((result) => {
+          if (result instanceof Error) {
+            alert(result.message);
+          } else {
+            setRows((oldRows) => {
+              return [...oldRows.filter((oldRow) => oldRow.id !== id)];
+            });
+            toast.success("Movimentação apagada com sucesso!");
+          }
+        });
+      }
+    });
   };
 
   const doc = new jsPDF();
 
   autoTable(doc, {
     head: [["Número de Série", "Est de Conservação", "Descrição", "Valor"]],
-    body: [
-      
-    ],
+    body: [],
   });
 
   return (
@@ -140,6 +153,12 @@ export const ListagemDeMovimentacao: React.FC = () => {
                         color={"error"}
                         onClick={() => doc.save("table.pdf")}
                       />
+                    </IconButton>
+                    <IconButton
+                      size="small"
+                      onClick={() => handleDelete(row.id)}
+                    >
+                      <Icon>delete</Icon>
                     </IconButton>
                   </Stack>
                 </TableCell>

@@ -135,6 +135,9 @@ export const RelatorioBem: React.FC = () => {
         <FerramentasDeDetalhe
           mostrarBotaoNovo={false}
           mostrarBotaoApagar={false}
+          mostrarBotaoSalvar={false}
+          mostrarBotaoVoltar={false}
+          mostrarBotaoPDF={true}
         />
       }
     >
