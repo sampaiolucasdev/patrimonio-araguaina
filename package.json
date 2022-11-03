@@ -7,7 +7,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "mock": "yarn run json-server -w -p 3334 ./mock/database.json"
+    "mock": "yarn run json-server -w -h 10.10.149.32 -p 3333 ./mock/database.json"
   },
   "dependencies": {
     "@emotion/react": "^11.10.0",
