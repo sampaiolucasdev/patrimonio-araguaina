@@ -14,5 +14,5 @@ export const Enviroment = {
   /**
    * URL base de consulta dos dados da aplicação
    */
-  URL_BASE: "http://10.10.149.32:3333",
+  URL_BASE: "http://api.patrimonio.saude.araguaina.to.gov.br",
 };
