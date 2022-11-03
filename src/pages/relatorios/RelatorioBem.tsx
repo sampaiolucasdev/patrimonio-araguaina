@@ -65,12 +65,7 @@ export const RelatorioBem: React.FC = () => {
   useEffect(() => {
     setIsLoading(true);
     debounce(() => {
-      BemService.getAllFiltered(
-        initialDate,
-        finalDate,
-        pegarOrigemId,
-        estConservacao
-      ).then((result) => {
+      BemService.getAllBySetor(pagina, busca, pegarOrigemId).then((result) => {
         setIsLoading(false);
         if (result instanceof Error) {
           alert(result.message);

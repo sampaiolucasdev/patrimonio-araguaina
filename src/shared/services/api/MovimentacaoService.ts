@@ -51,8 +51,6 @@ const getAll = async (
 };
 
 const getAllFiltered = async (
-  initialDate: Date | null,
-  finalDate: Date | null,
   setor_id_origem = 0
 ): Promise<TMovimentacaoComTotalCount | Error> => {
   try {
@@ -60,8 +58,6 @@ const getAllFiltered = async (
 
     const { data, headers } = await Api.get("/movimentacao", {
       params: {
-        initialDate,
-        finalDate,
         setor_id_origem,
         _limit: Enviroment.LIMITE_DE_LINHAS,
       },

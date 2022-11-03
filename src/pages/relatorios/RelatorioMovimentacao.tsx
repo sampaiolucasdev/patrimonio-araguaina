@@ -69,11 +69,7 @@ export const RelatorioMovimentacao: React.FC = () => {
   useEffect(() => {
     setIsLoading(true);
     debounce(() => {
-      MovimentacaoService.getAllFiltered(
-        initialDate,
-        finalDate,
-        setor_id_origem
-      ).then((result) => {
+      MovimentacaoService.getAllFiltered(setor_id_origem).then((result) => {
         setIsLoading(false);
         if (result instanceof Error) {
           alert(result.message);
@@ -91,20 +87,20 @@ export const RelatorioMovimentacao: React.FC = () => {
     {
       field: "setor_id_origem",
       headerName: "Origem",
-      width: 150,
+      width: 80,
       editable: false,
     },
     {
       field: "setor_id_destino",
       headerName: "Destino",
-      width: 150,
+      width: 80,
       type: "string",
       editable: false,
     },
     {
       field: "descricao",
       headerName: "Descrição",
-      width: 150,
+      width: 370,
       editable: false,
     },
     {
