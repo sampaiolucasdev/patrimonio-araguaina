@@ -114,15 +114,6 @@
         "MONITOR BLUECASE 20"
       ],
       "valor": 700
-    },
-    {
-      "estConservacao": "Descarte",
-      "setor_id_origem": 1,
-      "setor_id_destino": 2,
-      "arrayIds": [
-        1
-      ],
-      "id": 5
     }
   ],
   "bens": [

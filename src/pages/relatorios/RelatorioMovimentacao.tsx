@@ -131,7 +131,8 @@ export const RelatorioMovimentacao: React.FC = () => {
           mostrarBotaoNovo={false}
           mostrarBotaoApagar={false}
           mostrarBotaoSalvar={false}
-          //mostrarBotaoPDF
+          mostrarBotaoPDF
+          mostrarBotaoVoltar={false}
           //aoClicarEmPDF={}
           // aoClicarEmSalvar={saveAndClose}
           // aoClicarEmVoltar={() => navigate("/movimentacao")}
